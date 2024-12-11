@@ -1,0 +1,11 @@
+{
+  "port": 8080,
+  "app_name": "request-service",
+  "databases": {
+    "postgres": ""
+  },
+  "kafka": {
+    "address": "localhost:9091,localhost:9092,localhost:9093",
+    "producerTopic": "request-service"
+  }
+}
