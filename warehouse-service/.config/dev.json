@@ -1,0 +1,14 @@
+{
+  "port": 8080,
+  "app_name": "warehouse-service",
+  "databases": {
+    "postgres": ""
+  },
+  "cluster": {
+    "client_service": ""
+  },
+  "kafka": {
+    "address": "localhost:9091,localhost:9092,localhost:9093",
+    "producerTopic": "request-service"
+  }
+}
