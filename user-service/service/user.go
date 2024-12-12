@@ -10,7 +10,7 @@ import (
 type User interface {
 	GetUsers(ctx goatcontext.Context) ([]domain.User, error)
 	GetUserById(ctx goatcontext.Context, userId int) (domain.User, error)
-	CheckUserExists(ctx goatcontext.Context, userName string) bool
+	GetUserByUsername(ctx goatcontext.Context, userName string) (domain.User, error)
 	AddUser(ctx goatcontext.Context, user domain.User) (domain.User, error)
 	UpdateUser(ctx goatcontext.Context, user domain.User) error
 	DeleteUser(ctx goatcontext.Context, userId int) error
@@ -61,17 +61,18 @@ func (s *UserServiceImpl) GetUserById(ctx goatcontext.Context, userId int) (doma
 	return mappings.ToDomainUser(dbUser, userRole), nil
 }
 
-func (s *UserServiceImpl) CheckUserExists(ctx goatcontext.Context, userName string) bool {
-	user, err := s.userRepository.GetUserByUsername(ctx, userName)
+func (s *UserServiceImpl) GetUserByUsername(ctx goatcontext.Context, userName string) (domain.User, error) {
+	dbUser, err := s.userRepository.GetUserByUsername(ctx, userName)
 	if err != nil {
-		return false
+		return domain.User{}, err
 	}
 
-	if user.Id == 0 {
-		return false
+	userRole, err := s.roleRepository.GetRoleById(ctx, dbUser.RoleId)
+	if err != nil {
+		return domain.User{}, err
 	}
 
-	return true
+	return mappings.ToDomainUser(dbUser, userRole), nil
 }
 
 func (s *UserServiceImpl) AddUser(ctx goatcontext.Context, user domain.User) (domain.User, error) {

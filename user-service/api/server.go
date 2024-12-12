@@ -53,8 +53,8 @@ func (s *Server) Start() error {
 
 func (r *Router) SetupRoutes(logger goatlogger.Logger, userService service.User) {
 	r.router.HandleFunc("/users", handlers.GetUsersHandler(logger, userService)).Methods(http.MethodGet)
+	r.router.HandleFunc("/user", handlers.GetUserByUserName(logger, userService)).Methods(http.MethodGet)
 	r.router.HandleFunc("/user/{id}", handlers.GetUserHandler(logger, userService)).Methods(http.MethodGet)
-	r.router.HandleFunc("/user/check", handlers.CheckUserExistHandler(logger, userService)).Methods(http.MethodGet)
 	r.router.HandleFunc("/user", handlers.AddUserHandler(logger, userService)).Methods(http.MethodPost)
 	r.router.HandleFunc("/user", handlers.UpdateUserHandler(logger, userService)).Methods(http.MethodPut)
 	r.router.HandleFunc("/user/{id}", handlers.DeleteUserHandler(logger, userService)).Methods(http.MethodDelete)
