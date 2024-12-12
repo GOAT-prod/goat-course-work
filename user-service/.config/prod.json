@@ -1,0 +1,7 @@
+{
+  "port": 8080,
+  "app_name": "user-service",
+  "databases": {
+    "postgres": ""
+  }
+}
