@@ -39,7 +39,7 @@ func (r *UserRepositoryImpl) GetUserByUsername(ctx goatcontext.Context, username
 }
 
 func (r *UserRepositoryImpl) AddUser(ctx goatcontext.Context, user database.User) (id int, err error) {
-	return id, r.postgres.GetContext(ctx, &id, queries.AddUser, user)
+	return id, r.postgres.GetContext(ctx, &id, queries.AddUser, user.Username, user.Password, user.Status, user.RoleId, user.ClientId)
 }
 
 func (r *UserRepositoryImpl) UpdateUser(ctx goatcontext.Context, user database.User) error {
