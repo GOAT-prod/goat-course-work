@@ -9,7 +9,7 @@ type Config struct {
 
 type Database struct {
 	Postgres string `json:"postgres"`
-	Kafka    Kafka  `json:"kafka"`
+	Kafka    Kafka  `json:"broker"`
 }
 
 type Kafka struct {

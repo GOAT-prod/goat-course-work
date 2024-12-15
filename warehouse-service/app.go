@@ -10,7 +10,7 @@ import (
 	"warehouse-service/api"
 	"warehouse-service/cluster/clientservice"
 	"warehouse-service/database"
-	"warehouse-service/database/kafka"
+	"warehouse-service/database/broker"
 	"warehouse-service/repository"
 	"warehouse-service/service"
 	"warehouse-service/settings"
@@ -26,7 +26,7 @@ type App struct {
 	server *api.Server
 
 	postgres *sqlx.DB
-	producer *kafka.Producer
+	producer *broker.Producer
 
 	clientServiceClient *clientservice.Client
 
@@ -71,9 +71,9 @@ func (a *App) initPostgres() {
 }
 
 func (a *App) initKafka() {
-	producer, err := kafka.NewProducer(a.cfg.Databases.Kafka.Address, a.cfg.Databases.Kafka.Topic)
+	producer, err := broker.NewProducer(a.cfg.Databases.Kafka.Address, a.cfg.Databases.Kafka.Topic)
 	if err != nil {
-		a.logger.Panic(fmt.Sprintf("не удалось подключиться к kafka: %v", err))
+		a.logger.Panic(fmt.Sprintf("не удалось подключиться к broker: %v", err))
 	}
 
 	a.producer = producer

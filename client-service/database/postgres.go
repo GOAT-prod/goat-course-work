@@ -12,7 +12,7 @@ func ConnectPostgres(connectionString string) *sqlx.DB {
 
 func RunMigrations(database *sqlx.DB) error {
 	goose.SetVerbose(false)
-	goose.SetTableName("db_versions")
+	goose.SetTableName("client_service_db_versions")
 
 	return goose.Up(database.DB, "./database/migrations")
 }

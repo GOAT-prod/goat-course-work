@@ -1,0 +1,66 @@
+# github.com/GOAT-prod/goatcontext v1.0.0
+## explicit; go 1.23
+github.com/GOAT-prod/goatcontext
+# github.com/GOAT-prod/goathttp v1.0.4
+## explicit; go 1.23
+github.com/GOAT-prod/goathttp/headers
+github.com/GOAT-prod/goathttp/json
+github.com/GOAT-prod/goathttp/server
+# github.com/GOAT-prod/goatlogger v0.1.5
+## explicit; go 1.22.4
+github.com/GOAT-prod/goatlogger
+# github.com/GOAT-prod/goatsettings v1.0.0
+## explicit; go 1.23.1
+github.com/GOAT-prod/goatsettings
+# github.com/golang-jwt/jwt/v5 v5.2.1
+## explicit; go 1.18
+github.com/golang-jwt/jwt/v5
+# github.com/gorilla/mux v1.8.1
+## explicit; go 1.20
+github.com/gorilla/mux
+# github.com/jmoiron/sqlx v1.4.0
+## explicit; go 1.10
+github.com/jmoiron/sqlx
+github.com/jmoiron/sqlx/reflectx
+# github.com/lib/pq v1.10.9
+## explicit; go 1.13
+github.com/lib/pq
+github.com/lib/pq/oid
+github.com/lib/pq/scram
+# github.com/mfridman/interpolate v0.0.2
+## explicit; go 1.19
+github.com/mfridman/interpolate
+# github.com/pressly/goose/v3 v3.23.1
+## explicit; go 1.21.0
+github.com/pressly/goose/v3
+github.com/pressly/goose/v3/database
+github.com/pressly/goose/v3/internal/controller
+github.com/pressly/goose/v3/internal/dialect
+github.com/pressly/goose/v3/internal/dialect/dialectquery
+github.com/pressly/goose/v3/internal/gooseutil
+github.com/pressly/goose/v3/internal/sqlparser
+github.com/pressly/goose/v3/lock
+# github.com/samber/lo v1.47.0
+## explicit; go 1.18
+github.com/samber/lo
+github.com/samber/lo/internal/constraints
+github.com/samber/lo/internal/rand
+# github.com/sethvargo/go-retry v0.3.0
+## explicit; go 1.21
+github.com/sethvargo/go-retry
+# go.uber.org/multierr v1.11.0
+## explicit; go 1.19
+go.uber.org/multierr
+# golang.org/x/sync v0.10.0
+## explicit; go 1.18
+golang.org/x/sync/errgroup
+# golang.org/x/text v0.21.0
+## explicit; go 1.18
+golang.org/x/text/cases
+golang.org/x/text/internal
+golang.org/x/text/internal/language
+golang.org/x/text/internal/language/compact
+golang.org/x/text/internal/tag
+golang.org/x/text/language
+golang.org/x/text/transform
+golang.org/x/text/unicode/norm

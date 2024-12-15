@@ -2,10 +2,10 @@
   "port": 8080,
   "app_name": "warehouse-service",
   "databases": {
-    "postgres": ""
+    "postgres": "postgres://postgres:postgres@postgres:5432/logistics?sslmode=disable"
   },
   "cluster": {
-    "client_service": ""
+    "client_service": "http://client-service"
   },
   "kafka": {
     "address": "localhost:9091,localhost:9092,localhost:9093",

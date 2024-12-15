@@ -1,3 +1,4 @@
+-- +goose Up
 create table if not exists user_role
 (
     id   serial primary key,
@@ -22,3 +23,5 @@ create table if not exists users
 );
 
 create index if not exists idx_users_username on users (username);
+
+-- +goose Down

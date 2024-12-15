@@ -5,7 +5,7 @@ import (
 	"github.com/samber/lo"
 	"time"
 	"warehouse-service/cluster/clientservice"
-	"warehouse-service/database/kafka"
+	"warehouse-service/database/broker"
 	"warehouse-service/database/models"
 	"warehouse-service/domain"
 	"warehouse-service/domain/mappings"
@@ -24,10 +24,10 @@ type WareHouse interface {
 type Impl struct {
 	warehouseRepository repository.Warehouse
 	clientServiceClient *clientservice.Client
-	kafkaProducer       *kafka.Producer
+	kafkaProducer       *broker.Producer
 }
 
-func NewWarehouseService(warehouseRepository repository.Warehouse, clientServiceClient *clientservice.Client, kafkaProducer *kafka.Producer) WareHouse {
+func NewWarehouseService(warehouseRepository repository.Warehouse, clientServiceClient *clientservice.Client, kafkaProducer *broker.Producer) WareHouse {
 	return &Impl{
 		warehouseRepository: warehouseRepository,
 		clientServiceClient: clientServiceClient,
@@ -86,7 +86,7 @@ func (s *Impl) AddProducts(ctx goatcontext.Context, products []domain.Product) e
 	if err != nil {
 		return err
 	}
-	
+
 	return s.produceRequest(addedProducts)
 }
 
@@ -114,14 +114,12 @@ func (s *Impl) GetMaterialsList(ctx goatcontext.Context) ([]domain.ProductMateri
 
 func (s *Impl) produceRequest(products []models.Product) error {
 	for _, product := range products {
-		request := kafka.Request{
+		request := broker.Request{
 			Status:      1,
 			Type:        1,
 			UpdatedDate: time.Now(),
 			Summary:     "новый продукт на аппрув",
-			Item: kafka.RequestItem{
-				Item: product,
-			},
+			Item:        product,
 		}
 
 		if err := s.kafkaProducer.Produce(request); err != nil {

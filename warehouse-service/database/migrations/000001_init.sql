@@ -1,3 +1,4 @@
+-- +goose Up
 create table if not exists product
 (
     id          serial primary key,
@@ -38,3 +39,5 @@ create table if not exists image
     product_id integer references product(id),
     url        text default ''::text not null
 );
+
+-- +goose Down
