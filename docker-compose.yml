@@ -2,8 +2,6 @@ services:
   warehouse-service:
     container_name: warehouse-service
     build: ./warehouse-service
-    ports:
-      - "8081:8081"
     environment:
       - ENV=dev
     networks:
@@ -12,13 +10,13 @@ services:
       - postgres
       - kafka
       - client-service
+    expose:
+      - "80"
     restart: always
 
   user-service:
     container_name: user-service
     build: ./user-service
-    ports:
-      - "8082:8082"
     environment:
       - ENV=dev
     networks:
@@ -26,32 +24,34 @@ services:
     depends_on:
       - postgres
       - client-service
+    expose:
+      - "80"
     restart: always
 
   client-service:
     container_name: client-service
     build: ./client-service
-    ports:
-      - "8083:8083"
     environment:
       - ENV=dev
     networks:
       - app-network
     depends_on:
       - postgres
+    expose:
+      - "80"
     restart: always
 
   auth-service:
     container_name: auth-service
     build: ./auth-service
-    ports:
-      - "8084:8084"
     environment:
       - ENV=dev
     networks:
       - app-network
     depends_on:
       - redis
+    expose:
+      - "80"
 
   api-gateway:
     container_name: api-gateway
@@ -62,6 +62,8 @@ services:
       - ENV=dev
     networks:
       - app-network
+    expose:
+      - "80"
 
   redis:
     hostname: redis
