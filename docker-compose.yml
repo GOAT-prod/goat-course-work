@@ -1,6 +1,6 @@
 services:
   warehouse-service:
-    hostname: warehouse-service
+    container_name: warehouse-service
     build: ./warehouse-service
     ports:
       - "8081:81"
@@ -15,7 +15,7 @@ services:
     restart: always
 
   user-service:
-    hostname: user-service
+    container_name: user-service
     build: ./user-service
     ports:
       - "8082:82"
@@ -29,7 +29,7 @@ services:
     restart: always
 
   client-service:
-    hostname: client-service
+    container_name: client-service
     build: ./client-service
     ports:
       - "8083:83"
@@ -42,7 +42,7 @@ services:
     restart: always
 
   auth-service:
-    hostname: auth-service
+    container_name: auth-service
     build: ./auth-service
     ports:
       - "8084:84"
@@ -54,7 +54,7 @@ services:
       - redis
 
   api-gateway:
-    hostname: api-gateway
+    container_name: api-gateway
     build: ./api-gateway
     ports:
       - "8080:80"
