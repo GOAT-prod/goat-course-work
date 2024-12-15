@@ -26,6 +26,7 @@ func main() {
 		panic(err)
 	}
 
+	// BLYAT
 	logger := goatlogger.New(config.AppName)
 
 	mainCtx, cancelFunc := context.WithCancel(context.Background())
