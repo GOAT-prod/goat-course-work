@@ -3,7 +3,7 @@ services:
     container_name: warehouse-service
     build: ./warehouse-service
     ports:
-      - "8081:81"
+      - "8081:8081"
     environment:
       - ENV=dev
     networks:
@@ -18,7 +18,7 @@ services:
     container_name: user-service
     build: ./user-service
     ports:
-      - "8082:82"
+      - "8082:8082"
     environment:
       - ENV=dev
     networks:
@@ -32,7 +32,7 @@ services:
     container_name: client-service
     build: ./client-service
     ports:
-      - "8083:83"
+      - "8083:8083"
     environment:
       - ENV=dev
     networks:
@@ -45,7 +45,7 @@ services:
     container_name: auth-service
     build: ./auth-service
     ports:
-      - "8084:84"
+      - "8084:8084"
     environment:
       - ENV=dev
     networks:
@@ -57,7 +57,7 @@ services:
     container_name: api-gateway
     build: ./api-gateway
     ports:
-      - "8080:80"
+      - "8080:8080"
     environment:
       - ENV=dev
     networks:
