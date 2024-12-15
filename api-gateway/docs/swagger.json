@@ -1,0 +1,1060 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Прослойка для взаимодействия с логистическим сервисом",
+        "title": "api-gateway",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "description": "Authenticates a user and returns access and refresh tokens.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "User login",
+                "parameters": [
+                    {
+                        "description": "User login credentials",
+                        "name": "loginData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authservice.LoginData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Access and refresh tokens",
+                        "schema": {
+                            "$ref": "#/definitions/authservice.Tokens"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - Invalid credentials or request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "description": "Invalidates the user's session by revoking the refresh token.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "User logout",
+                "responses": {
+                    "200": {
+                        "description": "Successfully logged out",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - Invalid token or request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "description": "Registers a new user and returns access and refresh tokens.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "User registration",
+                "parameters": [
+                    {
+                        "description": "User registration data",
+                        "name": "registerData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authservice.RegisterData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Access and refresh tokens",
+                        "schema": {
+                            "$ref": "#/definitions/authservice.Tokens"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - Invalid registration data or request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/client": {
+            "put": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "This endpoint updates an existing client's information in the system.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clients"
+                ],
+                "summary": "Update an existing client",
+                "parameters": [
+                    {
+                        "description": "Client information to be updated",
+                        "name": "client",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/clientservice.ClientInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated client information",
+                        "schema": {
+                            "$ref": "#/definitions/clientservice.ClientInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/client/all": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "This endpoint retrieves a list of clients from the client service.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clients"
+                ],
+                "summary": "Get list of clients",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/clientservice.ClientInfo"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/client/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "Retrieves client details by their ID. Authorization is required to access this endpoint.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clients"
+                ],
+                "summary": "Get client",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Client ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Client details",
+                        "schema": {
+                            "$ref": "#/definitions/clientservice.ClientInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Invalid client ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - Invalid token or unauthorized request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "Deletes a client by their ID. Authorization is required to access this endpoint.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clients"
+                ],
+                "summary": "Delete client",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Client ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted client",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Invalid client ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - Invalid token or unauthorized request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "This endpoint retrieves a list of all products from the warehouse.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Get a list of products",
+                "responses": {
+                    "200": {
+                        "description": "List of products",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/warehousesevice.Product"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "This endpoint allows you to update a list of products in the warehouse.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Update a list of products",
+                "parameters": [
+                    {
+                        "description": "List of products to update",
+                        "name": "products",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/warehousesevice.Product"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Products successfully updated"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "This endpoint allows you to add a list of products to the warehouse.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Add products to the warehouse",
+                "parameters": [
+                    {
+                        "description": "List of products to be added",
+                        "name": "products",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/warehousesevice.Product"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Products successfully added"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "This endpoint allows you to delete a list of products from the warehouse by their IDs.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Delete products from the warehouse",
+                "parameters": [
+                    {
+                        "description": "List of product IDs to be deleted",
+                        "name": "productIds",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Products successfully deleted"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/materials": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "This endpoint retrieves a list of all materials from the warehouse.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "materials"
+                ],
+                "summary": "Get list of materials",
+                "responses": {
+                    "200": {
+                        "description": "List of materials",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/warehousesevice.ProductMaterial"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "This endpoint retrieves a product from the warehouse by its ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Get a product by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product details",
+                        "schema": {
+                            "$ref": "#/definitions/warehousesevice.Product"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "put": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "This endpoint allows you to update the details of an existing user in the system.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Update an existing user",
+                "parameters": [
+                    {
+                        "description": "User information to be updated",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/userservice.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated user information",
+                        "schema": {
+                            "$ref": "#/definitions/userservice.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "This endpoint allows you to add a new user to the system.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Add a new user",
+                "parameters": [
+                    {
+                        "description": "User information to be added",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/userservice.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User successfully added",
+                        "schema": {
+                            "$ref": "#/definitions/userservice.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/all": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "This endpoint retrieves a list of all users from the system.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get list of users",
+                "responses": {
+                    "200": {
+                        "description": "List of users",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/userservice.User"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "This endpoint retrieves the details of a user by their ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get a user by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User details",
+                        "schema": {
+                            "$ref": "#/definitions/userservice.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "This endpoint allows you to delete an existing user by their ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete a user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID to be deleted",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "authservice.LoginData": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "description": "Пароль пользователя для входа в систему.",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "Имя пользователя для входа в систему.",
+                    "type": "string"
+                }
+            }
+        },
+        "authservice.RegisterData": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "Адрес клиента, связанного с пользователем.",
+                    "type": "string"
+                },
+                "inn": {
+                    "description": "ИНН клиента, связанного с пользователем.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Имя клиента, связанного с пользователем.",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "Пароль, который пользователь создаст при регистрации.",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "Роль пользователя, например, администратор или обычный пользователь.",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "Имя пользователя, которое будет использоваться при регистрации.",
+                    "type": "string"
+                }
+            }
+        },
+        "authservice.Tokens": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "description": "Токен доступа для авторизации запросов.",
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "description": "Токен для обновления access_token, если он истек.",
+                    "type": "string"
+                }
+            }
+        },
+        "clientservice.ClientInfo": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "Адрес клиента.",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "Уникальный идентификатор клиента.",
+                    "type": "integer"
+                },
+                "inn": {
+                    "description": "ИНН клиента.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Имя клиента.",
+                    "type": "string"
+                }
+            }
+        },
+        "userservice.User": {
+            "type": "object",
+            "properties": {
+                "clientId": {
+                    "description": "Идентификатор клиента, с которым связан пользователь.",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "Уникальный идентификатор пользователя.",
+                    "type": "integer"
+                },
+                "password": {
+                    "description": "Пароль пользователя для входа в систему.",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "Роль пользователя (например, администратор или обычный пользователь).",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Статус пользователя (например, активен или заблокирован).",
+                    "type": "integer"
+                },
+                "username": {
+                    "description": "Имя пользователя для входа в систему.",
+                    "type": "string"
+                }
+            }
+        },
+        "warehousesevice.Factory": {
+            "type": "object",
+            "properties": {
+                "factoryName": {
+                    "description": "Название завода.",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "Уникальный идентификатор завода.",
+                    "type": "integer"
+                }
+            }
+        },
+        "warehousesevice.Product": {
+            "type": "object",
+            "properties": {
+                "brandName": {
+                    "description": "Название бренда продукта.",
+                    "type": "string"
+                },
+                "factory": {
+                    "description": "Завод, производящий продукт.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/warehousesevice.Factory"
+                        }
+                    ]
+                },
+                "id": {
+                    "description": "Уникальный идентификатор продукта.",
+                    "type": "integer"
+                },
+                "images": {
+                    "description": "Список изображений продукта.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/warehousesevice.ProductImages"
+                    }
+                },
+                "items": {
+                    "description": "Список товаров (размер, количество на складе и т.д.).",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/warehousesevice.ProductItem"
+                    }
+                },
+                "materials": {
+                    "description": "Материалы, из которых состоит продукт.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/warehousesevice.ProductMaterial"
+                    }
+                },
+                "name": {
+                    "description": "Название продукта.",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "Цена продукта.",
+                    "type": "number"
+                },
+                "status": {
+                    "description": "Статус продукта (например, \"в наличии\", \"не в наличии\").",
+                    "type": "string"
+                }
+            }
+        },
+        "warehousesevice.ProductImages": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Уникальный идентификатор изображения.",
+                    "type": "integer"
+                },
+                "imageUrl": {
+                    "description": "URL изображения продукта.",
+                    "type": "string"
+                }
+            }
+        },
+        "warehousesevice.ProductItem": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "description": "Цвет товара.",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "Уникальный идентификатор товара.",
+                    "type": "integer"
+                },
+                "size": {
+                    "description": "Размер товара (например, 42, 50 и т.д.).",
+                    "type": "integer"
+                },
+                "stockCount": {
+                    "description": "Количество товара на складе.",
+                    "type": "integer"
+                },
+                "weight": {
+                    "description": "Вес товара.",
+                    "type": "number"
+                }
+            }
+        },
+        "warehousesevice.ProductMaterial": {
+            "type": "object",
+            "properties": {
+                "Id": {
+                    "description": "Уникальный идентификатор материала.",
+                    "type": "integer"
+                },
+                "Material": {
+                    "description": "Название материала (например, \"дерево\", \"металл\").",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "LogisticAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
