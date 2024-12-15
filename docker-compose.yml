@@ -12,6 +12,7 @@ services:
       - postgres
       - kafka
       - client-service
+    restart: always
 
   user-service:
     hostname: user-service
@@ -25,6 +26,7 @@ services:
     depends_on:
       - postgres
       - client-service
+    restart: always
 
   client-service:
     hostname: client-service
@@ -37,6 +39,7 @@ services:
       - app-network
     depends_on:
       - postgres
+    restart: always
 
   auth-service:
     hostname: auth-service
@@ -50,8 +53,8 @@ services:
     depends_on:
       - redis
 
-  auth-gateway:
-    hostname: auth-service
+  api-gateway:
+    hostname: api-gateway
     build: ./api-gateway
     ports:
       - "8080:8080"
