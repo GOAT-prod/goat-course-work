@@ -1,5 +1,5 @@
 {
-  "port": 8080,
+  "port": 80,
   "app_name": "client-service",
   "databases": {
     "postgres": "postgres://postgres:postgres@postgres:5432/logistics?sslmode=disable"

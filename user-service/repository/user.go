@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"database/sql"
+	"errors"
 	"github.com/GOAT-prod/goatcontext"
 	"github.com/jmoiron/sqlx"
 	"user-service/database"
@@ -35,7 +37,11 @@ func (r *UserRepositoryImpl) GetUserById(ctx goatcontext.Context, userId int) (u
 }
 
 func (r *UserRepositoryImpl) GetUserByUsername(ctx goatcontext.Context, username string) (user database.User, err error) {
-	return user, r.postgres.GetContext(ctx, &user, queries.GetUserByUsername, username)
+	if err = r.postgres.GetContext(ctx, &user, queries.GetUserByUsername, username); err != nil && !errors.Is(err, sql.ErrNoRows) {
+		return user, err
+	}
+
+	return user, nil
 }
 
 func (r *UserRepositoryImpl) AddUser(ctx goatcontext.Context, user database.User) (id int, err error) {

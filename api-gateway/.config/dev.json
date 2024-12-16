@@ -1,5 +1,5 @@
 {
-  "port": 8080,
+  "port": 80,
   "app_name": "api-gateway",
   "cluster": {
     "auth_service_url": "http://auth-service",
