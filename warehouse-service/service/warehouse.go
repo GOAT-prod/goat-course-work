@@ -19,6 +19,7 @@ type WareHouse interface {
 	UpdateProducts(ctx goatcontext.Context, products []domain.Product) error
 	DeleteProducts(ctx goatcontext.Context, productIds []int) error
 	GetMaterialsList(ctx goatcontext.Context) ([]domain.ProductMaterial, error)
+	GetProductItemsInfo(ctx goatcontext.Context, ids []int) ([]domain.ProductItemInfo, error)
 }
 
 type Impl struct {
@@ -110,6 +111,25 @@ func (s *Impl) GetMaterialsList(ctx goatcontext.Context) ([]domain.ProductMateri
 	}
 
 	return mappings.ToDomainProductMaterials(dbMaterials), nil
+}
+
+func (s *Impl) GetProductItemsInfo(ctx goatcontext.Context, ids []int) ([]domain.ProductItemInfo, error) {
+	dbInfos, err := s.warehouseRepository.GetProductItemsInfo(ctx, ids)
+	if err != nil {
+		return nil, err
+	}
+
+	infos := lo.Map(dbInfos, func(item models.ProductItemInfo, _ int) domain.ProductItemInfo {
+		return domain.ProductItemInfo{
+			Id:    item.Id,
+			Name:  item.Name,
+			Price: item.Price,
+			Color: item.Color,
+			Size:  item.Size,
+		}
+	})
+
+	return infos, nil
 }
 
 func (s *Impl) produceRequest(products []models.Product) error {

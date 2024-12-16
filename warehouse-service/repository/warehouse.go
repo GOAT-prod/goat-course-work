@@ -28,6 +28,7 @@ type Warehouse interface {
 	AddImages(ctx goatcontext.Context, productImages []models.ProductImages) error
 	UpdateImages(ctx goatcontext.Context, productImages []models.ProductImages) error
 	DeleteImages(ctx goatcontext.Context, id []int) error
+	GetProductItemsInfo(ctx goatcontext.Context, ids []int) (items []models.ProductItemInfo, err error)
 }
 
 type Init struct {
@@ -268,4 +269,8 @@ func (r *Init) UpdateImages(ctx goatcontext.Context, productImages []models.Prod
 func (r *Init) DeleteImages(ctx goatcontext.Context, id []int) error {
 	_, err := r.postgres.ExecContext(ctx, queries.DeleteImages, pq.Array(id))
 	return err
+}
+
+func (r *Init) GetProductItemsInfo(ctx goatcontext.Context, ids []int) (items []models.ProductItemInfo, err error) {
+	return items, r.postgres.SelectContext(ctx, &items, queries.GetProductItemInfos, pq.Array(ids))
 }

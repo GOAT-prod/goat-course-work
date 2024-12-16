@@ -56,4 +56,7 @@ var (
 
 	//go:embed sql/delete_images.sql
 	DeleteImages string
+
+	//go:embed sql/get_product_item_info.sql
+	GetProductItemInfos string
 )

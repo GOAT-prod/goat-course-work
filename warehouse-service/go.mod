@@ -3,7 +3,7 @@ module warehouse-service
 go 1.23.1
 
 require (
-	github.com/GOAT-prod/goatcontext v1.0.1
+	github.com/GOAT-prod/goatcontext v1.0.2
 	github.com/GOAT-prod/goathttp v1.0.4
 	github.com/GOAT-prod/goatlogger v0.1.5
 	github.com/confluentinc/confluent-kafka-go/v2 v2.6.1
