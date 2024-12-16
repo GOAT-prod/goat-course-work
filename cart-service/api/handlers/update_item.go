@@ -14,7 +14,7 @@ import (
 func UpdateCartItemHandler(logger goatlogger.Logger, cartService service.Cart) goathttp.Handler {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx, err := goatcontext.New(r)
-		if err != nil {
+		if err != nil || !ctx.IsAuthorized() {
 			w.WriteHeader(http.StatusForbidden)
 			logger.Error(fmt.Sprintf("не удалось получить контекст запроса: %v", err))
 			return

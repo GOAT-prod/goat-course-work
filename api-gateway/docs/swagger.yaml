@@ -38,6 +38,47 @@ definitions:
         description: Токен для обновления access_token, если он истек.
         type: string
     type: object
+  cart.Cart:
+    properties:
+      id:
+        description: Уникальный идентификатор корзины.
+        type: integer
+      items:
+        description: Список товаров, добавленных в корзину.
+        items:
+          $ref: '#/definitions/cart.Item'
+        type: array
+      total:
+        description: Общая сумма стоимости всех товаров в корзине.
+        type: integer
+    type: object
+  cart.Item:
+    properties:
+      color:
+        description: Цвет товара.
+        type: string
+      count:
+        description: Количество единиц данного товара в корзине.
+        type: integer
+      id:
+        description: Уникальный идентификатор элемента корзины.
+        type: integer
+      isSelected:
+        description: Признак, выбран ли данный товар (например, для оформления заказа).
+        type: boolean
+      name:
+        description: Название товара.
+        type: string
+      price:
+        description: Цена за единицу товара.
+        type: number
+      productId:
+        description: Идентификатор товара (связь с ProductItem).
+        type: integer
+      size:
+        description: Размер товара (например, 42, 50 и т.д.).
+        type: integer
+    type: object
   clientservice.ClientInfo:
     properties:
       address:
@@ -233,6 +274,134 @@ paths:
       summary: User registration
       tags:
       - auth
+  /cart:
+    get:
+      description: Возвращает содержимое корзины текущего пользователя.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Содержимое корзины пользователя
+          schema:
+            $ref: '#/definitions/cart.Cart'
+        "400":
+          description: Ошибка получения корзины
+          schema:
+            type: string
+        "403":
+          description: Доступ запрещен
+          schema:
+            type: string
+      summary: Получить корзину пользователя
+      tags:
+      - Корзина
+  /cart/clear:
+    delete:
+      description: Удаляет все товары из корзины текущего пользователя.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Корзина успешно очищена
+          schema:
+            type: string
+        "400":
+          description: Ошибка очистки корзины
+          schema:
+            type: string
+        "403":
+          description: Доступ запрещен
+          schema:
+            type: string
+      summary: Очистить корзину
+      tags:
+      - Корзина
+  /cart/item:
+    post:
+      consumes:
+      - application/json
+      description: Позволяет добавить новый товар в корзину пользователя.
+      parameters:
+      - description: Данные товара для добавления в корзину
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/cart.Item'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Добавленный товар
+          schema:
+            $ref: '#/definitions/cart.Item'
+        "400":
+          description: Ошибка ввода или бизнес-логики
+          schema:
+            type: string
+        "403":
+          description: Доступ запрещен
+          schema:
+            type: string
+      summary: Добавить товар в корзину
+      tags:
+      - Корзина
+    put:
+      consumes:
+      - application/json
+      description: Обновляет количество, размер или другие параметры элемента в корзине.
+      parameters:
+      - description: Данные элемента корзины для обновления
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/cart.Item'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Элемент корзины успешно обновлен
+          schema:
+            type: string
+        "400":
+          description: Ошибка обновления элемента корзины
+          schema:
+            type: string
+        "403":
+          description: Доступ запрещен
+          schema:
+            type: string
+      summary: Обновить элемент корзины
+      tags:
+      - Корзина
+  /cart/item/{id}:
+    delete:
+      description: Удаляет элемент корзины по его идентификатору.
+      parameters:
+      - description: ID элемента корзины
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Элемент успешно удален
+          schema:
+            type: string
+        "400":
+          description: Ошибка удаления элемента корзины
+          schema:
+            type: string
+        "403":
+          description: Доступ запрещен
+          schema:
+            type: string
+      summary: Удалить элемент из корзины
+      tags:
+      - Корзина
   /client:
     put:
       consumes:

@@ -116,6 +116,201 @@
                 }
             }
         },
+        "/cart": {
+            "get": {
+                "description": "Возвращает содержимое корзины текущего пользователя.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Корзина"
+                ],
+                "summary": "Получить корзину пользователя",
+                "responses": {
+                    "200": {
+                        "description": "Содержимое корзины пользователя",
+                        "schema": {
+                            "$ref": "#/definitions/cart.Cart"
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка получения корзины",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/clear": {
+            "delete": {
+                "description": "Удаляет все товары из корзины текущего пользователя.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Корзина"
+                ],
+                "summary": "Очистить корзину",
+                "responses": {
+                    "200": {
+                        "description": "Корзина успешно очищена",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка очистки корзины",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/item": {
+            "put": {
+                "description": "Обновляет количество, размер или другие параметры элемента в корзине.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Корзина"
+                ],
+                "summary": "Обновить элемент корзины",
+                "parameters": [
+                    {
+                        "description": "Данные элемента корзины для обновления",
+                        "name": "item",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cart.Item"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Элемент корзины успешно обновлен",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка обновления элемента корзины",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Позволяет добавить новый товар в корзину пользователя.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Корзина"
+                ],
+                "summary": "Добавить товар в корзину",
+                "parameters": [
+                    {
+                        "description": "Данные товара для добавления в корзину",
+                        "name": "item",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cart.Item"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Добавленный товар",
+                        "schema": {
+                            "$ref": "#/definitions/cart.Item"
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка ввода или бизнес-логики",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/item/{id}": {
+            "delete": {
+                "description": "Удаляет элемент корзины по его идентификатору.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Корзина"
+                ],
+                "summary": "Удалить элемент из корзины",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID элемента корзины",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Элемент успешно удален",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка удаления элемента корзины",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/client": {
             "put": {
                 "security": [
@@ -878,6 +1073,63 @@
                 "refresh_token": {
                     "description": "Токен для обновления access_token, если он истек.",
                     "type": "string"
+                }
+            }
+        },
+        "cart.Cart": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Уникальный идентификатор корзины.",
+                    "type": "integer"
+                },
+                "items": {
+                    "description": "Список товаров, добавленных в корзину.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/cart.Item"
+                    }
+                },
+                "total": {
+                    "description": "Общая сумма стоимости всех товаров в корзине.",
+                    "type": "integer"
+                }
+            }
+        },
+        "cart.Item": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "description": "Цвет товара.",
+                    "type": "string"
+                },
+                "count": {
+                    "description": "Количество единиц данного товара в корзине.",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "Уникальный идентификатор элемента корзины.",
+                    "type": "integer"
+                },
+                "isSelected": {
+                    "description": "Признак, выбран ли данный товар (например, для оформления заказа).",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "Название товара.",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "Цена за единицу товара.",
+                    "type": "number"
+                },
+                "productId": {
+                    "description": "Идентификатор товара (связь с ProductItem).",
+                    "type": "integer"
+                },
+                "size": {
+                    "description": "Размер товара (например, 42, 50 и т.д.).",
+                    "type": "integer"
                 }
             }
         },

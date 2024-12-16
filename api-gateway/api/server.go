@@ -3,10 +3,12 @@ package api
 import (
 	"api-gateway/api/handlers"
 	"api-gateway/api/handlers/authhandlers"
+	"api-gateway/api/handlers/carthandlers"
 	"api-gateway/api/handlers/clienthandlers"
 	"api-gateway/api/handlers/userhandlers"
 	"api-gateway/api/handlers/warehousehandlers"
 	"api-gateway/cluster/authservice"
+	"api-gateway/cluster/cart"
 	"api-gateway/cluster/clientservice"
 	"api-gateway/cluster/userservice"
 	"api-gateway/cluster/warehousesevice"
@@ -58,9 +60,9 @@ func (s *Server) Start() error {
 	return s.server.ListenAndServe()
 }
 
-func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.Client, userClient *userservice.Client, clientService *clientservice.Client, warehouseClient *warehousesevice.Client) {
+func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.Client, userClient *userservice.Client, clientService *clientservice.Client, warehouseClient *warehousesevice.Client, cartClient *cart.Client) {
 	r.router.PathPrefix("/swagger/").Handler(handlers.SwaggerHandler())
-	
+
 	//	auth-service
 	authSubRouter := r.router.PathPrefix("/auth").Subrouter()
 	authSubRouter.HandleFunc("/login", authhandlers.LoginHandler(logger, authClient)).Methods(http.MethodPost)
@@ -93,4 +95,13 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.C
 	warehouseSubRouter.HandleFunc("/", warehousehandlers.UpdateProductsHandler(logger, warehouseClient)).Methods(http.MethodPut)
 	warehouseSubRouter.HandleFunc("/", warehousehandlers.DeleteProductsHandler(logger, warehouseClient)).Methods(http.MethodDelete)
 	warehouseSubRouter.HandleFunc("/materials", warehousehandlers.GetMaterialsHandler(logger, warehouseClient)).Methods(http.MethodGet)
+
+	//	cart-service
+	cartSubRouter := r.router.PathPrefix("/cart").Subrouter()
+	cartSubRouter.Use(goathttp.AuthMiddleware)
+	cartSubRouter.HandleFunc("/", carthandlers.GetCartHandler(logger, cartClient)).Methods(http.MethodGet)
+	cartSubRouter.HandleFunc("/item", carthandlers.AddCartItemHandler(logger, cartClient)).Methods(http.MethodPost)
+	cartSubRouter.HandleFunc("/item", carthandlers.UpdateCartItemHandler(logger, cartClient)).Methods(http.MethodPut)
+	cartSubRouter.HandleFunc("/item/{id}", carthandlers.DeleteCartItemHandler(logger, cartClient)).Methods(http.MethodDelete)
+	cartSubRouter.HandleFunc("/clear", carthandlers.ClearCartHandler(logger, cartClient)).Methods(http.MethodDelete)
 }

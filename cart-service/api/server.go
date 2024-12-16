@@ -53,7 +53,7 @@ func (s *Server) Start() error {
 
 func (r *Router) SetupRoutes(logger goatlogger.Logger, cartService service.Cart) {
 	r.router.HandleFunc("/cart", handlers.GetCartHandler(logger, cartService)).Methods(http.MethodGet)
-	r.router.HandleFunc("/to-cart", handlers.AddCartItemHandler(logger, cartService)).Methods(http.MethodPost)
+	r.router.HandleFunc("/cart/item", handlers.AddCartItemHandler(logger, cartService)).Methods(http.MethodPost)
 	r.router.HandleFunc("/cart/item", handlers.UpdateCartItemHandler(logger, cartService)).Methods(http.MethodPut)
 	r.router.HandleFunc("/cart/item/{id}", handlers.DeleteItemHandler(logger, cartService)).Methods(http.MethodDelete)
 	r.router.HandleFunc("/cart/clear", handlers.ClearCartHandler(logger, cartService)).Methods(http.MethodDelete)

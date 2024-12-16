@@ -3,6 +3,7 @@ package main
 import (
 	"api-gateway/api"
 	"api-gateway/cluster/authservice"
+	"api-gateway/cluster/cart"
 	"api-gateway/cluster/clientservice"
 	"api-gateway/cluster/userservice"
 	"api-gateway/cluster/warehousesevice"
@@ -27,6 +28,7 @@ type App struct {
 	userServiceClient      *userservice.Client
 	clientServiceClient    *clientservice.Client
 	warehouseServiceClient *warehousesevice.Client
+	cartServiceClient      *cart.Client
 }
 
 func NewApp(ctx context.Context, logger goatlogger.Logger, cfg settings.Config) *App {
@@ -54,6 +56,7 @@ func (a *App) initClients() {
 	a.userServiceClient = userservice.NewClient(goatclient.NewBaseClient(a.cfg.Cluster.UserService))
 	a.clientServiceClient = clientservice.NewClient(goatclient.NewBaseClient(a.cfg.Cluster.ClientService))
 	a.warehouseServiceClient = warehousesevice.NewClient(goatclient.NewBaseClient(a.cfg.Cluster.WareHouseService))
+	a.cartServiceClient = cart.NewClient(goatclient.NewBaseClient(a.cfg.Cluster.CartService))
 }
 
 func (a *App) initServer() {
@@ -62,7 +65,7 @@ func (a *App) initServer() {
 	}
 
 	router := api.NewRouter(a.logger, a.cfg.Port)
-	router.SetupRoutes(a.logger, a.authServiceClient, a.userServiceClient, a.clientServiceClient, a.warehouseServiceClient)
+	router.SetupRoutes(a.logger, a.authServiceClient, a.userServiceClient, a.clientServiceClient, a.warehouseServiceClient, a.cartServiceClient)
 
 	a.server = api.NewServer(a.ctx, router)
 }

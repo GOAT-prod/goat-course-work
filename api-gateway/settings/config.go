@@ -11,4 +11,5 @@ type Cluster struct {
 	UserService      string `json:"user_service_url"`
 	ClientService    string `json:"client_service_url"`
 	WareHouseService string `json:"warehouse_service_url"`
+	CartService      string `json:"cart_service_url"`
 }
