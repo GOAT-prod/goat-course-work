@@ -1,10 +1,10 @@
 {
-  "port": 8080,
+  "port": 80,
   "app_name": "api-gateway",
   "cluster": {
-    "auth_service_url": "http://auth-service",
-    "user_service_url": "http://user-service",
-    "client_service_url": "http://client-service",
+    "auth_service_url": "http://localhost:8080",
+    "user_service_url": "http://localhost:8081",
+    "client_service_url": "http://localhost:8082",
     "warehouse-service_url": "http://warehouse-service"
   }
 }

@@ -67,6 +67,10 @@ func (s *UserServiceImpl) GetUserByUsername(ctx goatcontext.Context, userName st
 		return domain.User{}, err
 	}
 
+	if dbUser.Id == 0 {
+		return domain.User{}, nil
+	}
+
 	userRole, err := s.roleRepository.GetRoleById(ctx, dbUser.RoleId)
 	if err != nil {
 		return domain.User{}, err
