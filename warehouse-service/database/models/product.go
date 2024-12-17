@@ -18,7 +18,7 @@ type Product struct {
 type ProductMaterial struct {
 	Id        int    `db:"id" json:"id"`
 	ProductId int    `db:"product_id" json:"product_id"`
-	Material  string `db:"material" json:"material"`
+	Material  string `db:"name" json:"material"`
 }
 
 type ProductImages struct {
