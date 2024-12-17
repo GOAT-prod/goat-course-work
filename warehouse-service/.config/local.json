@@ -1,14 +1,14 @@
 {
-  "port": 8080,
+  "port": 8081,
   "app_name": "warehouse-service",
   "databases": {
-    "postgres": "postgres://postgres:postgres@postgres:5432/logistics?sslmode=disable"
+    "postgres": "postgres://postgres:postgres@188.225.45.200:5432/logistics?sslmode=disable"
   },
   "cluster": {
     "client_service": "http://client-service"
   },
   "kafka": {
-    "address": "localhost:9091,localhost:9092,localhost:9093",
+    "address": "188.225.45.200:9091",
     "producerTopic": "request-service"
   }
 }

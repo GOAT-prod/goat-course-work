@@ -8,7 +8,7 @@
     "client_service": "http://client-service"
   },
   "kafka": {
-    "address": "localhost:9091,localhost:9092,localhost:9093",
+    "address": "kafka:9091",
     "producerTopic": "request-service"
   }
 }

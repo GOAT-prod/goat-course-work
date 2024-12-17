@@ -5,7 +5,7 @@
     "auth_service_url": "http://localhost:8080",
     "user_service_url": "http://localhost:8081",
     "client_service_url": "http://localhost:8082",
-    "warehouse_service_url": "http://warehouse-service",
+    "warehouse_service_url": "http://localhost:8081",
     "cart_service_url" : "http://cart-service"
   }
 }

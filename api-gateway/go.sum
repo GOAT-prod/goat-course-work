@@ -1,5 +1,5 @@
-github.com/GOAT-prod/goatcontext v1.0.4 h1:koRRFcE3LIZRm9pERGyxhIYIfcQRSuAsiztGypV5gcQ=
-github.com/GOAT-prod/goatcontext v1.0.4/go.mod h1:owpHfJtSC84jNCCvEllP0K5OudQeXHmNlkO3P3W++xY=
+github.com/GOAT-prod/goatcontext v1.0.5 h1:fFdP/wNRy4soWGV/gdcK6GcQvh9IyqQtTl6Vs1tqiHk=
+github.com/GOAT-prod/goatcontext v1.0.5/go.mod h1:owpHfJtSC84jNCCvEllP0K5OudQeXHmNlkO3P3W++xY=
 github.com/GOAT-prod/goathttp v1.0.8 h1:IYiJHr1OtJemHlE+cG8BeY1+H/W5CtvnqeUJp7C7fHo=
 github.com/GOAT-prod/goathttp v1.0.8/go.mod h1:78vZJTconOHMKgzKDQ79/2faoErKJsyY/5/T346Et/k=
 github.com/GOAT-prod/goatlogger v0.1.5 h1:phEAifyymISlr0DT43Jlz0nJHWsSjVsPi3MJJpQbhbs=
