@@ -6,6 +6,7 @@
     "user_service_url": "http://user-service",
     "client_service_url": "http://client-service",
     "warehouse_service_url": "http://warehouse-service",
-    "cart_service_url" : "http://cart-service"
+    "cart_service_url" : "http://cart-service",
+    "order_service_url": "http://order-service"
   }
 }
