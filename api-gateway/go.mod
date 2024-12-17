@@ -6,7 +6,7 @@ toolchain go1.23.4
 
 require (
 	github.com/GOAT-prod/goatcontext v1.0.2
-	github.com/GOAT-prod/goathttp v1.0.6
+	github.com/GOAT-prod/goathttp v1.0.7
 	github.com/GOAT-prod/goatlogger v0.1.5
 	github.com/GOAT-prod/goatsettings v1.0.0
 	github.com/gorilla/mux v1.8.1
