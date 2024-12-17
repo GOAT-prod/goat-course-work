@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/GOAT-prod/goatcontext"
 	goatclient "github.com/GOAT-prod/goathttp/client"
+	"github.com/GOAT-prod/goathttp/headers"
 	"net/http"
 )
 
@@ -23,6 +24,8 @@ func (c *Client) GetProducts(ctx goatcontext.Context) (products []Product, err e
 		return
 	}
 
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
+
 	return products, c.httpClient.Do(request, body, &products)
 }
 
@@ -31,6 +34,8 @@ func (c *Client) GetProductById(ctx goatcontext.Context, productId int) (product
 	if err != nil {
 		return
 	}
+
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
 
 	return product, c.httpClient.Do(request, body, &product)
 }
@@ -41,6 +46,8 @@ func (c *Client) AddProducts(ctx goatcontext.Context, products []Product) error 
 		return err
 	}
 
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
+
 	return c.httpClient.Do(request, body, nil)
 }
 
@@ -49,6 +56,8 @@ func (c *Client) UpdateProducts(ctx goatcontext.Context, products []Product) err
 	if err != nil {
 		return err
 	}
+
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
 
 	return c.httpClient.Do(request, body, nil)
 }
@@ -59,6 +68,8 @@ func (c *Client) DeleteProducts(ctx goatcontext.Context, productsIds []int) erro
 		return err
 	}
 
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
+
 	return c.httpClient.Do(request, body, nil)
 }
 
@@ -67,6 +78,8 @@ func (c *Client) GetAllMaterials(ctx goatcontext.Context) (materials []ProductMa
 	if err != nil {
 		return
 	}
-	
+
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
+
 	return materials, c.httpClient.Do(request, body, &materials)
 }

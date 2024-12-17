@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/GOAT-prod/goatcontext"
 	goatclient "github.com/GOAT-prod/goathttp/client"
+	"github.com/GOAT-prod/goathttp/headers"
 	"net/http"
 )
 
@@ -23,6 +24,8 @@ func (c *Client) GetCart(ctx goatcontext.Context) (cart Cart, err error) {
 		return Cart{}, err
 	}
 
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
+
 	return cart, c.httpClient.Do(request, body, &cart)
 }
 
@@ -31,6 +34,8 @@ func (c *Client) AddCartItem(ctx goatcontext.Context, item Item) (result Item, e
 	if err != nil {
 		return Item{}, err
 	}
+
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
 
 	return result, c.httpClient.Do(request, body, &result)
 }
@@ -41,6 +46,8 @@ func (c *Client) UpdateCartItem(ctx goatcontext.Context, item Item) error {
 		return err
 	}
 
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
+
 	return c.httpClient.Do(request, body, nil)
 }
 
@@ -50,6 +57,8 @@ func (c *Client) DeleteCartItem(ctx goatcontext.Context, itemId int) error {
 		return err
 	}
 
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
+
 	return c.httpClient.Do(request, body, nil)
 }
 
@@ -58,6 +67,8 @@ func (c *Client) ClearCart(ctx goatcontext.Context) error {
 	if err != nil {
 		return err
 	}
+
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
 
 	return c.httpClient.Do(request, body, nil)
 }

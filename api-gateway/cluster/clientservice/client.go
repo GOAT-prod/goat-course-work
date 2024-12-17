@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/GOAT-prod/goatcontext"
 	goatclient "github.com/GOAT-prod/goathttp/client"
+	"github.com/GOAT-prod/goathttp/headers"
 	"net/http"
 )
 
@@ -23,6 +24,8 @@ func (c *Client) GetClients(ctx goatcontext.Context) (clients []ClientInfo, err 
 		return
 	}
 
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
+
 	return clients, c.httpClient.Do(request, body, &clients)
 }
 
@@ -31,6 +34,8 @@ func (c *Client) GetClientById(ctx goatcontext.Context, clientId int) (client Cl
 	if err != nil {
 		return
 	}
+
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
 
 	return client, c.httpClient.Do(request, body, &client)
 }
@@ -41,6 +46,8 @@ func (c *Client) UpdateClient(ctx goatcontext.Context, client ClientInfo) (resul
 		return
 	}
 
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
+
 	return result, c.httpClient.Do(request, body, &result)
 }
 
@@ -49,6 +56,8 @@ func (c *Client) DeleteClient(ctx goatcontext.Context, clientId int) error {
 	if err != nil {
 		return err
 	}
-	
+
+	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
+
 	return c.httpClient.Do(request, body, nil)
 }
