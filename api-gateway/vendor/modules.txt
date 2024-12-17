@@ -1,7 +1,7 @@
 # github.com/GOAT-prod/goatcontext v1.0.2
 ## explicit; go 1.23
 github.com/GOAT-prod/goatcontext
-# github.com/GOAT-prod/goathttp v1.0.7
+# github.com/GOAT-prod/goathttp v1.0.8
 ## explicit; go 1.23
 github.com/GOAT-prod/goathttp/client
 github.com/GOAT-prod/goathttp/headers
