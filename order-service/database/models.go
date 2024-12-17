@@ -24,7 +24,7 @@ type Order struct {
 
 type OrderItem struct {
 	Id            uuid.UUID `db:"id"`
-	OrderId       string    `db:"order_id"`
+	OrderId       uuid.UUID `db:"order_id"`
 	ProductItemId int       `db:"product_item_id"`
 	Quantity      int       `db:"quantity"`
 }

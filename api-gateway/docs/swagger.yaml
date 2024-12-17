@@ -94,6 +94,39 @@ definitions:
         description: Имя клиента.
         type: string
     type: object
+  order.Order:
+    properties:
+      createDate:
+        description: Дата и время создания заказа
+        type: string
+      deliveryWeight:
+        description: Общий вес доставки для всех товаров в заказе
+        type: number
+      id:
+        description: Уникальный идентификатор заказа
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/order.Status'
+        description: Текущий статус заказа (например, "в процессе", "доставлен", "отменен")
+      total:
+        description: Общая сумма заказа
+        type: number
+    type: object
+  order.Status:
+    enum:
+    - unknown
+    - pending
+    - delivering
+    - delivered
+    - cancelled
+    type: string
+    x-enum-varnames:
+    - Unknown
+    - Pending
+    - Delivering
+    - Delivered
+    - Cancelled
   userservice.User:
     properties:
       clientId:
@@ -524,6 +557,65 @@ paths:
       summary: Get list of clients
       tags:
       - clients
+  /order:
+    post:
+      consumes:
+      - application/json
+      description: Создает новый заказ, используя переданные идентификаторы элементов
+        корзины.
+      parameters:
+      - description: Список идентификаторов элементов корзины
+        in: body
+        name: cartItemIds
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Заказ успешно создан
+          schema:
+            type: string
+        "400":
+          description: Ошибка при создании заказа
+          schema:
+            type: string
+        "403":
+          description: Доступ запрещен
+          schema:
+            type: string
+      summary: Создать заказ
+      tags:
+      - Заказы
+  /order/all:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает список всех заказов, связанных с текущим авторизованным
+        пользователем.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список заказов пользователя
+          schema:
+            items:
+              $ref: '#/definitions/order.Order'
+            type: array
+        "400":
+          description: Ошибка при получении заказов пользователя
+          schema:
+            type: string
+        "403":
+          description: Доступ запрещен
+          schema:
+            type: string
+      summary: Получить заказы пользователя
+      tags:
+      - Заказы
   /products:
     delete:
       consumes:

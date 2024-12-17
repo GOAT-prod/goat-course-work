@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"order-service/api/handlers"
+	"order-service/service"
 
 	goathttp "github.com/GOAT-prod/goathttp/server"
 	"github.com/GOAT-prod/goatlogger"
@@ -49,5 +51,7 @@ func (s *Server) Start() error {
 	return s.server.ListenAndServe()
 }
 
-func (r *Router) SetupRoutes(logger goatlogger.Logger) {
+func (r *Router) SetupRoutes(logger goatlogger.Logger, orderService service.Order) {
+	r.router.HandleFunc("/order", handlers.CreateOrderHandler(logger, orderService)).Methods(http.MethodPost)
+	r.router.HandleFunc("/orders", handlers.GetUserOrders(logger, orderService)).Methods(http.MethodGet)
 }

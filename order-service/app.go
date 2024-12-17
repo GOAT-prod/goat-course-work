@@ -8,7 +8,11 @@ import (
 	"github.com/jmoiron/sqlx"
 	"net/http"
 	"order-service/api"
+	"order-service/cluster/cart"
 	"order-service/cluster/warehouse"
+	"order-service/database"
+	"order-service/repository"
+	"order-service/service"
 	"order-service/settings"
 
 	"github.com/GOAT-prod/goatlogger"
@@ -24,6 +28,12 @@ type App struct {
 	postgres *sqlx.DB
 
 	warehouseClient *warehouse.Client
+	cartClient      *cart.Client
+
+	orderService service.Order
+
+	orderRepository   repository.Order
+	financeRepository repository.Finance
 }
 
 func NewApp(ctx context.Context, logger goatlogger.Logger, cfg settings.Config) *App {
@@ -61,13 +71,17 @@ func (a *App) initPostgres() {
 }
 
 func (a *App) initRepositories() {
+	a.financeRepository = repository.NewFinanceRepository(a.postgres)
+	a.orderRepository = repository.NewOrderRepository(a.postgres)
 }
 
 func (a *App) initClients() {
-	a.warehouseClient = warehouse.NewClient(goatclient.NewBaseClient(a.cfg.Cluster.WarehouseClient))
+	a.warehouseClient = warehouse.NewClient(goatclient.NewBaseClient(a.cfg.Cluster.WarehouseService))
+	a.cartClient = cart.NewClient(goatclient.NewBaseClient(a.cfg.Cluster.CartService))
 }
 
 func (a *App) initServices() {
+	a.orderService = service.NewOrderService(a.cartClient, a.warehouseClient, a.orderRepository, a.financeRepository)
 }
 
 func (a *App) initServer() {
@@ -76,7 +90,7 @@ func (a *App) initServer() {
 	}
 
 	router := api.NewRouter(a.logger, a.cfg.Port)
-	router.SetupRoutes(a.logger)
+	router.SetupRoutes(a.logger, a.orderService)
 
 	a.server = api.NewServer(a.ctx, router)
 }

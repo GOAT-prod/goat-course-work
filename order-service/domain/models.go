@@ -11,9 +11,9 @@ type OrderRequest struct {
 }
 
 type Order struct {
-	Id             uuid.UUID
-	CreateDate     time.Time
-	DeliveryWeight decimal.Decimal
-	Total          decimal.Decimal
-	Status         OrderStatus
+	Id             uuid.UUID       `json:"id"`
+	CreateDate     time.Time       `json:"createDate"`
+	DeliveryWeight decimal.Decimal `json:"deliveryWeight"`
+	Total          decimal.Decimal `json:"total"`
+	Status         OrderStatus     `json:"status"`
 }

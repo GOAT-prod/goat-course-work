@@ -9,6 +9,7 @@ require (
 	github.com/GOAT-prod/goathttp v1.0.8
 	github.com/GOAT-prod/goatlogger v0.1.5
 	github.com/GOAT-prod/goatsettings v1.0.0
+	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.1
 	github.com/shopspring/decimal v1.4.0
 	github.com/swaggo/http-swagger/v2 v2.0.2

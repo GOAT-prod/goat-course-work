@@ -5,11 +5,13 @@ import (
 	"api-gateway/api/handlers/authhandlers"
 	"api-gateway/api/handlers/carthandlers"
 	"api-gateway/api/handlers/clienthandlers"
+	"api-gateway/api/handlers/orderhandlers"
 	"api-gateway/api/handlers/userhandlers"
 	"api-gateway/api/handlers/warehousehandlers"
 	"api-gateway/cluster/authservice"
 	"api-gateway/cluster/cart"
 	"api-gateway/cluster/clientservice"
+	"api-gateway/cluster/order"
 	"api-gateway/cluster/userservice"
 	"api-gateway/cluster/warehousesevice"
 	"context"
@@ -60,7 +62,7 @@ func (s *Server) Start() error {
 	return s.server.ListenAndServe()
 }
 
-func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.Client, userClient *userservice.Client, clientService *clientservice.Client, warehouseClient *warehousesevice.Client, cartClient *cart.Client) {
+func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.Client, userClient *userservice.Client, clientService *clientservice.Client, warehouseClient *warehousesevice.Client, cartClient *cart.Client, orderClient *order.Client) {
 	r.router.PathPrefix("/swagger/").Handler(handlers.SwaggerHandler())
 
 	//	auth-service
@@ -104,4 +106,10 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.C
 	cartSubRouter.HandleFunc("/item", carthandlers.UpdateCartItemHandler(logger, cartClient)).Methods(http.MethodPut, http.MethodOptions)
 	cartSubRouter.HandleFunc("/item/{id}", carthandlers.DeleteCartItemHandler(logger, cartClient)).Methods(http.MethodDelete, http.MethodOptions)
 	cartSubRouter.HandleFunc("/clear", carthandlers.ClearCartHandler(logger, cartClient)).Methods(http.MethodDelete, http.MethodOptions)
+
+	//	order-service
+	orderSubRouter := r.router.PathPrefix("/order").Subrouter()
+	orderSubRouter.Use(goathttp.AuthMiddleware)
+	orderSubRouter.HandleFunc("/", orderhandlers.CreateOrderHandler(logger, orderClient)).Methods(http.MethodPost, http.MethodOptions)
+	orderSubRouter.HandleFunc("/all", orderhandlers.GetUserOrdersHandler(logger, orderClient)).Methods(http.MethodGet, http.MethodOptions)
 }

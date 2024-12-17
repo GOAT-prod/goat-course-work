@@ -501,6 +501,93 @@
                 }
             }
         },
+        "/order": {
+            "post": {
+                "description": "Создает новый заказ, используя переданные идентификаторы элементов корзины.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Заказы"
+                ],
+                "summary": "Создать заказ",
+                "parameters": [
+                    {
+                        "description": "Список идентификаторов элементов корзины",
+                        "name": "cartItemIds",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Заказ успешно создан",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка при создании заказа",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/all": {
+            "get": {
+                "description": "Возвращает список всех заказов, связанных с текущим авторизованным пользователем.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Заказы"
+                ],
+                "summary": "Получить заказы пользователя",
+                "responses": {
+                    "200": {
+                        "description": "Список заказов пользователя",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/order.Order"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка при получении заказов пользователя",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Доступ запрещен",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/products": {
             "get": {
                 "security": [
@@ -1153,6 +1240,52 @@
                     "type": "string"
                 }
             }
+        },
+        "order.Order": {
+            "type": "object",
+            "properties": {
+                "createDate": {
+                    "description": "Дата и время создания заказа",
+                    "type": "string"
+                },
+                "deliveryWeight": {
+                    "description": "Общий вес доставки для всех товаров в заказе",
+                    "type": "number"
+                },
+                "id": {
+                    "description": "Уникальный идентификатор заказа",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Текущий статус заказа (например, \"в процессе\", \"доставлен\", \"отменен\")",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/order.Status"
+                        }
+                    ]
+                },
+                "total": {
+                    "description": "Общая сумма заказа",
+                    "type": "number"
+                }
+            }
+        },
+        "order.Status": {
+            "type": "string",
+            "enum": [
+                "unknown",
+                "pending",
+                "delivering",
+                "delivered",
+                "cancelled"
+            ],
+            "x-enum-varnames": [
+                "Unknown",
+                "Pending",
+                "Delivering",
+                "Delivered",
+                "Cancelled"
+            ]
         },
         "userservice.User": {
             "type": "object",

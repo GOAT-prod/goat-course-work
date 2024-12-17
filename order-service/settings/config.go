@@ -12,5 +12,6 @@ type Database struct {
 }
 
 type Cluster struct {
-	WarehouseClient string `json:"warehouse_client_url"`
+	WarehouseService string `json:"warehouse_service_url"`
+	CartService      string `json:"cart_service_url"`
 }

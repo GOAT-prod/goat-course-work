@@ -12,9 +12,10 @@ type ProductItem struct {
 }
 
 type ProductItemInfo struct {
-	Id    int             `db:"id"`
-	Name  string          `db:"name"`
-	Price decimal.Decimal `db:"price"`
-	Color string          `db:"color"`
-	Size  int             `db:"size"`
+	Id     int             `db:"id"`
+	Name   string          `db:"name"`
+	Price  decimal.Decimal `db:"price"`
+	Color  string          `db:"color"`
+	Size   int             `db:"size"`
+	Weight decimal.Decimal `db:"weight"`
 }

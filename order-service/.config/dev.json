@@ -5,6 +5,7 @@
     "postgres": "postgres://postgres:postgres@postgres:5432/logistics?sslmode=disable"
   },
   "cluster" : {
-    "warehouse_client_url" : "http://warehouse-service"
+    "warehouse_service_url" : "http://warehouse-service",
+    "cart_service_url": "http://cart-service"
   }
 }
