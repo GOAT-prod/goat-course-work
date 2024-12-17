@@ -47,8 +47,8 @@ func NewRouter(logger goatlogger.Logger, port int) *Router {
 	router := mux.NewRouter()
 	router.Use(goathttp.CommonJsonMiddleware, goathttp.CORSMiddleware, goathttp.PanicRecoveryMiddleware(logger))
 
-	router.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {}).Methods(http.MethodGet)
-	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {}).Methods(http.MethodGet)
+	router.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {}).Methods(http.MethodGet, http.MethodOptions)
+	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {}).Methods(http.MethodGet, http.MethodOptions)
 
 	return &Router{
 		port:   port,
@@ -65,43 +65,43 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.C
 
 	//	auth-service
 	authSubRouter := r.router.PathPrefix("/auth").Subrouter()
-	authSubRouter.HandleFunc("/login", authhandlers.LoginHandler(logger, authClient)).Methods(http.MethodPost)
-	authSubRouter.HandleFunc("/logout", authhandlers.LogoutHandler(logger, authClient)).Methods(http.MethodPost)
-	authSubRouter.HandleFunc("/register", authhandlers.RegistrationHandler(logger, authClient)).Methods(http.MethodPost)
+	authSubRouter.HandleFunc("/login", authhandlers.LoginHandler(logger, authClient)).Methods(http.MethodPost, http.MethodOptions)
+	authSubRouter.HandleFunc("/logout", authhandlers.LogoutHandler(logger, authClient)).Methods(http.MethodPost, http.MethodOptions)
+	authSubRouter.HandleFunc("/register", authhandlers.RegistrationHandler(logger, authClient)).Methods(http.MethodPost, http.MethodOptions)
 
 	//	user-service
 	userSubRouter := r.router.PathPrefix("/user").Subrouter()
 	userSubRouter.Use(goathttp.AuthMiddleware)
-	userSubRouter.HandleFunc("/all", userhandlers.GetUsersHandler(logger, userClient)).Methods(http.MethodGet)
-	userSubRouter.HandleFunc("/{id}", userhandlers.GetUserHandler(logger, userClient)).Methods(http.MethodGet)
-	userSubRouter.HandleFunc("/", userhandlers.AddUserHandler(logger, userClient)).Methods(http.MethodPost)
-	userSubRouter.HandleFunc("/", userhandlers.UpdateUserHandler(logger, userClient)).Methods(http.MethodPut)
-	userSubRouter.HandleFunc("/{id}", userhandlers.DeleteUserHandler(logger, userClient)).Methods(http.MethodDelete)
+	userSubRouter.HandleFunc("/all", userhandlers.GetUsersHandler(logger, userClient)).Methods(http.MethodGet, http.MethodOptions)
+	userSubRouter.HandleFunc("/{id}", userhandlers.GetUserHandler(logger, userClient)).Methods(http.MethodGet, http.MethodOptions)
+	userSubRouter.HandleFunc("/", userhandlers.AddUserHandler(logger, userClient)).Methods(http.MethodPost, http.MethodOptions)
+	userSubRouter.HandleFunc("/", userhandlers.UpdateUserHandler(logger, userClient)).Methods(http.MethodPut, http.MethodOptions)
+	userSubRouter.HandleFunc("/{id}", userhandlers.DeleteUserHandler(logger, userClient)).Methods(http.MethodDelete, http.MethodOptions)
 
 	//	client-service
 	clientSubRouter := r.router.PathPrefix("/client").Subrouter()
 	clientSubRouter.Use(goathttp.AuthMiddleware)
-	clientSubRouter.HandleFunc("/all", clienthandlers.GetClientsHandler(logger, clientService)).Methods(http.MethodGet)
-	clientSubRouter.HandleFunc("/{id}", clienthandlers.GetClientHandler(logger, clientService)).Methods(http.MethodGet)
-	clientSubRouter.HandleFunc("/", clienthandlers.UpdateClientHandler(logger, clientService)).Methods(http.MethodPut)
-	clientSubRouter.HandleFunc("/{id}", clienthandlers.DeleteClientHandler(logger, clientService)).Methods(http.MethodDelete)
+	clientSubRouter.HandleFunc("/all", clienthandlers.GetClientsHandler(logger, clientService)).Methods(http.MethodGet, http.MethodOptions)
+	clientSubRouter.HandleFunc("/{id}", clienthandlers.GetClientHandler(logger, clientService)).Methods(http.MethodGet, http.MethodOptions)
+	clientSubRouter.HandleFunc("/", clienthandlers.UpdateClientHandler(logger, clientService)).Methods(http.MethodPut, http.MethodOptions)
+	clientSubRouter.HandleFunc("/{id}", clienthandlers.DeleteClientHandler(logger, clientService)).Methods(http.MethodDelete, http.MethodOptions)
 
 	//	warehouse-service
 	warehouseSubRouter := r.router.PathPrefix("/products").Subrouter()
 	warehouseSubRouter.Use(goathttp.AuthMiddleware)
-	warehouseSubRouter.HandleFunc("/", warehousehandlers.GetProductsHandler(logger, warehouseClient)).Methods(http.MethodGet)
-	warehouseSubRouter.HandleFunc("/{id}", warehousehandlers.GetProductHandler(logger, warehouseClient)).Methods(http.MethodGet)
-	warehouseSubRouter.HandleFunc("/", warehousehandlers.AddProductsHandler(logger, warehouseClient)).Methods(http.MethodPost)
-	warehouseSubRouter.HandleFunc("/", warehousehandlers.UpdateProductsHandler(logger, warehouseClient)).Methods(http.MethodPut)
-	warehouseSubRouter.HandleFunc("/", warehousehandlers.DeleteProductsHandler(logger, warehouseClient)).Methods(http.MethodDelete)
-	warehouseSubRouter.HandleFunc("/materials", warehousehandlers.GetMaterialsHandler(logger, warehouseClient)).Methods(http.MethodGet)
+	warehouseSubRouter.HandleFunc("/", warehousehandlers.GetProductsHandler(logger, warehouseClient)).Methods(http.MethodGet, http.MethodOptions)
+	warehouseSubRouter.HandleFunc("/{id}", warehousehandlers.GetProductHandler(logger, warehouseClient)).Methods(http.MethodGet, http.MethodOptions)
+	warehouseSubRouter.HandleFunc("/", warehousehandlers.AddProductsHandler(logger, warehouseClient)).Methods(http.MethodPost, http.MethodOptions)
+	warehouseSubRouter.HandleFunc("/", warehousehandlers.UpdateProductsHandler(logger, warehouseClient)).Methods(http.MethodPut, http.MethodOptions)
+	warehouseSubRouter.HandleFunc("/", warehousehandlers.DeleteProductsHandler(logger, warehouseClient)).Methods(http.MethodDelete, http.MethodOptions)
+	warehouseSubRouter.HandleFunc("/materials", warehousehandlers.GetMaterialsHandler(logger, warehouseClient)).Methods(http.MethodGet, http.MethodOptions)
 
 	//	cart-service
 	cartSubRouter := r.router.PathPrefix("/cart").Subrouter()
 	cartSubRouter.Use(goathttp.AuthMiddleware)
-	cartSubRouter.HandleFunc("/", carthandlers.GetCartHandler(logger, cartClient)).Methods(http.MethodGet)
-	cartSubRouter.HandleFunc("/item", carthandlers.AddCartItemHandler(logger, cartClient)).Methods(http.MethodPost)
-	cartSubRouter.HandleFunc("/item", carthandlers.UpdateCartItemHandler(logger, cartClient)).Methods(http.MethodPut)
-	cartSubRouter.HandleFunc("/item/{id}", carthandlers.DeleteCartItemHandler(logger, cartClient)).Methods(http.MethodDelete)
-	cartSubRouter.HandleFunc("/clear", carthandlers.ClearCartHandler(logger, cartClient)).Methods(http.MethodDelete)
+	cartSubRouter.HandleFunc("/", carthandlers.GetCartHandler(logger, cartClient)).Methods(http.MethodGet, http.MethodOptions)
+	cartSubRouter.HandleFunc("/item", carthandlers.AddCartItemHandler(logger, cartClient)).Methods(http.MethodPost, http.MethodOptions)
+	cartSubRouter.HandleFunc("/item", carthandlers.UpdateCartItemHandler(logger, cartClient)).Methods(http.MethodPut, http.MethodOptions)
+	cartSubRouter.HandleFunc("/item/{id}", carthandlers.DeleteCartItemHandler(logger, cartClient)).Methods(http.MethodDelete, http.MethodOptions)
+	cartSubRouter.HandleFunc("/clear", carthandlers.ClearCartHandler(logger, cartClient)).Methods(http.MethodDelete, http.MethodOptions)
 }
