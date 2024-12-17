@@ -12,6 +12,9 @@ var (
 	//go:embed sql/get_cart_items.sql
 	GetCartItems string
 
+	//go:embed sql/get_cart_items_by_ids.sql
+	GetCartItemByIds string
+
 	//go:embed sql/add_cart_item.sql
 	AddCartItem string
 

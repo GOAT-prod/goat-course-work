@@ -57,4 +57,5 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, cartService service.Cart)
 	r.router.HandleFunc("/cart/item", handlers.UpdateCartItemHandler(logger, cartService)).Methods(http.MethodPut)
 	r.router.HandleFunc("/cart/item/{id}", handlers.DeleteItemHandler(logger, cartService)).Methods(http.MethodDelete)
 	r.router.HandleFunc("/cart/clear", handlers.ClearCartHandler(logger, cartService)).Methods(http.MethodDelete)
+	r.router.HandleFunc("/cart/items", handlers.GetCartItemsHandler(logger, cartService)).Methods(http.MethodPost)
 }

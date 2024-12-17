@@ -16,6 +16,7 @@ type Cart interface {
 	UpdateCartItem(ctx goatcontext.Context, cartItem database.CartItem) error
 	DeleteCartItems(ctx goatcontext.Context, cartItemIds []int) error
 	ClearCartItems(ctx goatcontext.Context, cartId int) error
+	GetCartItemsByIds(ctx goatcontext.Context, ids []int) (items []database.CartItem, err error)
 }
 
 type CartRepositoryImpl struct {
@@ -43,6 +44,10 @@ func (r *CartRepositoryImpl) CreateCart(ctx goatcontext.Context, cart database.C
 
 func (r *CartRepositoryImpl) GetCartItems(ctx goatcontext.Context, cartId int) (items []database.CartItem, err error) {
 	return items, r.postgres.SelectContext(ctx, &items, queries.GetCartItems, cartId)
+}
+
+func (r *CartRepositoryImpl) GetCartItemsByIds(ctx goatcontext.Context, ids []int) (items []database.CartItem, err error) {
+	return items, r.postgres.SelectContext(ctx, &items, queries.GetCartItemByIds, pq.Array(ids))
 }
 
 func (r *CartRepositoryImpl) AddCartItem(ctx goatcontext.Context, cartItem database.CartItem) (id int64, err error) {

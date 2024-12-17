@@ -89,12 +89,12 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.C
 	//	warehouse-service
 	warehouseSubRouter := r.router.PathPrefix("/products").Subrouter()
 	warehouseSubRouter.Use(goathttp.AuthMiddleware)
+	warehouseSubRouter.HandleFunc("/materials", warehousehandlers.GetMaterialsHandler(logger, warehouseClient)).Methods(http.MethodGet, http.MethodOptions)
 	warehouseSubRouter.HandleFunc("/", warehousehandlers.GetProductsHandler(logger, warehouseClient)).Methods(http.MethodGet, http.MethodOptions)
 	warehouseSubRouter.HandleFunc("/{id}", warehousehandlers.GetProductHandler(logger, warehouseClient)).Methods(http.MethodGet, http.MethodOptions)
 	warehouseSubRouter.HandleFunc("/", warehousehandlers.AddProductsHandler(logger, warehouseClient)).Methods(http.MethodPost, http.MethodOptions)
 	warehouseSubRouter.HandleFunc("/", warehousehandlers.UpdateProductsHandler(logger, warehouseClient)).Methods(http.MethodPut, http.MethodOptions)
 	warehouseSubRouter.HandleFunc("/", warehousehandlers.DeleteProductsHandler(logger, warehouseClient)).Methods(http.MethodDelete, http.MethodOptions)
-	warehouseSubRouter.HandleFunc("/materials", warehousehandlers.GetMaterialsHandler(logger, warehouseClient)).Methods(http.MethodGet, http.MethodOptions)
 
 	//	cart-service
 	cartSubRouter := r.router.PathPrefix("/cart").Subrouter()
