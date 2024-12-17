@@ -66,6 +66,7 @@ services:
       - warehouse-service
     expose:
       - "80"
+    restart: always
 
   api-gateway:
     container_name: api-gateway
@@ -99,7 +100,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
 
   kafka:
     hostname: kafka
