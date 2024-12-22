@@ -2,7 +2,7 @@
   "port": 80,
   "app_name": "order-service",
   "databases": {
-    "postgres": "postgres://postgres:postgres@postgres:5432/logistics?sslmode=disable"
+    "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@postgres:5432/order?sslmode=disable"
   },
   "cluster" : {
     "warehouse_service_url" : "http://warehouse-service",

@@ -2,6 +2,6 @@
   "port": 80,
   "app_name": "client-service",
   "databases": {
-    "postgres": "postgres://postgres:postgres@postgres:5432/logistics?sslmode=disable"
+    "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@postgres:5432/client?sslmode=disable"
   }
 }
