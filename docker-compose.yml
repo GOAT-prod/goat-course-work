@@ -6,6 +6,8 @@ services:
       - ENV=dev
     networks:
       - app-network
+    extra_hosts:
+      - "postgres:147.45.245.24"
     depends_on:
       - kafka
       - client-service
@@ -20,6 +22,8 @@ services:
       - ENV=dev
     networks:
       - app-network
+    extra_hosts:
+      - "postgres:147.45.245.24"
     depends_on:
       - client-service
     expose:
@@ -56,6 +60,8 @@ services:
       - ENV=dev
     networks:
       - app-network
+    extra_hosts:
+      - "postgres:147.45.245.24"
     depends_on:
       - user-service
       - warehouse-service
@@ -70,6 +76,8 @@ services:
       - ENV=dev
     networks:
       - app-network
+    extra_hosts:
+      - "postgres:147.45.245.24"
     depends_on:
       - warehouse-service
     expose:
@@ -95,20 +103,6 @@ services:
       - "6379:6379"
     networks:
       - app-network
-
-  postgres:
-    hostname: postgres
-    image: postgres:16
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=logistics
-    ports:
-      - "5432:5432"
-    networks:
-      - app-network
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
 
   kafka:
     hostname: kafka
@@ -140,9 +134,6 @@ services:
       ZOOKEEPER_SYNC_LIMIT: 2
     networks:
       - app-network
-
-volumes:
-  postgres-data:
 
 networks:
   app-network:
