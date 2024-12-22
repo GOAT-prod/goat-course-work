@@ -37,6 +37,8 @@ services:
       - ENV=dev
     networks:
       - app-network
+    extra_hosts:
+      - "postgres:147.45.245.24"
     expose:
       - "80"
     restart: always
