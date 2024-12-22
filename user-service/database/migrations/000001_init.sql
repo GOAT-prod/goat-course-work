@@ -19,7 +19,7 @@ create table if not exists users
     password  text not null default '',
     status    int,
     role_id   int references user_role (id),
-    client_id int references client (id)
+    client_id int
 );
 
 create index if not exists idx_users_username on users (username);

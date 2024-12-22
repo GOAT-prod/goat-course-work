@@ -7,7 +7,7 @@ create table if not exists product
     price       numeric default 0.0      not null,
     material    text    default ''::text not null,
     status      text    default ''::text not null,
-    factory_id  integer references client(id)
+    factory_id  integer
 );
 
 create table if not exists product_item

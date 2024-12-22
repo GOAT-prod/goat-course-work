@@ -5,14 +5,14 @@ create table if not exists orders
     status        text      not null,
     create_date   timestamp not null,
     delivery_date timestamp,
-    user_id       int references users (id)
+    user_id       int
     );
 
 create table if not exists orders_item
 (
     id              uuid primary key,
     orders_id       uuid references orders (id),
-    product_item_id int references product_item (id),
+    product_item_id int,
     quantity        int
     );
 
