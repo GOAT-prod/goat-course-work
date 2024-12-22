@@ -7,7 +7,6 @@ services:
     networks:
       - app-network
     depends_on:
-      - postgres
       - kafka
       - client-service
     expose:
@@ -22,7 +21,6 @@ services:
     networks:
       - app-network
     depends_on:
-      - postgres
       - client-service
     expose:
       - "80"
@@ -35,8 +33,6 @@ services:
       - ENV=dev
     networks:
       - app-network
-    depends_on:
-      - postgres
     expose:
       - "80"
     restart: always
@@ -61,7 +57,6 @@ services:
     networks:
       - app-network
     depends_on:
-      - postgres
       - user-service
       - warehouse-service
     expose:
@@ -76,7 +71,6 @@ services:
     networks:
       - app-network
     depends_on:
-      - postgres
       - warehouse-service
     expose:
       - "80"
