@@ -435,6 +435,38 @@ paths:
       summary: Удалить элемент из корзины
       tags:
       - Корзина
+  /catalog:
+    get:
+      description: Retrieves the catalog based on the provided query parameters.
+      parameters:
+      - description: Filter query parameter
+        in: query
+        name: filter
+        type: string
+      - description: Sort query parameter
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Catalog data
+          schema:
+            type: object
+        "400":
+          description: Invalid request or failed to process the response
+          schema:
+            type: string
+        "403":
+          description: Forbidden - context creation failed
+          schema:
+            type: string
+      security:
+      - LogisticAuth: []
+      summary: Get catalog
+      tags:
+      - Catalog
   /client:
     put:
       consumes:
@@ -557,6 +589,31 @@ paths:
       summary: Get list of clients
       tags:
       - clients
+  /filters/active:
+    get:
+      description: Retrieves a list of active filters from the search service.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of active filters
+          schema:
+            items:
+              type: object
+            type: array
+        "400":
+          description: Invalid request or failed to process the response
+          schema:
+            type: string
+        "403":
+          description: Forbidden - context creation failed
+          schema:
+            type: string
+      security:
+      - LogisticAuth: []
+      summary: Get active filters
+      tags:
+      - Filters
   /order:
     post:
       consumes:
@@ -587,6 +644,8 @@ paths:
           description: Доступ запрещен
           schema:
             type: string
+      security:
+      - LogisticAuth: []
       summary: Создать заказ
       tags:
       - Заказы
@@ -613,9 +672,40 @@ paths:
           description: Доступ запрещен
           schema:
             type: string
+      security:
+      - LogisticAuth: []
       summary: Получить заказы пользователя
       tags:
       - Заказы
+  /product/{productId}/catalog:
+    get:
+      description: Retrieves the catalog for a specific product by its ID.
+      parameters:
+      - description: Product ID
+        in: path
+        name: productId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product catalog data
+          schema:
+            type: object
+        "400":
+          description: Invalid request or failed to process the response
+          schema:
+            type: string
+        "403":
+          description: Forbidden - context creation failed
+          schema:
+            type: string
+      security:
+      - LogisticAuth: []
+      summary: Get product catalog
+      tags:
+      - Catalog
   /products:
     delete:
       consumes:
@@ -795,6 +885,119 @@ paths:
       summary: Get list of materials
       tags:
       - materials
+  /reports/order/{userId}:
+    get:
+      description: Retrieves the order report for a specific user by their ID.
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order report data
+          schema:
+            type: object
+        "400":
+          description: Invalid request or failed to process the response
+          schema:
+            type: string
+        "403":
+          description: Forbidden - context creation failed
+          schema:
+            type: string
+      security:
+      - LogisticAuth: []
+      summary: Get order report
+      tags:
+      - Reports
+  /reports/sell/{userId}:
+    get:
+      description: Retrieves the sell report for a specific user by their ID.
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sell report data
+          schema:
+            type: object
+        "400":
+          description: Invalid request or failed to process the response
+          schema:
+            type: string
+        "403":
+          description: Forbidden - context creation failed
+          schema:
+            type: string
+      security:
+      - LogisticAuth: []
+      summary: Get sell report
+      tags:
+      - Reports
+  /requests:
+    get:
+      description: Retrieves a list of requests.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of requests
+          schema:
+            items:
+              type: object
+            type: array
+        "400":
+          description: Invalid request or failed to process the response
+          schema:
+            type: string
+        "403":
+          description: Forbidden - context creation failed
+          schema:
+            type: string
+      security:
+      - LogisticAuth: []
+      summary: Get requests
+      tags:
+      - Requests
+  /requests/{requestId}/status/{status}:
+    put:
+      description: Updates the status of a specific request by its ID.
+      parameters:
+      - description: Request ID
+        in: path
+        name: requestId
+        required: true
+        type: integer
+      - description: New status of the request
+        in: path
+        name: status
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Status updated successfully
+        "400":
+          description: Invalid request or failed to process the response
+          schema:
+            type: string
+        "403":
+          description: Forbidden - context creation failed
+          schema:
+            type: string
+      security:
+      - LogisticAuth: []
+      summary: Update request status
+      tags:
+      - Requests
   /user:
     post:
       consumes:

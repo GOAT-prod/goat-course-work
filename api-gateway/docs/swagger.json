@@ -311,6 +311,57 @@
                 }
             }
         },
+        "/catalog": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "Retrieves the catalog based on the provided query parameters.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Catalog"
+                ],
+                "summary": "Get catalog",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filter query parameter",
+                        "name": "filter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort query parameter",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Catalog data",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or failed to process the response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - context creation failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/client": {
             "put": {
                 "security": [
@@ -501,8 +552,53 @@
                 }
             }
         },
+        "/filters/active": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "Retrieves a list of active filters from the search service.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Filters"
+                ],
+                "summary": "Get active filters",
+                "responses": {
+                    "200": {
+                        "description": "List of active filters",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or failed to process the response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - context creation failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/order": {
             "post": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
                 "description": "Создает новый заказ, используя переданные идентификаторы элементов корзины.",
                 "consumes": [
                     "application/json"
@@ -552,6 +648,11 @@
         },
         "/order/all": {
             "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
                 "description": "Возвращает список всех заказов, связанных с текущим авторизованным пользователем.",
                 "consumes": [
                     "application/json"
@@ -581,6 +682,52 @@
                     },
                     "403": {
                         "description": "Доступ запрещен",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/{productId}/catalog": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "Retrieves the catalog for a specific product by its ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Catalog"
+                ],
+                "summary": "Get product catalog",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "productId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product catalog data",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or failed to process the response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - context creation failed",
                         "schema": {
                             "type": "string"
                         }
@@ -863,6 +1010,185 @@
                     },
                     "403": {
                         "description": "Forbidden",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/order/{userId}": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "Retrieves the order report for a specific user by their ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Get order report",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order report data",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or failed to process the response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - context creation failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/sell/{userId}": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "Retrieves the sell report for a specific user by their ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Get sell report",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sell report data",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or failed to process the response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - context creation failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/requests": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "Retrieves a list of requests.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Requests"
+                ],
+                "summary": "Get requests",
+                "responses": {
+                    "200": {
+                        "description": "List of requests",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or failed to process the response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - context creation failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/requests/{requestId}/status/{status}": {
+            "put": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "Updates the status of a specific request by its ID.",
+                "tags": [
+                    "Requests"
+                ],
+                "summary": "Update request status",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Request ID",
+                        "name": "requestId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "New status of the request",
+                        "name": "status",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Status updated successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request or failed to process the response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - context creation failed",
                         "schema": {
                             "type": "string"
                         }

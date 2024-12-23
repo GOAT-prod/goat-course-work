@@ -6,12 +6,18 @@ import (
 	"api-gateway/api/handlers/carthandlers"
 	"api-gateway/api/handlers/clienthandlers"
 	"api-gateway/api/handlers/orderhandlers"
+	"api-gateway/api/handlers/reporthandlers"
+	"api-gateway/api/handlers/requesthandlers"
+	"api-gateway/api/handlers/searchhandlers"
 	"api-gateway/api/handlers/userhandlers"
 	"api-gateway/api/handlers/warehousehandlers"
 	"api-gateway/cluster/authservice"
 	"api-gateway/cluster/cart"
 	"api-gateway/cluster/clientservice"
 	"api-gateway/cluster/order"
+	"api-gateway/cluster/report"
+	"api-gateway/cluster/request"
+	"api-gateway/cluster/search"
 	"api-gateway/cluster/userservice"
 	"api-gateway/cluster/warehousesevice"
 	"context"
@@ -62,7 +68,8 @@ func (s *Server) Start() error {
 	return s.server.ListenAndServe()
 }
 
-func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.Client, userClient *userservice.Client, clientService *clientservice.Client, warehouseClient *warehousesevice.Client, cartClient *cart.Client, orderClient *order.Client) {
+func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.Client, userClient *userservice.Client, clientService *clientservice.Client,
+	warehouseClient *warehousesevice.Client, cartClient *cart.Client, orderClient *order.Client, searchClient *search.Client, requestClient *request.Client, reportClient *report.Client) {
 	r.router.PathPrefix("/swagger/").Handler(handlers.SwaggerHandler())
 
 	//	auth-service
@@ -112,4 +119,23 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.C
 	orderSubRouter.Use(goathttp.AuthMiddleware)
 	orderSubRouter.HandleFunc("/", orderhandlers.CreateOrderHandler(logger, orderClient)).Methods(http.MethodPost, http.MethodOptions)
 	orderSubRouter.HandleFunc("/all", orderhandlers.GetUserOrdersHandler(logger, orderClient)).Methods(http.MethodGet, http.MethodOptions)
+
+	//	search-service
+	searchSubRouter := r.router.PathPrefix("/search").Subrouter()
+	searchSubRouter.Use(goathttp.AuthMiddleware)
+	searchSubRouter.HandleFunc("/filters", searchhandlers.GetActiveFiltersHandler(logger, searchClient)).Methods(http.MethodGet, http.MethodOptions)
+	searchSubRouter.HandleFunc("/catalog", searchhandlers.GetCatalogHandler(logger, searchClient)).Methods(http.MethodGet, http.MethodOptions)
+	searchSubRouter.HandleFunc("/catalog/product/{id}", searchhandlers.GetProductCatalogHandler(logger, searchClient)).Methods(http.MethodGet, http.MethodOptions)
+
+	//	request-service
+	requestSubRouter := r.router.PathPrefix("/request").Subrouter()
+	requestSubRouter.Use(goathttp.AuthMiddleware)
+	requestSubRouter.HandleFunc("/all", requesthandlers.GetRequestsHandler(logger, requestClient)).Methods(http.MethodGet, http.MethodOptions)
+	requestSubRouter.HandleFunc("/{requestId}/status/{status}", requesthandlers.UpdateRequestStatusHandler(logger, requestClient)).Methods(http.MethodPut, http.MethodOptions)
+
+	//	report-service
+	reportSubRouter := r.router.PathPrefix("/report").Subrouter()
+	reportSubRouter.Use(goathttp.AuthMiddleware)
+	reportSubRouter.HandleFunc("/sell/{user_id}", reporthandlers.GetSellReportHandlers(logger, reportClient)).Methods(http.MethodGet, http.MethodOptions)
+	reportSubRouter.HandleFunc("/order/{user_id}", reporthandlers.GetOrderReportHandler(logger, reportClient)).Methods(http.MethodGet, http.MethodOptions)
 }
