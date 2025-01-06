@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 	"net"
 	"net/http"
+	"request-service/api/handlers"
 	"request-service/service"
 )
 
@@ -50,4 +51,6 @@ func (s *Server) Start() error {
 }
 
 func (r *Router) SetupRoutes(logger goatlogger.Logger, requestService service.Request) {
+	r.router.HandleFunc("/requests", handlers.GetAllRequestsHandler(logger, requestService)).Methods(http.MethodGet)
+	r.router.HandleFunc("/request/{id}/{status}", handlers.UpdateRequestStatusHandler(logger, requestService)).Methods(http.MethodPut)
 }

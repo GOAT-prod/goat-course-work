@@ -59,4 +59,5 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, warehouse service.WareHou
 	r.router.HandleFunc("/products", handlers.UpdateProductsHandler(logger, warehouse)).Methods(http.MethodPut)
 	r.router.HandleFunc("/products", handlers.DeleteProductsHandler(logger, warehouse)).Methods(http.MethodDelete)
 	r.router.HandleFunc("/products/items", handlers.GetProductItemsInfoHandler(logger, warehouse)).Methods(http.MethodPost)
+	r.router.HandleFunc("/products/detailed", handlers.GetDetailedProductsHandler(logger, warehouse)).Methods(http.MethodPost)
 }

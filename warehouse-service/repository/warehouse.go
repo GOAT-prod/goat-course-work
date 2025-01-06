@@ -12,6 +12,7 @@ import (
 type Warehouse interface {
 	GetProducts(ctx goatcontext.Context) ([]models.Product, error)
 	GetProductById(ctx goatcontext.Context, id int) (models.Product, error)
+	GetProductsByIds(ctx goatcontext.Context, id []int) ([]models.Product, error)
 	AddProducts(ctx goatcontext.Context, products []models.Product) ([]models.Product, error)
 	UpdateProducts(ctx goatcontext.Context, products []models.Product) error
 	DeleteProducts(ctx goatcontext.Context, productIds []int) error
@@ -99,6 +100,36 @@ func (r *Init) GetProductById(ctx goatcontext.Context, id int) (models.Product, 
 	product.Materials = materials
 
 	return product, nil
+}
+
+func (r *Init) GetProductsByIds(ctx goatcontext.Context, ids []int) ([]models.Product, error) {
+	var products []models.Product
+	if err := r.postgres.SelectContext(ctx, &products, queries.GetProductsById, pq.Array(ids)); err != nil {
+		return nil, err
+	}
+
+	for i := range products {
+		items, err := r.GetProductItems(ctx, products[i].Id)
+		if err != nil {
+			return nil, err
+		}
+
+		materials, err := r.GetProductsMaterials(ctx, products[i].Id)
+		if err != nil {
+			return nil, err
+		}
+
+		images, err := r.GetImages(ctx, products[i].Id)
+		if err != nil {
+			return nil, err
+		}
+
+		products[i].Images = images
+		products[i].Items = items
+		products[i].Materials = materials
+	}
+
+	return products, nil
 }
 
 func (r *Init) AddProducts(ctx goatcontext.Context, products []models.Product) ([]models.Product, error) {

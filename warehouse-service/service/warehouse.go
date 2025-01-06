@@ -15,6 +15,7 @@ import (
 type WareHouse interface {
 	GetProducts(ctx goatcontext.Context) ([]domain.Product, error)
 	GetDetailedProductsInfo(ctx goatcontext.Context, productId int) (domain.Product, error)
+	GetDetailedProductsInfos(ctx goatcontext.Context, productIds []int) ([]domain.Product, error)
 	AddProducts(ctx goatcontext.Context, products []domain.Product) error
 	UpdateProducts(ctx goatcontext.Context, products []domain.Product) error
 	DeleteProducts(ctx goatcontext.Context, productIds []int) error
@@ -75,6 +76,26 @@ func (s *Impl) GetDetailedProductsInfo(ctx goatcontext.Context, productId int) (
 	}
 
 	return mappings.ToDomainProduct(dbProduct, shortFactoryInfo[0]), nil
+}
+
+func (s *Impl) GetDetailedProductsInfos(ctx goatcontext.Context, productIds []int) ([]domain.Product, error) {
+	dbProducts, err := s.warehouseRepository.GetProductsByIds(ctx, productIds)
+	if err != nil {
+		return nil, err
+	}
+
+	products := make([]domain.Product, 0, len(dbProducts))
+
+	for _, dbProduct := range dbProducts {
+		shortFactoryInfo, err := s.clientServiceClient.GetClientInfoShort(ctx, []int{dbProduct.FactoryId})
+		if err != nil {
+			return nil, err
+		}
+
+		products = append(products, mappings.ToDomainProduct(dbProduct, shortFactoryInfo[0]))
+	}
+
+	return products, nil
 }
 
 func (s *Impl) AddProducts(ctx goatcontext.Context, products []domain.Product) error {

@@ -4,11 +4,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/GOAT-prod/goatcontext"
+	"github.com/GOAT-prod/goathttp/client"
 	"github.com/GOAT-prod/goatlogger"
 	"github.com/jmoiron/sqlx"
 	"net/http"
 	"request-service/api"
+	"request-service/cluster/warehouse"
 	"request-service/database"
+	"request-service/kafka"
 	"request-service/repository"
 	"request-service/service"
 	"request-service/settings"
@@ -21,7 +25,11 @@ type App struct {
 
 	server *api.Server
 
-	postgres *sqlx.DB
+	postgres               *sqlx.DB
+	approveProductConsumer *kafka.Consumer
+	supplyProductConsumer  *kafka.Consumer
+
+	warehouseClient *warehouse.Client
 
 	requestRepository repository.Request
 	requestService    service.Request
@@ -42,17 +50,27 @@ func (a *App) Start() {
 			a.logger.Error(fmt.Sprintf("приложение неожиданно остановлено, ошибка: %v", err))
 		}
 	}()
+
+	go a.approveProductConsumer.Consume(goatcontext.Context{}, a.logger)
+	go a.supplyProductConsumer.Consume(goatcontext.Context{}, a.logger)
 }
 
 func (a *App) Stop(_ context.Context) {
 	if err := a.postgres.Close(); err != nil {
 		a.logger.Error(fmt.Sprintf("не удалось закрыть подключение к базе: %v", err))
 	}
+
+	if err := a.approveProductConsumer.Stop(); err != nil {
+		a.logger.Error(fmt.Sprintf("не удалось закрыть консюмер подтверждения продутов: %v", err))
+	}
+
+	if err := a.supplyProductConsumer.Stop(); err != nil {
+		a.logger.Error(fmt.Sprintf("не удалось закрыть консюмер необходимых поставок: %v", err))
+	}
 }
 
 func (a *App) initDatabases() {
 	a.initPostgres()
-	a.initKafka()
 }
 
 func (a *App) initPostgres() {
@@ -63,14 +81,34 @@ func (a *App) initPostgres() {
 	}
 }
 
-func (a *App) initKafka() {}
+func (a *App) initKafka() {
+	approveProductMessageHandler := kafka.NewMessageHandler(a.requestRepository)
+	supplyProductMessageHandler := kafka.NewMessageHandler(a.requestRepository)
+
+	approveProductConsumer, err := kafka.NewConsumer(approveProductMessageHandler, a.cfg.Kafka.Address, a.cfg.Kafka.ProductApproveTopic)
+	if err != nil {
+		a.logger.Panic(fmt.Sprintf("не инициализировать космюмер подтверждения продуктов: %v", err))
+	}
+
+	supplyProductConsumer, err := kafka.NewConsumer(supplyProductMessageHandler, a.cfg.Kafka.Address, a.cfg.Kafka.SupplyProductsTopic)
+	if err != nil {
+		a.logger.Panic(fmt.Sprintf("не инициализировать космюмер поставки продуктов: %v", err))
+	}
+
+	a.approveProductConsumer = approveProductConsumer
+	a.supplyProductConsumer = supplyProductConsumer
+}
 
 func (a *App) initRepositories() {
 	a.requestRepository = repository.NewRequestRepository(a.postgres)
 }
 
+func (a *App) initClients() {
+	a.warehouseClient = warehouse.NewClient(client.NewBaseClient(a.cfg.Cluster.WarehouseService))
+}
+
 func (a *App) initServices() {
-	a.requestService = service.NewRequestService(a.requestRepository)
+	a.requestService = service.NewRequestService(a.requestRepository, a.warehouseClient)
 }
 
 func (a *App) initServer() {

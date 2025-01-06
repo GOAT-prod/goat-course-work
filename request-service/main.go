@@ -27,6 +27,14 @@ func main() {
 	defer cancelFunc()
 
 	app := NewApp(mainCtx, logger, config)
+
+	app.initDatabases()
+	app.initRepositories()
+	app.initKafka()
+	app.initClients()
+	app.initServices()
+	app.initServer()
+
 	app.Start()
 
 	logger.Info(fmt.Sprintf("приложение запушено, порт: %d, конфиг: %s.json", config.Port, goatsettings.GetEnv()))

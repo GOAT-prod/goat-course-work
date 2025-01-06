@@ -1,5 +1,9 @@
+# github.com/GOAT-prod/goatcontext v1.0.5
+## explicit; go 1.23
+github.com/GOAT-prod/goatcontext
 # github.com/GOAT-prod/goathttp v1.0.4
 ## explicit; go 1.23
+github.com/GOAT-prod/goathttp/client
 github.com/GOAT-prod/goathttp/headers
 github.com/GOAT-prod/goathttp/json
 github.com/GOAT-prod/goathttp/server
@@ -9,6 +13,10 @@ github.com/GOAT-prod/goatlogger
 # github.com/GOAT-prod/goatsettings v1.0.0
 ## explicit; go 1.23.1
 github.com/GOAT-prod/goatsettings
+# github.com/confluentinc/confluent-kafka-go/v2 v2.6.1
+## explicit; go 1.21
+github.com/confluentinc/confluent-kafka-go/v2/kafka
+github.com/confluentinc/confluent-kafka-go/v2/kafka/librdkafka_vendor
 # github.com/golang-jwt/jwt/v5 v5.2.1
 ## explicit; go 1.18
 github.com/golang-jwt/jwt/v5
@@ -36,6 +44,11 @@ github.com/pressly/goose/v3/internal/dialect/dialectquery
 github.com/pressly/goose/v3/internal/gooseutil
 github.com/pressly/goose/v3/internal/sqlparser
 github.com/pressly/goose/v3/lock
+# github.com/samber/lo v1.47.0
+## explicit; go 1.18
+github.com/samber/lo
+github.com/samber/lo/internal/constraints
+github.com/samber/lo/internal/rand
 # github.com/sethvargo/go-retry v0.3.0
 ## explicit; go 1.21
 github.com/sethvargo/go-retry
@@ -48,3 +61,13 @@ go.uber.org/multierr
 # golang.org/x/sync v0.9.0
 ## explicit; go 1.18
 golang.org/x/sync/errgroup
+# golang.org/x/text v0.19.0
+## explicit; go 1.18
+golang.org/x/text/cases
+golang.org/x/text/internal
+golang.org/x/text/internal/language
+golang.org/x/text/internal/language/compact
+golang.org/x/text/internal/tag
+golang.org/x/text/language
+golang.org/x/text/transform
+golang.org/x/text/unicode/norm

@@ -2,10 +2,14 @@
   "port": 80,
   "app_name": "request-service",
   "databases": {
-    "postgres": ""
+    "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@postgres:5432/request?sslmode=disable"
   },
   "kafka": {
-    "address": "localhost:9091,localhost:9092,localhost:9093",
-    "producerTopic": "request-service"
+    "address": "localhost:9091",
+    "productApproveTopic": "product-approve",
+    "supplyProductsTopic": "supply-products"
+  },
+  "cluster" : {
+    "warehouse_service_url" : "http://warehouse-service"
   }
 }
