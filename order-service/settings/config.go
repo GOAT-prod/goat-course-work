@@ -5,6 +5,7 @@ type Config struct {
 	AppName   string   `json:"app_name"`
 	Databases Database `json:"databases"`
 	Cluster   Cluster  `json:"cluster"`
+	Kafka     Kafka    `json:"kafka"`
 }
 
 type Database struct {
@@ -14,4 +15,9 @@ type Database struct {
 type Cluster struct {
 	WarehouseService string `json:"warehouse_service_url"`
 	CartService      string `json:"cart_service_url"`
+}
+
+type Kafka struct {
+	Address string `json:"address"`
+	Topic   string `json:"topic"`
 }

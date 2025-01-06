@@ -6,10 +6,12 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/lo"
 	"github.com/shopspring/decimal"
+	"log"
 	"order-service/cluster/cart"
 	"order-service/cluster/warehouse"
 	"order-service/database"
 	"order-service/domain"
+	"order-service/kafka"
 	"order-service/repository"
 	"time"
 )
@@ -24,6 +26,7 @@ type OrderServiceImpl struct {
 	warehouseService  *warehouse.Client
 	orderRepository   repository.Order
 	financeRepository repository.Finance
+	kafkaProducer     *kafka.Producer
 }
 
 func NewOrderService(cartService *cart.Client, warehouseService *warehouse.Client, orderRepository repository.Order, financeRepository repository.Finance) Order {
@@ -39,6 +42,13 @@ func (s *OrderServiceImpl) Order(ctx goatcontext.Context, cartItemsIds []int) er
 	itemsForOrder, err := s.cartService.GetCartItems(ctx, cartItemsIds)
 	if err != nil {
 		return fmt.Errorf("не удалось получить айдемы из корзины для заказа: %w", err)
+	}
+
+	warehouseProductItems, err := s.warehouseService.GetProductItemsInfo(ctx, lo.Map(itemsForOrder, func(item cart.Item, _ int) int {
+		return item.ProductItemId
+	}))
+	if err != nil {
+		return fmt.Errorf("не удалось получить покупаемые товары со склада: %w", err)
 	}
 
 	orderId, err := uuid.NewV7()
@@ -57,9 +67,26 @@ func (s *OrderServiceImpl) Order(ctx goatcontext.Context, cartItemsIds []int) er
 		return fmt.Errorf("не удалось создать заказ: %w", err)
 	}
 
+	supplyItems := make([]kafka.RequestItem, 0, len(itemsForOrder))
+
 	totalOrderPrice := decimal.Zero
 	for _, item := range itemsForOrder {
-		//TODO: проверка на количество товара на складе для реквестов
+		warehouseProductItem, ok := lo.Find(warehouseProductItems, func(productItem warehouse.ProductItemInfo) bool {
+			return productItem.Id == item.ProductItemId
+		})
+
+		if !ok {
+			return fmt.Errorf("вариант продукта %d из корзины отсутствует на складе", item.ProductItemId)
+		}
+
+		if warehouseProductItem.Count < item.Count {
+			supplyItems = append(supplyItems, kafka.RequestItem{
+				ProductId:        warehouseProductItem.ProductId,
+				ProductItemId:    item.ProductItemId,
+				ProductItemCount: item.Count - warehouseProductItem.Count,
+			})
+		}
+
 		totalOrderPrice = totalOrderPrice.Add(item.Price.Mul(decimal.NewFromInt(int64(item.Count))))
 
 		orderItemId, uErr := uuid.NewV7()
@@ -109,6 +136,10 @@ func (s *OrderServiceImpl) Order(ctx goatcontext.Context, cartItemsIds []int) er
 
 	if err = s.financeRepository.CreateOperationDetail(ctx, operationDetail); err != nil {
 		return fmt.Errorf("не удалось создать деталь фин операции: %w", err)
+	}
+
+	if len(supplyItems) > 0 {
+		go s.produceSupplyMessage(supplyItems)
 	}
 
 	return nil
@@ -168,4 +199,36 @@ func (s *OrderServiceImpl) GetUserOrders(ctx goatcontext.Context) ([]domain.Orde
 	}
 
 	return userOrders, nil
+}
+
+func (s *OrderServiceImpl) produceSupplyMessage(supplyItems []kafka.RequestItem) {
+	supplyItemsByProductId := associateRequestItemByProducts(supplyItems)
+	for _, supplyItem := range supplyItemsByProductId {
+		request := kafka.Request{
+			Status:      "pending",
+			Type:        "supply",
+			UpdatedDate: time.Now(),
+			Summary:     "необходима поставка продукта на склад",
+			Items:       supplyItem,
+		}
+
+		if err := s.kafkaProducer.Produce(request); err != nil {
+			log.Println("не удалось записать сообщение в кафку")
+		}
+	}
+}
+
+func associateRequestItemByProducts(requestItems []kafka.RequestItem) map[int][]kafka.RequestItem {
+	result := make(map[int][]kafka.RequestItem)
+
+	for _, requestItem := range requestItems {
+		if _, ok := result[requestItem.ProductId]; !ok {
+			result[requestItem.ProductId] = []kafka.RequestItem{requestItem}
+			continue
+		}
+
+		result[requestItem.ProductId] = append(result[requestItem.ProductId], requestItem)
+	}
+
+	return result
 }

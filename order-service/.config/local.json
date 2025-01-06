@@ -4,8 +4,12 @@
   "databases": {
     "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@postgres:5432/order?sslmode=disable"
   },
-  "cluster" : {
-    "warehouse_service_url" : "http://warehouse-service",
+  "cluster": {
+    "warehouse_service_url": "http://warehouse-service",
     "cart_service_url": "http://cart-service"
+  },
+  "kafka": {
+    "address": "kafka:9091",
+    "topic": "supply-products"
   }
 }

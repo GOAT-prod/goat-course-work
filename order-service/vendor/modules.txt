@@ -13,6 +13,10 @@ github.com/GOAT-prod/goatlogger
 # github.com/GOAT-prod/goatsettings v1.0.0
 ## explicit; go 1.23.1
 github.com/GOAT-prod/goatsettings
+# github.com/confluentinc/confluent-kafka-go/v2 v2.6.1
+## explicit; go 1.21
+github.com/confluentinc/confluent-kafka-go/v2/kafka
+github.com/confluentinc/confluent-kafka-go/v2/kafka/librdkafka_vendor
 # github.com/golang-jwt/jwt/v5 v5.2.1
 ## explicit; go 1.18
 github.com/golang-jwt/jwt/v5

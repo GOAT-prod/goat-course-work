@@ -9,6 +9,7 @@ require (
 	github.com/GOAT-prod/goathttp v1.0.4
 	github.com/GOAT-prod/goatlogger v0.1.5
 	github.com/GOAT-prod/goatsettings v1.0.0
+	github.com/confluentinc/confluent-kafka-go/v2 v2.6.1
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.1
 	github.com/jmoiron/sqlx v1.4.0
