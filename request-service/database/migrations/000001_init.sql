@@ -13,7 +13,8 @@ create table if not exists request_item
     id              serial primary key,
     request_id      int,
     product_id      int,
-    product_item_id int 
+    product_item_id int,
+    product_item_count int
 );
 
 -- +goose Down

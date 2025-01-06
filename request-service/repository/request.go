@@ -9,6 +9,7 @@ import (
 )
 
 type Request interface {
+	GetRequestById(ctx goatcontext.Context, id int) (request database.Request, err error)
 	GetPendingRequests(ctx goatcontext.Context) ([]database.Request, error)
 	AddRequest(ctx goatcontext.Context, request database.Request) error
 	UpdateRequestStatus(ctx goatcontext.Context, id int, status string) error
@@ -24,7 +25,17 @@ func NewRequestRepository(postgres *sqlx.DB) Request {
 	}
 }
 
-func (r Impl) GetPendingRequests(ctx goatcontext.Context) ([]database.Request, error) {
+func (r *Impl) GetRequestById(ctx goatcontext.Context, id int) (request database.Request, err error) {
+	err = r.postgres.GetContext(ctx, &request, queries.GetRequestById, id)
+
+	if err = r.postgres.SelectContext(ctx, &request.Items, queries.GetRequestItemsByRequestId, id); err != nil {
+		return database.Request{}, err
+	}
+	
+	return request, nil
+}
+
+func (r *Impl) GetPendingRequests(ctx goatcontext.Context) ([]database.Request, error) {
 	var requests []database.Request
 	if err := r.postgres.SelectContext(ctx, &requests, queries.GetPendingRequests); err != nil {
 		return nil, err
@@ -39,7 +50,7 @@ func (r Impl) GetPendingRequests(ctx goatcontext.Context) ([]database.Request, e
 	return requests, nil
 }
 
-func (r Impl) AddRequest(ctx goatcontext.Context, request database.Request) error {
+func (r *Impl) AddRequest(ctx goatcontext.Context, request database.Request) error {
 	var requestId int
 	if err := r.postgres.GetContext(ctx, &requestId, queries.AddRequest, request); err != nil {
 		return err
@@ -59,7 +70,7 @@ func (r Impl) AddRequest(ctx goatcontext.Context, request database.Request) erro
 	return nil
 }
 
-func (r Impl) UpdateRequestStatus(ctx goatcontext.Context, id int, status string) error {
+func (r *Impl) UpdateRequestStatus(ctx goatcontext.Context, id int, status string) error {
 	_, err := r.postgres.ExecContext(ctx, queries.UpdateRequestStatus, status, id)
 	return err
 }

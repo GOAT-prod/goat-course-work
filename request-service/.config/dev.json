@@ -10,6 +10,7 @@
     "supplyProductsTopic": "supply-products"
   },
   "cluster" : {
-    "warehouse_service_url" : "http://warehouse-service"
+    "warehouse_service_url" : "http://warehouse-service",
+    "notifier_service_url": "http://notifier-service"
   }
 }

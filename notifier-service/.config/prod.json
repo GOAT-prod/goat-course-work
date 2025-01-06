@@ -1,0 +1,11 @@
+{
+  "port": 8080,
+  "app_name": "notifier-service",
+  "smtp": {
+    "from": "ilya.antonoff21@yandex.ru",
+    "host": "smtp.yandex.ru",
+    "port": 465,
+    "password": "ptjdvdksjpzfimlk",
+    "to": "goat.prod.sup@gmail.com"
+  }
+}

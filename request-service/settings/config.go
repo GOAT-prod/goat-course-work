@@ -20,4 +20,5 @@ type Kafka struct {
 
 type Cluster struct {
 	WarehouseService string `json:"warehouse_service_url"`
+	NotifierService  string `json:"notifier_service_url"`
 }

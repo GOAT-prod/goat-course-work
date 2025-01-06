@@ -3,6 +3,9 @@ package queries
 import _ "embed"
 
 var (
+	//go:embed sql/get_request_by_id.sql
+	GetRequestById string
+
 	//go:embed sql/get_pending_requests.sql
 	GetPendingRequests string
 
