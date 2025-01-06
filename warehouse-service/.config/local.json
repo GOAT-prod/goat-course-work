@@ -9,6 +9,6 @@
   },
   "kafka": {
     "address": "188.225.45.200:9091",
-    "producerTopic": "request-service"
+    "producerTopic": "product-approve"
   }
 }

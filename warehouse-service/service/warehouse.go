@@ -157,11 +157,17 @@ func (s *Impl) GetProductItemsInfo(ctx goatcontext.Context, ids []int) ([]domain
 func (s *Impl) produceRequest(products []models.Product) error {
 	for _, product := range products {
 		request := broker.Request{
-			Status:      1,
-			Type:        1,
+			Status:      "pending",
+			Type:        "approve",
 			UpdatedDate: time.Now(),
 			Summary:     "новый продукт на аппрув",
-			Item:        product,
+			Items: lo.Map(product.Items, func(item models.ProductItem, _ int) broker.RequestItem {
+				return broker.RequestItem{
+					ProductId:        product.Id,
+					ProductItemId:    item.Id,
+					ProductItemCount: 0,
+				}
+			}),
 		}
 
 		if err := s.kafkaProducer.Produce(request); err != nil {

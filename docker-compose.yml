@@ -101,6 +101,18 @@ services:
       - "80"
     restart: always
 
+  notifier-service:
+    container_name: notifier-service
+    build: ./notifier-service
+    ports:
+      - "8080:80"
+    environment:
+      - ENV=dev
+    networks:
+      - app-network
+    expose:
+      - "80"
+
   api-gateway:
     container_name: api-gateway
     build: ./api-gateway
