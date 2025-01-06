@@ -59,6 +59,11 @@ type LoginUser struct {
 	Password string `json:"password"`
 }
 
+type UpdatePasswordRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 func (r *RefreshTokenBase) IsEquals(compareValue RefreshTokenBase) bool {
 	return r.UserId == compareValue.UserId && r.UserName == compareValue.UserName
 }

@@ -59,4 +59,5 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, userService service.User)
 	r.router.HandleFunc("/user", handlers.UpdateUserHandler(logger, userService)).Methods(http.MethodPut)
 	r.router.HandleFunc("/user/{id}", handlers.DeleteUserHandler(logger, userService)).Methods(http.MethodDelete)
 	r.router.HandleFunc("/user/registration", handlers.RegisterHandler(logger, userService)).Methods(http.MethodPost)
+	r.router.HandleFunc("/user/password/new", handlers.UpdateUserPasswordHandler(logger, userService)).Methods(http.MethodPut)
 }

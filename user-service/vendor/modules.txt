@@ -3,6 +3,7 @@
 github.com/GOAT-prod/goatcontext
 # github.com/GOAT-prod/goathttp v1.0.4
 ## explicit; go 1.23
+github.com/GOAT-prod/goathttp/client
 github.com/GOAT-prod/goathttp/headers
 github.com/GOAT-prod/goathttp/json
 github.com/GOAT-prod/goathttp/server

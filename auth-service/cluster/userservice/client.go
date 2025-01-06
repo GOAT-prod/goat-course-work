@@ -8,8 +8,9 @@ import (
 )
 
 const (
-	_getUserUri  = "user"
-	_saveUserUri = "user/registration"
+	_getUserUri            = "user"
+	_saveUserUri           = "user/registration"
+	_updateUserPasswordUri = "user/password/new"
 )
 
 type Client struct {
@@ -42,4 +43,13 @@ func (c *Client) RegisterUser(ctx context.Context, user domain.User) (result dom
 	}
 
 	return result, c.httpClient.Do(httpRequest, body, &result)
+}
+
+func (c *Client) UpdateUserPassword(ctx context.Context, user domain.UpdatePasswordRequest) error {
+	httpRequest, body, err := c.httpClient.Request(ctx, http.MethodPut, _updateUserPasswordUri, user, nil)
+	if err != nil {
+		return err
+	}
+
+	return c.httpClient.Do(httpRequest, body, nil)
 }

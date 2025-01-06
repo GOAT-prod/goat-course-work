@@ -8,3 +8,8 @@ type User struct {
 	Role     UserRole   `json:"role"`
 	ClientId int        `json:"clientId"`
 }
+
+type UpdatePasswordRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}

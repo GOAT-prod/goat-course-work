@@ -1,7 +1,10 @@
 {
-  "port": 8080,
+  "port": 8081,
   "app_name": "user-service",
   "databases": {
     "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@postgres:5432/user?sslmode=disable"
+  },
+  "cluster": {
+    "notifier_service_url": "http://notifier-service"
   }
 }

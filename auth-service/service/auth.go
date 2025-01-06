@@ -5,6 +5,7 @@ import (
 	"auth-service/domain"
 	"context"
 	"errors"
+	"fmt"
 	"log"
 )
 
@@ -12,6 +13,7 @@ type AuthService interface {
 	Login(username, password string) (domain.TokenResponse, error)
 	Logout(refreshToken string)
 	RefreshToken(token string) (domain.TokenResponse, error)
+	UpdatePassword(request domain.UpdatePasswordRequest) error
 }
 
 type AuthServiceImpl struct {
@@ -77,4 +79,26 @@ func (a *AuthServiceImpl) RefreshToken(token string) (domain.TokenResponse, erro
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
+}
+
+func (a *AuthServiceImpl) UpdatePassword(request domain.UpdatePasswordRequest) error {
+	user, err := a.userService.GetUserByUserName(context.TODO(), request.Username)
+	if err != nil {
+		return fmt.Errorf("не удалось получить пользователя: %w", err)
+	}
+
+	passwordHash, err := a.hasher.Hash(request.Password)
+	if err != nil {
+		return fmt.Errorf("не удалось захешировать новый пароль: %w", err)
+	}
+
+	if passwordHash == user.Password {
+		return fmt.Errorf("новый и старый пароли совпадают")
+	}
+
+	if err = a.userService.UpdateUserPassword(context.TODO(), request); err != nil {
+		return fmt.Errorf("не удалось сохранить новый пароль: %w", err)
+	}
+
+	return nil
 }

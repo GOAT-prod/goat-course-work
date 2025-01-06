@@ -30,4 +30,5 @@ func (s *Server) Setup(authService service.AuthService, registrationService serv
 	s.server.Post("/login", handlers.LoginHandler(authService))
 	s.server.Post("/logout", handlers.LogoutHandler(authService))
 	s.server.Post("/refresh-token", handlers.RefreshHandler(authService))
+	s.server.Post("/password/new", handlers.UpdatePasswordHandler(authService))
 }
