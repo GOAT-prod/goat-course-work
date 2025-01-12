@@ -10,6 +10,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"net/http"
 	"request-service/api"
+	"request-service/cluster/notifier"
 	"request-service/cluster/warehouse"
 	"request-service/database"
 	"request-service/kafka"
@@ -30,6 +31,7 @@ type App struct {
 	supplyProductConsumer  *kafka.Consumer
 
 	warehouseClient *warehouse.Client
+	notifierClient  *notifier.Client
 
 	requestRepository repository.Request
 	requestService    service.Request
@@ -105,10 +107,11 @@ func (a *App) initRepositories() {
 
 func (a *App) initClients() {
 	a.warehouseClient = warehouse.NewClient(client.NewBaseClient(a.cfg.Cluster.WarehouseService))
+	a.notifierClient = notifier.NewClient(client.NewBaseClient(a.cfg.Cluster.NotifierService))
 }
 
 func (a *App) initServices() {
-	a.requestService = service.NewRequestService(a.requestRepository, a.warehouseClient)
+	a.requestService = service.NewRequestService(a.requestRepository, a.warehouseClient, a.notifierClient)
 }
 
 func (a *App) initServer() {
