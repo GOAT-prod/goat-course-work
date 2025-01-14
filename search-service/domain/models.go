@@ -16,6 +16,8 @@ const (
 )
 
 type AppliedFilters struct {
+	Page     int             `json:"page"`
+	Limit    int             `json:"limit"`
 	Size     []int           `json:"size"`
 	Color    []string        `json:"color"`
 	Brand    []string        `json:"brand"`

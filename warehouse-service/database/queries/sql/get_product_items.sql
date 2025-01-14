@@ -3,7 +3,7 @@ SELECT
     pi.color,
     pi.size,
     pi.weight,
-    pi.quantity
+    pi.quantity as stock_count
 FROM
     product_item pi
 WHERE

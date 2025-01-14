@@ -3,6 +3,6 @@ SET
     color = :color,
     size = :size,
     weight = :weight,
-    quantity = :quantity
+    quantity = :stock_count
 WHERE
     id = :id;

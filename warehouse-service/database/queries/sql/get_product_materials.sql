@@ -1,5 +1,5 @@
 SELECT
-    pm.id,
+    pm.material_id,
     pm.product_id,
     m.name
 FROM product_material pm

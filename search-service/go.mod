@@ -9,6 +9,7 @@ require (
 	github.com/GOAT-prod/goathttp v1.0.8
 	github.com/GOAT-prod/goatlogger v0.1.5
 	github.com/GOAT-prod/goatsettings v1.0.0
+	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.1
 	github.com/redis/go-redis/v9 v9.7.0
 	github.com/samber/lo v1.47.0
