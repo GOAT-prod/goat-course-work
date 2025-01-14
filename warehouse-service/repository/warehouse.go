@@ -137,7 +137,13 @@ func (r *Init) AddProducts(ctx goatcontext.Context, products []models.Product) (
 
 	for _, product := range products {
 		var id int
-		if err := r.postgres.Get(ctx, queries.AddProducts, id); err != nil {
+
+		stmt, stmtErr := r.postgres.PrepareNamedContext(ctx, queries.AddProducts)
+		if stmtErr != nil {
+			return nil, stmtErr
+		}
+
+		if err := stmt.GetContext(ctx, &id, product); err != nil {
 			return nil, err
 		}
 

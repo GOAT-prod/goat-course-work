@@ -109,7 +109,9 @@ func (s *Impl) AddProducts(ctx goatcontext.Context, products []domain.Product) e
 		return err
 	}
 
-	return s.produceRequest(addedProducts)
+	s.produceRequest(addedProducts)
+
+	return err
 }
 
 func (s *Impl) UpdateProducts(ctx goatcontext.Context, products []domain.Product) error {

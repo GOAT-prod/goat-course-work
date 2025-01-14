@@ -115,6 +115,8 @@ func checkProduct(appliedFilters domain.AppliedFilters, product domain.Product) 
 		return false
 	case appliedFilters.MinPrice.GreaterThan(product.Price) || appliedFilters.MaxPrice.LessThan(product.Price):
 		return false
+	case len(appliedFilters.Material) != 0 && !lo.Some(product.GetMaterialNames(), appliedFilters.Material):
+		return false
 	}
 
 	return true

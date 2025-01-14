@@ -83,8 +83,8 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.C
 	userSubRouter.Use(goathttp.AuthMiddleware)
 	userSubRouter.HandleFunc("/all", userhandlers.GetUsersHandler(logger, userClient)).Methods(http.MethodGet, http.MethodOptions)
 	userSubRouter.HandleFunc("/{id}", userhandlers.GetUserHandler(logger, userClient)).Methods(http.MethodGet, http.MethodOptions)
-	userSubRouter.HandleFunc("/", userhandlers.AddUserHandler(logger, userClient)).Methods(http.MethodPost, http.MethodOptions)
-	userSubRouter.HandleFunc("/", userhandlers.UpdateUserHandler(logger, userClient)).Methods(http.MethodPut, http.MethodOptions)
+	userSubRouter.HandleFunc("", userhandlers.AddUserHandler(logger, userClient)).Methods(http.MethodPost, http.MethodOptions)
+	userSubRouter.HandleFunc("", userhandlers.UpdateUserHandler(logger, userClient)).Methods(http.MethodPut, http.MethodOptions)
 	userSubRouter.HandleFunc("/{id}", userhandlers.DeleteUserHandler(logger, userClient)).Methods(http.MethodDelete, http.MethodOptions)
 
 	//	client-service
@@ -92,23 +92,23 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.C
 	clientSubRouter.Use(goathttp.AuthMiddleware)
 	clientSubRouter.HandleFunc("/all", clienthandlers.GetClientsHandler(logger, clientService)).Methods(http.MethodGet, http.MethodOptions)
 	clientSubRouter.HandleFunc("/{id}", clienthandlers.GetClientHandler(logger, clientService)).Methods(http.MethodGet, http.MethodOptions)
-	clientSubRouter.HandleFunc("/", clienthandlers.UpdateClientHandler(logger, clientService)).Methods(http.MethodPut, http.MethodOptions)
+	clientSubRouter.HandleFunc("", clienthandlers.UpdateClientHandler(logger, clientService)).Methods(http.MethodPut, http.MethodOptions)
 	clientSubRouter.HandleFunc("/{id}", clienthandlers.DeleteClientHandler(logger, clientService)).Methods(http.MethodDelete, http.MethodOptions)
 
 	//	warehouse-service
 	warehouseSubRouter := r.router.PathPrefix("/products").Subrouter()
 	warehouseSubRouter.Use(goathttp.AuthMiddleware)
 	warehouseSubRouter.HandleFunc("/materials", warehousehandlers.GetMaterialsHandler(logger, warehouseClient)).Methods(http.MethodGet, http.MethodOptions)
-	warehouseSubRouter.HandleFunc("/", warehousehandlers.GetProductsHandler(logger, warehouseClient)).Methods(http.MethodGet, http.MethodOptions)
+	warehouseSubRouter.HandleFunc("", warehousehandlers.GetProductsHandler(logger, warehouseClient)).Methods(http.MethodGet, http.MethodOptions)
 	warehouseSubRouter.HandleFunc("/{id}", warehousehandlers.GetProductHandler(logger, warehouseClient)).Methods(http.MethodGet, http.MethodOptions)
-	warehouseSubRouter.HandleFunc("/", warehousehandlers.AddProductsHandler(logger, warehouseClient)).Methods(http.MethodPost, http.MethodOptions)
-	warehouseSubRouter.HandleFunc("/", warehousehandlers.UpdateProductsHandler(logger, warehouseClient)).Methods(http.MethodPut, http.MethodOptions)
-	warehouseSubRouter.HandleFunc("/", warehousehandlers.DeleteProductsHandler(logger, warehouseClient)).Methods(http.MethodDelete, http.MethodOptions)
+	warehouseSubRouter.HandleFunc("", warehousehandlers.AddProductsHandler(logger, warehouseClient)).Methods(http.MethodPost, http.MethodOptions)
+	warehouseSubRouter.HandleFunc("", warehousehandlers.UpdateProductsHandler(logger, warehouseClient)).Methods(http.MethodPut, http.MethodOptions)
+	warehouseSubRouter.HandleFunc("", warehousehandlers.DeleteProductsHandler(logger, warehouseClient)).Methods(http.MethodDelete, http.MethodOptions)
 
 	//	cart-service
 	cartSubRouter := r.router.PathPrefix("/cart").Subrouter()
 	cartSubRouter.Use(goathttp.AuthMiddleware)
-	cartSubRouter.HandleFunc("/", carthandlers.GetCartHandler(logger, cartClient)).Methods(http.MethodGet, http.MethodOptions)
+	cartSubRouter.HandleFunc("", carthandlers.GetCartHandler(logger, cartClient)).Methods(http.MethodGet, http.MethodOptions)
 	cartSubRouter.HandleFunc("/item", carthandlers.AddCartItemHandler(logger, cartClient)).Methods(http.MethodPost, http.MethodOptions)
 	cartSubRouter.HandleFunc("/item", carthandlers.UpdateCartItemHandler(logger, cartClient)).Methods(http.MethodPut, http.MethodOptions)
 	cartSubRouter.HandleFunc("/item/{id}", carthandlers.DeleteCartItemHandler(logger, cartClient)).Methods(http.MethodDelete, http.MethodOptions)
@@ -117,7 +117,7 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.C
 	//	order-service
 	orderSubRouter := r.router.PathPrefix("/order").Subrouter()
 	orderSubRouter.Use(goathttp.AuthMiddleware)
-	orderSubRouter.HandleFunc("/", orderhandlers.CreateOrderHandler(logger, orderClient)).Methods(http.MethodPost, http.MethodOptions)
+	orderSubRouter.HandleFunc("", orderhandlers.CreateOrderHandler(logger, orderClient)).Methods(http.MethodPost, http.MethodOptions)
 	orderSubRouter.HandleFunc("/all", orderhandlers.GetUserOrdersHandler(logger, orderClient)).Methods(http.MethodGet, http.MethodOptions)
 
 	//	search-service

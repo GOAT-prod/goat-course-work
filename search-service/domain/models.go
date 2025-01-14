@@ -1,6 +1,9 @@
 package domain
 
-import "github.com/shopspring/decimal"
+import (
+	"github.com/samber/lo"
+	"github.com/shopspring/decimal"
+)
 
 type ProductStatus string
 
@@ -16,6 +19,7 @@ type AppliedFilters struct {
 	Size     []int           `json:"size"`
 	Color    []string        `json:"color"`
 	Brand    []string        `json:"brand"`
+	Material []string        `json:"material"`
 	MinPrice decimal.Decimal `json:"minPrice"`
 	MaxPrice decimal.Decimal `json:"maxPrice"`
 }
@@ -49,6 +53,12 @@ type ProductItem struct {
 type ProductMaterial struct {
 	Id       int    `json:"Id"`
 	Material string `json:"Material"`
+}
+
+func (p Product) GetMaterialNames() []string {
+	return lo.Map(p.Materials, func(item ProductMaterial, _ int) string {
+		return item.Material
+	})
 }
 
 type ProductImages struct {
