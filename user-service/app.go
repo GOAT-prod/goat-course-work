@@ -4,9 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/GOAT-prod/goathttp/client"
 	"github.com/jmoiron/sqlx"
 	"net/http"
 	"user-service/api"
+	"user-service/cluster/notifier"
 	"user-service/database"
 	"user-service/repository"
 	"user-service/service"
@@ -27,6 +29,7 @@ type App struct {
 	userRepository repository.User
 	roleRepository repository.Role
 	userService    service.User
+	notifierClient *notifier.Client
 }
 
 func NewApp(ctx context.Context, logger goatlogger.Logger, cfg settings.Config) *App {
@@ -68,8 +71,12 @@ func (a *App) initRepositories() {
 	a.roleRepository = repository.NewRoleRepository(a.postgres)
 }
 
+func (a *App) initCluster() {
+	a.notifierClient = notifier.NewClient(client.NewBaseClient(a.cfg.Cluster.NotifierService))
+}
+
 func (a *App) initServices() {
-	a.userService = service.NewUserService(a.userRepository, a.roleRepository)
+	a.userService = service.NewUserService(a.userRepository, a.roleRepository, a.notifierClient)
 }
 
 func (a *App) initServer() {

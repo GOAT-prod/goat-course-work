@@ -1,0 +1,19 @@
+{
+  "port": 8080,
+  "app_name": "search-service",
+  "databases": {
+    "mongo": {
+      "connection": "",
+      "database": "",
+      "collection": ""
+    },
+    "redis": {
+      "address": "redis:6379",
+      "password": "",
+      "database": 2
+    }
+  },
+  "cluster": {
+    "warehouse_service_url": "http://warehouse-service"
+  }
+}

@@ -131,7 +131,7 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.C
 	requestSubRouter := r.router.PathPrefix("/request").Subrouter()
 	requestSubRouter.Use(goathttp.AuthMiddleware)
 	requestSubRouter.HandleFunc("/all", requesthandlers.GetRequestsHandler(logger, requestClient)).Methods(http.MethodGet, http.MethodOptions)
-	requestSubRouter.HandleFunc("/{requestId}/status/{status}", requesthandlers.UpdateRequestStatusHandler(logger, requestClient)).Methods(http.MethodPut, http.MethodOptions)
+	requestSubRouter.HandleFunc("/{requestId}/{status}", requesthandlers.UpdateRequestStatusHandler(logger, requestClient)).Methods(http.MethodPut, http.MethodOptions)
 
 	//	report-service
 	reportSubRouter := r.router.PathPrefix("/report").Subrouter()
