@@ -7,12 +7,15 @@ RUN mkdir out && \
     mv database/migrations/ out/database/migrations/ && \
     mv .config/ out/
 
-RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -o out/app
+RUN apt-get update && \
+    apt-get install -y build-essential pkg-config libssl-dev
+
+RUN go build -mod vendor -o out/app
 
 FROM alpine
 EXPOSE 8080
 
-RUN apk update && apk add --no-cache tzdata
+RUN apk update && apk add --no-cache tzdata bash musl libc6-compat
 
 WORKDIR /app
 
