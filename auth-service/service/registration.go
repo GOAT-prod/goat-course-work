@@ -36,7 +36,12 @@ func (r *RegistrationServiceImpl) SignUp(registerData domain.RegisterData) (doma
 	}
 
 	//отправить пользователя на сохранение
-	if userCheck, checkUserErr := r.userService.GetUserByUserName(context.TODO(), registerData.UserName); checkUserErr != nil || userCheck.Id != 0 {
+	userCheck, err := r.userService.GetUserByUserName(context.TODO(), registerData.UserName)
+	if err != nil {
+		return domain.TokenResponse{}, err
+	}
+
+	if userCheck.Id != 0 {
 		return domain.TokenResponse{}, errors.New("user already exists")
 	}
 
