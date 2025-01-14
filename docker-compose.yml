@@ -104,8 +104,6 @@ services:
   notifier-service:
     container_name: notifier-service
     build: ./notifier-service
-    ports:
-      - "8080:80"
     environment:
       - ENV=dev
     networks:
