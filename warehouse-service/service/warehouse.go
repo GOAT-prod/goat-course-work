@@ -21,6 +21,7 @@ type WareHouse interface {
 	DeleteProducts(ctx goatcontext.Context, productIds []int) error
 	GetMaterialsList(ctx goatcontext.Context) ([]domain.ProductMaterial, error)
 	GetProductItemsInfo(ctx goatcontext.Context, ids []int) ([]domain.ProductItemInfo, error)
+	GetClientProduct(ctx goatcontext.Context, clientId int) ([]domain.Product, error)
 }
 
 type Impl struct {
@@ -154,6 +155,33 @@ func (s *Impl) GetProductItemsInfo(ctx goatcontext.Context, ids []int) ([]domain
 	})
 
 	return infos, nil
+}
+
+func (s *Impl) GetClientProduct(ctx goatcontext.Context, clientId int) ([]domain.Product, error) {
+	dbProducts, err := s.warehouseRepository.GetClientProducts(ctx, clientId)
+	if err != nil {
+		return nil, err
+	}
+
+	factoryIds := lo.Map(dbProducts, func(item models.Product, _ int) int {
+		return item.FactoryId
+	})
+
+	shortFactoryInfos, err := s.clientServiceClient.GetClientInfoShort(ctx, factoryIds)
+	if err != nil {
+		return nil, err
+	}
+
+	shortFactoryInfosMap := lo.Associate(shortFactoryInfos, func(item clientservice.ClientInfoShort) (int, clientservice.ClientInfoShort) {
+		return item.Id, item
+	})
+
+	products := make([]domain.Product, 0, len(dbProducts))
+	for _, dbProduct := range dbProducts {
+		products = append(products, mappings.ToDomainProduct(dbProduct, shortFactoryInfosMap[dbProduct.FactoryId]))
+	}
+
+	return products, nil
 }
 
 func (s *Impl) produceRequest(products []models.Product) error {

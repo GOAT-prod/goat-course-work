@@ -30,6 +30,7 @@ type Warehouse interface {
 	UpdateImages(ctx goatcontext.Context, productImages []models.ProductImages) error
 	DeleteImages(ctx goatcontext.Context, id []int) error
 	GetProductItemsInfo(ctx goatcontext.Context, ids []int) (items []models.ProductItemInfo, err error)
+	GetClientProducts(ctx goatcontext.Context, clientId int) (items []models.Product, err error)
 }
 
 type Init struct {
@@ -310,4 +311,36 @@ func (r *Init) DeleteImages(ctx goatcontext.Context, id []int) error {
 
 func (r *Init) GetProductItemsInfo(ctx goatcontext.Context, ids []int) (items []models.ProductItemInfo, err error) {
 	return items, r.postgres.SelectContext(ctx, &items, queries.GetProductItemInfos, pq.Array(ids))
+}
+
+func (r *Init) GetClientProducts(ctx goatcontext.Context, clientId int) ([]models.Product, error) {
+	var products []models.Product
+	if err := r.postgres.SelectContext(ctx, &products, queries.GetClientProducts, pq.Array([]int{clientId})); err != nil {
+		return nil, err
+	}
+
+	for _, product := range products {
+		items, err := r.GetProductItems(ctx, product.Id)
+		if err != nil {
+			return nil, err
+		}
+
+		product.Items = items
+
+		materials, err := r.GetProductsMaterials(ctx, product.Id)
+		if err != nil {
+			return nil, err
+		}
+
+		product.Materials = materials
+
+		images, err := r.GetImages(ctx, product.Id)
+		if err != nil {
+			return nil, err
+		}
+
+		product.Images = images
+	}
+
+	return products, nil
 }

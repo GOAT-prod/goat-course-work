@@ -59,4 +59,7 @@ var (
 
 	//go:embed sql/get_product_item_info.sql
 	GetProductItemInfos string
+
+	//go:embed sql/get_client_products.sql
+	GetClientProducts string
 )
