@@ -352,7 +352,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Catalog data",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/search.Catalog"
                         }
                     },
                     "400": {
@@ -581,7 +581,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "object"
+                                "$ref": "#/definitions/search.Filter"
                             }
                         }
                     },
@@ -725,7 +725,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Product catalog data",
                         "schema": {
-                            "type": "object"
+                            "$ref": "#/definitions/search.Product"
                         }
                     },
                     "400": {
@@ -1620,6 +1620,199 @@ const docTemplate = `{
                 "Delivered",
                 "Cancelled"
             ]
+        },
+        "search.AppliedFilters": {
+            "type": "object",
+            "properties": {
+                "brand": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "color": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "material": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "maxPrice": {
+                    "type": "number"
+                },
+                "minPrice": {
+                    "type": "number"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "size": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "search.Catalog": {
+            "type": "object",
+            "properties": {
+                "filters": {
+                    "$ref": "#/definitions/search.AppliedFilters"
+                },
+                "pages": {
+                    "type": "integer"
+                },
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/search.Product"
+                    }
+                },
+                "searchId": {
+                    "type": "string"
+                }
+            }
+        },
+        "search.Factory": {
+            "type": "object",
+            "properties": {
+                "factoryName": {
+                    "description": "Название завода.",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "Уникальный идентификатор завода.",
+                    "type": "integer"
+                }
+            }
+        },
+        "search.Filter": {
+            "type": "object",
+            "properties": {
+                "allowedValues": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "search.Product": {
+            "type": "object",
+            "properties": {
+                "brandName": {
+                    "description": "Название бренда продукта.",
+                    "type": "string"
+                },
+                "factory": {
+                    "description": "Завод, производящий продукт.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/search.Factory"
+                        }
+                    ]
+                },
+                "id": {
+                    "description": "Уникальный идентификатор продукта.",
+                    "type": "integer"
+                },
+                "images": {
+                    "description": "Список изображений продукта.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/search.ProductImages"
+                    }
+                },
+                "items": {
+                    "description": "Список товаров (размер, количество на складе и т.д.).",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/search.ProductItem"
+                    }
+                },
+                "materials": {
+                    "description": "Материалы, из которых состоит продукт.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/search.ProductMaterial"
+                    }
+                },
+                "name": {
+                    "description": "Название продукта.",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "Цена продукта.",
+                    "type": "number"
+                },
+                "status": {
+                    "description": "Статус продукта (например, \"в наличии\", \"не в наличии\").",
+                    "type": "string"
+                }
+            }
+        },
+        "search.ProductImages": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Уникальный идентификатор изображения.",
+                    "type": "integer"
+                },
+                "imageUrl": {
+                    "description": "URL изображения продукта.",
+                    "type": "string"
+                }
+            }
+        },
+        "search.ProductItem": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "description": "Цвет товара.",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "Уникальный идентификатор товара.",
+                    "type": "integer"
+                },
+                "size": {
+                    "description": "Размер товара (например, 42, 50 и т.д.).",
+                    "type": "integer"
+                },
+                "stockCount": {
+                    "description": "Количество товара на складе.",
+                    "type": "integer"
+                },
+                "weight": {
+                    "description": "Вес товара.",
+                    "type": "number"
+                }
+            }
+        },
+        "search.ProductMaterial": {
+            "type": "object",
+            "properties": {
+                "Id": {
+                    "description": "Уникальный идентификатор материала.",
+                    "type": "integer"
+                },
+                "Material": {
+                    "description": "Название материала (например, \"дерево\", \"металл\").",
+                    "type": "string"
+                }
+            }
         },
         "userservice.User": {
             "type": "object",

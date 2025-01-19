@@ -16,7 +16,7 @@ import (
 // @Produce json
 // @Param filter query string false "Filter query parameter"
 // @Param sort query string false "Sort query parameter"
-// @Success 200 {object} object "Catalog data"
+// @Success 200 {object} search.Catalog "Catalog data"
 // @Failure 400 {string} string "Invalid request or failed to process the response"
 // @Failure 403 {string} string "Forbidden - context creation failed"
 // @Router /catalog [get]

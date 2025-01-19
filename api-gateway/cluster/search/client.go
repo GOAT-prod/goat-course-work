@@ -19,10 +19,10 @@ func NewClient(httpClient goatclient.BaseClient) *Client {
 	}
 }
 
-func (c *Client) GetActiveFilters(ctx goatcontext.Context) (result any, err error) {
+func (c *Client) GetActiveFilters(ctx goatcontext.Context) (result []Filter, err error) {
 	request, body, err := c.httpClient.Request(ctx, http.MethodGet, "filters/active", nil, nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
@@ -30,10 +30,10 @@ func (c *Client) GetActiveFilters(ctx goatcontext.Context) (result any, err erro
 	return result, c.httpClient.Do(request, body, &result)
 }
 
-func (c *Client) GetCatalog(ctx goatcontext.Context, filters map[string][]string) (result any, err error) {
+func (c *Client) GetCatalog(ctx goatcontext.Context, filters map[string][]string) (result Catalog, err error) {
 	request, body, err := c.httpClient.Request(ctx, http.MethodGet, "catalog", nil, prepareParams(filters))
 	if err != nil {
-		return nil, err
+		return Catalog{}, err
 	}
 
 	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
@@ -41,10 +41,10 @@ func (c *Client) GetCatalog(ctx goatcontext.Context, filters map[string][]string
 	return result, c.httpClient.Do(request, body, &result)
 }
 
-func (c *Client) GetProductCatalog(ctx goatcontext.Context, productId int) (result any, err error) {
+func (c *Client) GetProductCatalog(ctx goatcontext.Context, productId int) (result Product, err error) {
 	request, body, err := c.httpClient.Request(ctx, http.MethodGet, fmt.Sprintf("catalog/%d", productId), nil, nil)
 	if err != nil {
-		return nil, err
+		return Product{}, err
 	}
 
 	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())

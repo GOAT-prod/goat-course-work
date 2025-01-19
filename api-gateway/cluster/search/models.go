@@ -2,10 +2,27 @@ package search
 
 import "github.com/shopspring/decimal"
 
+type Filter struct {
+	Name          string   `json:"name"`
+	AllowedValues []string `json:"allowedValues"`
+}
+
+type AppliedFilters struct {
+	Page     int             `json:"page"`
+	Limit    int             `json:"limit"`
+	Size     []int           `json:"size"`
+	Color    []string        `json:"color"`
+	Brand    []string        `json:"brand"`
+	Material []string        `json:"material"`
+	MinPrice decimal.Decimal `json:"minPrice"`
+	MaxPrice decimal.Decimal `json:"maxPrice"`
+}
+
 type Catalog struct {
-	Filters  any       `json:"filters"`
-	SearchId string    `json:"search_id"`
-	Items    []Product `json:"items"`
+	Filters  AppliedFilters `json:"filters"`
+	SearchId string         `json:"searchId"`
+	Products []Product      `json:"products"`
+	Pages    int            `json:"pages"`
 }
 
 // Product представляет информацию о продукте.

@@ -17,8 +17,6 @@ func GetFiltersHandlers(logger goatlogger.Logger, searchService service.Search) 
 			return
 		}
 
-		parseQueryParams(r)
-
 		filters, err := searchService.GetFilters(ctx)
 		if err != nil {
 			logger.Error(err.Error())

@@ -127,6 +127,137 @@ definitions:
     - Delivering
     - Delivered
     - Cancelled
+  search.AppliedFilters:
+    properties:
+      brand:
+        items:
+          type: string
+        type: array
+      color:
+        items:
+          type: string
+        type: array
+      limit:
+        type: integer
+      material:
+        items:
+          type: string
+        type: array
+      maxPrice:
+        type: number
+      minPrice:
+        type: number
+      page:
+        type: integer
+      size:
+        items:
+          type: integer
+        type: array
+    type: object
+  search.Catalog:
+    properties:
+      filters:
+        $ref: '#/definitions/search.AppliedFilters'
+      pages:
+        type: integer
+      products:
+        items:
+          $ref: '#/definitions/search.Product'
+        type: array
+      searchId:
+        type: string
+    type: object
+  search.Factory:
+    properties:
+      factoryName:
+        description: Название завода.
+        type: string
+      id:
+        description: Уникальный идентификатор завода.
+        type: integer
+    type: object
+  search.Filter:
+    properties:
+      allowedValues:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+    type: object
+  search.Product:
+    properties:
+      brandName:
+        description: Название бренда продукта.
+        type: string
+      factory:
+        allOf:
+        - $ref: '#/definitions/search.Factory'
+        description: Завод, производящий продукт.
+      id:
+        description: Уникальный идентификатор продукта.
+        type: integer
+      images:
+        description: Список изображений продукта.
+        items:
+          $ref: '#/definitions/search.ProductImages'
+        type: array
+      items:
+        description: Список товаров (размер, количество на складе и т.д.).
+        items:
+          $ref: '#/definitions/search.ProductItem'
+        type: array
+      materials:
+        description: Материалы, из которых состоит продукт.
+        items:
+          $ref: '#/definitions/search.ProductMaterial'
+        type: array
+      name:
+        description: Название продукта.
+        type: string
+      price:
+        description: Цена продукта.
+        type: number
+      status:
+        description: Статус продукта (например, "в наличии", "не в наличии").
+        type: string
+    type: object
+  search.ProductImages:
+    properties:
+      id:
+        description: Уникальный идентификатор изображения.
+        type: integer
+      imageUrl:
+        description: URL изображения продукта.
+        type: string
+    type: object
+  search.ProductItem:
+    properties:
+      color:
+        description: Цвет товара.
+        type: string
+      id:
+        description: Уникальный идентификатор товара.
+        type: integer
+      size:
+        description: Размер товара (например, 42, 50 и т.д.).
+        type: integer
+      stockCount:
+        description: Количество товара на складе.
+        type: integer
+      weight:
+        description: Вес товара.
+        type: number
+    type: object
+  search.ProductMaterial:
+    properties:
+      Id:
+        description: Уникальный идентификатор материала.
+        type: integer
+      Material:
+        description: Название материала (например, "дерево", "металл").
+        type: string
+    type: object
   userservice.User:
     properties:
       clientId:
@@ -453,7 +584,7 @@ paths:
         "200":
           description: Catalog data
           schema:
-            type: object
+            $ref: '#/definitions/search.Catalog'
         "400":
           description: Invalid request or failed to process the response
           schema:
@@ -599,7 +730,7 @@ paths:
           description: List of active filters
           schema:
             items:
-              type: object
+              $ref: '#/definitions/search.Filter'
             type: array
         "400":
           description: Invalid request or failed to process the response
@@ -692,7 +823,7 @@ paths:
         "200":
           description: Product catalog data
           schema:
-            type: object
+            $ref: '#/definitions/search.Product'
         "400":
           description: Invalid request or failed to process the response
           schema:

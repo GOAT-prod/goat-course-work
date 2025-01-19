@@ -14,7 +14,7 @@ import (
 // @Description Retrieves a list of active filters from the search service.
 // @Tags Filters
 // @Produce json
-// @Success 200 {object} []object "List of active filters"
+// @Success 200 {object} []search.Filter "List of active filters"
 // @Failure 400 {string} string "Invalid request or failed to process the response"
 // @Failure 403 {string} string "Forbidden - context creation failed"
 // @Router /filters/active [get]

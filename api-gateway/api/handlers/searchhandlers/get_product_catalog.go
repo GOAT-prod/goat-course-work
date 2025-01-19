@@ -17,7 +17,7 @@ import (
 // @Tags Catalog
 // @Produce json
 // @Param productId path int true "Product ID"
-// @Success 200 {object} object "Product catalog data"
+// @Success 200 {object} search.Product "Product catalog data"
 // @Failure 400 {string} string "Invalid request or failed to process the response"
 // @Failure 403 {string} string "Forbidden - context creation failed"
 // @Router /product/{productId}/catalog [get]
