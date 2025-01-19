@@ -51,5 +51,7 @@ func (s *Server) Start() error {
 }
 
 func (r *Router) SetupRoutes(logger goatlogger.Logger, searchService service.Search) {
-	r.router.HandleFunc("/filters", handlers.GetFiltersHandlers(logger, searchService)).Methods(http.MethodGet)
+	r.router.HandleFunc("/filters/active", handlers.GetFiltersHandlers(logger, searchService)).Methods(http.MethodGet)
+	r.router.HandleFunc("/catalog", handlers.GetCatalogHandler(logger, searchService)).Methods(http.MethodGet)
+	r.router.HandleFunc("/catalog/{productId}", handlers.GetProductCatalog(logger, searchService)).Methods(http.MethodGet)
 }
