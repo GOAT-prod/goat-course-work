@@ -30,6 +30,7 @@ type Catalog struct {
 	Filters  AppliedFilters `json:"filters"`
 	SearchId string         `json:"searchId"`
 	Products []Product      `json:"products"`
+	Pages    int            `json:"pages"`
 }
 
 type Product struct {

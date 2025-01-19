@@ -74,6 +74,7 @@ func (s *SearchService) GetCatalog(ctx goatcontext.Context, searchId string, app
 	})
 
 	catalog.Products = applyFilters(allProducts, appliedFilters)
+	catalog.Pages = getPagesCount(catalog.Products, appliedFilters.Limit)
 
 	go func(sid string, p []domain.Product) {
 		redisCtx := ctx
@@ -84,6 +85,10 @@ func (s *SearchService) GetCatalog(ctx goatcontext.Context, searchId string, app
 	}(searchId, catalog.Products)
 
 	return catalog, nil
+}
+
+func (s *SearchService) GetProductCatalog(ctx goatcontext.Context, productId int) (domain.Product, error) {
+	return s.warehouseClient.GetProduct(ctx, productId)
 }
 
 func applyFilters(products []domain.Product, appliedFilters domain.AppliedFilters) []domain.Product {
@@ -107,6 +112,10 @@ func applyFilters(products []domain.Product, appliedFilters domain.AppliedFilter
 			filteredProduct.Items = filteredProductItems
 			filteredProducts = append(filteredProducts, filteredProduct)
 		}
+	}
+
+	if len(filteredProducts) > appliedFilters.Limit*appliedFilters.Page {
+		return filteredProducts[appliedFilters.Limit*(appliedFilters.Page-1) : appliedFilters.Limit*appliedFilters.Page]
 	}
 
 	return filteredProducts
@@ -140,6 +149,10 @@ func checkProductItem(appliedFilters domain.AppliedFilters, productItem domain.P
 	return true
 }
 
-func (s *SearchService) GetProductCatalog(ctx goatcontext.Context, productId int) (domain.Product, error) {
-	return s.warehouseClient.GetProduct(ctx, productId)
+func getPagesCount(products []domain.Product, limit int) int {
+	if len(products)%limit == 0 {
+		return len(products) / limit
+	}
+
+	return len(products)/limit + 1
 }
