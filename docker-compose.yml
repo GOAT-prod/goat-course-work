@@ -101,6 +101,21 @@ services:
       - "80"
     restart: always
 
+  report-service:
+    container_name: report-service
+    build: ./report-service
+    environment:
+      - ENV=dev
+    networks:
+      - app-network
+    extra_hosts:
+      - "postgres:147.45.245.24"
+    depends_on:
+      - order-service
+    expose:
+      - "80"
+    restart: always
+
   notifier-service:
     container_name: notifier-service
     build: ./notifier-service
