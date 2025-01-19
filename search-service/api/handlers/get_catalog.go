@@ -69,7 +69,19 @@ func parseFilters(r *http.Request) (domain.AppliedFilters, error) {
 		return domain.AppliedFilters{}, err
 	}
 
+	page, err := strconv.Atoi(queryParams.Get("page"))
+	if err != nil {
+		return domain.AppliedFilters{}, err
+	}
+
+	limit, err := strconv.Atoi(queryParams.Get("limit"))
+	if err != nil {
+		return domain.AppliedFilters{}, err
+	}
+
 	return domain.AppliedFilters{
+		Page:     page,
+		Limit:    limit,
 		Size:     intSizes,
 		Color:    queryParams["color"],
 		Brand:    queryParams["brand"],

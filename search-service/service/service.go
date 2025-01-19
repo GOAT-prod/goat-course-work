@@ -10,6 +10,7 @@ import (
 	"search-service/database"
 	"search-service/domain"
 	"search-service/repository"
+	"sort"
 )
 
 type Search interface {
@@ -67,6 +68,10 @@ func (s *SearchService) GetCatalog(ctx goatcontext.Context, searchId string, app
 	if err != nil {
 		return domain.Catalog{}, err
 	}
+
+	sort.Slice(allProducts, func(i, j int) bool {
+		return allProducts[i].Id < allProducts[j].Id
+	})
 
 	catalog.Products = applyFilters(allProducts, appliedFilters)
 

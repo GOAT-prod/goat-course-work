@@ -17,4 +17,7 @@ var (
 
 	//go:embed sql/delete_client.sql
 	DeleteClient string
+
+	//go:embed sql/get_clients_by_ids.sql
+	GetClientsByIds string
 )

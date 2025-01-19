@@ -57,4 +57,5 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, clientService service.Cli
 	r.router.HandleFunc("/client", handlers.AddClientHandler(logger, clientService)).Methods(http.MethodPost)
 	r.router.HandleFunc("/client", handlers.UpdateClientHandler(logger, clientService)).Methods(http.MethodPut)
 	r.router.HandleFunc("/client/{id}", handlers.DeleteClientHandler(logger, clientService)).Methods(http.MethodDelete)
+	r.router.HandleFunc("/info/short", handlers.GetInfoShort(logger, clientService)).Methods(http.MethodPost)
 }

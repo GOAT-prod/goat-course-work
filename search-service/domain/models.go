@@ -27,9 +27,9 @@ type AppliedFilters struct {
 }
 
 type Catalog struct {
-	Filters  any       `json:"filters"`
-	SearchId string    `json:"searchId"`
-	Products []Product `json:"products"`
+	Filters  AppliedFilters `json:"filters"`
+	SearchId string         `json:"searchId"`
+	Products []Product      `json:"products"`
 }
 
 type Product struct {

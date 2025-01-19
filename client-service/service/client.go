@@ -13,6 +13,7 @@ type Client interface {
 	AddClient(ctx goatcontext.Context, client domain.Client) (domain.Client, error)
 	UpdateClient(ctx goatcontext.Context, client domain.Client) error
 	DeleteClient(ctx goatcontext.Context, id int) error
+	GetClientsByIds(ctx goatcontext.Context, ids []int) ([]domain.Client, error)
 }
 
 type ClientServiceImpl struct {
@@ -41,6 +42,15 @@ func (s *ClientServiceImpl) GetClient(ctx goatcontext.Context, id int) (domain.C
 	}
 
 	return mappings.ToDomainClient(dbClient), nil
+}
+
+func (s *ClientServiceImpl) GetClientsByIds(ctx goatcontext.Context, ids []int) ([]domain.Client, error) {
+	dbClients, err := s.clientRepository.GetClientsByIds(ctx, ids)
+	if err != nil {
+		return nil, err
+	}
+
+	return mappings.ToDomainClients(dbClients), nil
 }
 
 func (s *ClientServiceImpl) AddClient(ctx goatcontext.Context, client domain.Client) (domain.Client, error) {

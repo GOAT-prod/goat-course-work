@@ -13,6 +13,7 @@ type Client interface {
 	AddClient(ctx goatcontext.Context, client database.Client) (id int, err error)
 	UpdateClient(ctx goatcontext.Context, client database.Client) error
 	DeleteClient(ctx goatcontext.Context, id int) error
+	GetClientsByIds(ctx goatcontext.Context, ids []int) (clients []database.Client, err error)
 }
 
 type ClientRepositoryImpl struct {
@@ -31,6 +32,10 @@ func (r *ClientRepositoryImpl) GetClients(ctx goatcontext.Context) (clients []da
 
 func (r *ClientRepositoryImpl) GetClient(ctx goatcontext.Context, id int) (client database.Client, err error) {
 	return client, r.postgres.GetContext(ctx, &client, queries.GetClientById, id)
+}
+
+func (r *ClientRepositoryImpl) GetClientsByIds(ctx goatcontext.Context, ids []int) (clients []database.Client, err error) {
+	return clients, r.postgres.SelectContext(ctx, &clients, queries.GetClientsByIds, ids)
 }
 
 func (r *ClientRepositoryImpl) AddClient(ctx goatcontext.Context, client database.Client) (id int, err error) {
