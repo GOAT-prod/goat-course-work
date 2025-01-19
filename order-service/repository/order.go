@@ -6,6 +6,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"order-service/database"
 	"order-service/database/queries"
+	"time"
 )
 
 type Order interface {
@@ -13,6 +14,7 @@ type Order interface {
 	CreateOrder(ctx goatcontext.Context, order database.Order) error
 	GetOrderItems(ctx goatcontext.Context, orderId uuid.UUID) (items []database.OrderItem, err error)
 	CreateOrderItem(ctx goatcontext.Context, orderItem database.OrderItem) error
+	GetLatestOrders(ctx goatcontext.Context, startDate, endDate time.Time) (orders []database.LatestOrder, err error)
 }
 
 type OrderRepositoryImpl struct {
@@ -41,4 +43,8 @@ func (r *OrderRepositoryImpl) GetOrderItems(ctx goatcontext.Context, orderId uui
 func (r *OrderRepositoryImpl) CreateOrderItem(ctx goatcontext.Context, orderItem database.OrderItem) error {
 	_, err := r.postgres.NamedExecContext(ctx, queries.CreateOrderItem, orderItem)
 	return err
+}
+
+func (r *OrderRepositoryImpl) GetLatestOrders(ctx goatcontext.Context, startDate, endDate time.Time) (orders []database.LatestOrder, err error) {
+	return orders, r.postgres.SelectContext(ctx, &orders, queries.GetLatestOrders, startDate, endDate)
 }

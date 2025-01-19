@@ -1016,7 +1016,7 @@ paths:
       summary: Get list of materials
       tags:
       - materials
-  /reports/order/{userId}:
+  /reports/order/{userId}/{date}:
     get:
       description: Retrieves the order report for a specific user by their ID.
       parameters:
@@ -1025,6 +1025,11 @@ paths:
         name: userId
         required: true
         type: integer
+      - description: Date
+        in: path
+        name: date
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -1045,7 +1050,7 @@ paths:
       summary: Get order report
       tags:
       - Reports
-  /reports/sell/{userId}:
+  /reports/sell/{userId}/{date}:
     get:
       description: Retrieves the sell report for a specific user by their ID.
       parameters:
@@ -1054,6 +1059,11 @@ paths:
         name: userId
         required: true
         type: integer
+      - description: Date
+        in: path
+        name: date
+        required: true
+        type: string
       produces:
       - application/json
       responses:

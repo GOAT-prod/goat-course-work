@@ -26,4 +26,7 @@ var (
 
 	//go:embed sql/add_operation_detail.sql
 	CreateOperationDetail string
+
+	//go:embed sql/get_latest_orders.sql
+	GetLatestOrders string
 )

@@ -1017,7 +1017,7 @@
                 }
             }
         },
-        "/reports/order/{userId}": {
+        "/reports/order/{userId}/{date}": {
             "get": {
                 "security": [
                     {
@@ -1037,6 +1037,13 @@
                         "type": "integer",
                         "description": "User ID",
                         "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date",
+                        "name": "date",
                         "in": "path",
                         "required": true
                     }
@@ -1063,7 +1070,7 @@
                 }
             }
         },
-        "/reports/sell/{userId}": {
+        "/reports/sell/{userId}/{date}": {
             "get": {
                 "security": [
                     {
@@ -1083,6 +1090,13 @@
                         "type": "integer",
                         "description": "User ID",
                         "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date",
+                        "name": "date",
                         "in": "path",
                         "required": true
                     }

@@ -1025,7 +1025,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/reports/order/{userId}": {
+        "/reports/order/{userId}/{date}": {
             "get": {
                 "security": [
                     {
@@ -1045,6 +1045,13 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "User ID",
                         "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date",
+                        "name": "date",
                         "in": "path",
                         "required": true
                     }
@@ -1071,7 +1078,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/reports/sell/{userId}": {
+        "/reports/sell/{userId}/{date}": {
             "get": {
                 "security": [
                     {
@@ -1091,6 +1098,13 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "User ID",
                         "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date",
+                        "name": "date",
                         "in": "path",
                         "required": true
                     }

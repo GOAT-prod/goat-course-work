@@ -42,3 +42,11 @@ type OperationDetail struct {
 	Type        OperationDetailType `db:"type"`
 	Price       decimal.Decimal     `db:"price"`
 }
+
+type LatestOrder struct {
+	UserId        int             `db:"user_id"`
+	ProductItemId int             `db:"product_item_id"`
+	Quantity      int             `db:"quantity"`
+	Price         decimal.Decimal `db:"price"`
+	Date          time.Time       `db:"date"`
+}

@@ -1,11 +1,13 @@
 package report
 
 import (
+	"fmt"
 	"github.com/GOAT-prod/goatcontext"
 	goatclient "github.com/GOAT-prod/goathttp/client"
 	"github.com/GOAT-prod/goathttp/headers"
+	"io"
 	"net/http"
-	"strconv"
+	"time"
 )
 
 type Client struct {
@@ -18,32 +20,50 @@ func NewClient(httpClient goatclient.BaseClient) *Client {
 	}
 }
 
-func (c *Client) GetSellReport(ctx goatcontext.Context, userId int) (result any, err error) {
-	params := map[string]string{
-		"userId": strconv.Itoa(userId),
-	}
-
-	request, body, err := c.httpClient.Request(ctx, http.MethodGet, "report/sell", nil, params)
+func (c *Client) GetSellReport(ctx goatcontext.Context, userId int, date time.Time) (result io.ReadCloser, err error) {
+	request, _, err := c.httpClient.Request(ctx, http.MethodGet, fmt.Sprintf("report/user/%d/%s", userId, date.Format(time.DateOnly)), nil, nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
 
-	return result, c.httpClient.Do(request, body, &result)
+	response, err := http.DefaultClient.Do(request)
+	if err != nil {
+		return nil, err
+	}
+
+	if response.Body != nil {
+		defer response.Body.Close()
+	}
+
+	if response.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("status code %d", response.StatusCode)
+	}
+
+	return response.Body, nil
 }
 
-func (c *Client) GetOrderReport(ctx goatcontext.Context, userId int) (result any, err error) {
-	params := map[string]string{
-		"userId": strconv.Itoa(userId),
-	}
-
-	request, body, err := c.httpClient.Request(ctx, http.MethodGet, "report/order", nil, params)
+func (c *Client) GetOrderReport(ctx goatcontext.Context, userId int, date time.Time) (result io.ReadCloser, err error) {
+	request, _, err := c.httpClient.Request(ctx, http.MethodGet, fmt.Sprintf("report/factory/%d/%s", userId, date.Format(time.DateOnly)), nil, nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
 
-	return result, c.httpClient.Do(request, body, &result)
+	response, err := http.DefaultClient.Do(request)
+	if err != nil {
+		return nil, err
+	}
+
+	if response.Body != nil {
+		defer response.Body.Close()
+	}
+
+	if response.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("status code %d", response.StatusCode)
+	}
+
+	return response.Body, nil
 }

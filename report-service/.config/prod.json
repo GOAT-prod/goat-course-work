@@ -1,0 +1,10 @@
+{
+  "port": 80,
+  "app_name": "report-service",
+  "databases": {
+    "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@postgres:5432/report?sslmode=disable"
+  },
+  "cluster": {
+    "order_service_url": "http://order-service"
+  }
+}

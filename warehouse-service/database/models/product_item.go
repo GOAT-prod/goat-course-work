@@ -14,6 +14,7 @@ type ProductItem struct {
 type ProductItemInfo struct {
 	Id        int             `db:"id"`
 	ProductId int             `db:"product_id"`
+	FactoryId int             `db:"factory_id"`
 	Name      string          `db:"name"`
 	Price     decimal.Decimal `db:"price"`
 	Color     string          `db:"color"`

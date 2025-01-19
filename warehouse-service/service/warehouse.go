@@ -145,12 +145,15 @@ func (s *Impl) GetProductItemsInfo(ctx goatcontext.Context, ids []int) ([]domain
 
 	infos := lo.Map(dbInfos, func(item models.ProductItemInfo, _ int) domain.ProductItemInfo {
 		return domain.ProductItemInfo{
-			Id:     item.Id,
-			Name:   item.Name,
-			Price:  item.Price,
-			Color:  item.Color,
-			Size:   item.Size,
-			Weight: item.Weight,
+			Id:        item.Id,
+			ProductId: item.ProductId,
+			FactoryId: item.FactoryId,
+			Name:      item.Name,
+			Price:     item.Price,
+			Color:     item.Color,
+			Size:      item.Size,
+			Weight:    item.Weight,
+			Count:     item.Count,
 		}
 	})
 

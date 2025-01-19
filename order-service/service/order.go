@@ -19,6 +19,7 @@ import (
 type Order interface {
 	Order(ctx goatcontext.Context, cartItemsIds []int) error
 	GetUserOrders(ctx goatcontext.Context) ([]domain.Order, error)
+	GetLatestOrders(ctx goatcontext.Context) ([]domain.ReportItem, error)
 }
 
 type OrderServiceImpl struct {
@@ -199,6 +200,50 @@ func (s *OrderServiceImpl) GetUserOrders(ctx goatcontext.Context) ([]domain.Orde
 	}
 
 	return userOrders, nil
+}
+
+func (s *OrderServiceImpl) GetLatestOrders(ctx goatcontext.Context) ([]domain.ReportItem, error) {
+	startTime := time.Now().Add(-15 * time.Minute)
+	endTime := time.Now()
+
+	latestOrders, err := s.orderRepository.GetLatestOrders(ctx, startTime, endTime)
+	if err != nil {
+		return nil, err
+	}
+
+	productItemIds := lo.Map(latestOrders, func(item database.LatestOrder, _ int) int {
+		return item.ProductItemId
+	})
+
+	productItemInfos, err := s.warehouseService.GetProductItemsInfo(ctx, productItemIds)
+	if err != nil {
+		return nil, err
+	}
+
+	result := make([]domain.ReportItem, 0, len(productItemInfos))
+
+	for _, order := range latestOrders {
+		productItem, ok := lo.Find(productItemInfos, func(item warehouse.ProductItemInfo) bool {
+			return item.Id == order.ProductItemId
+		})
+
+		if !ok {
+			continue
+		}
+
+		result = append(result, domain.ReportItem{
+			Date:        order.Date,
+			ProductName: productItem.Name,
+			FactoryId:   productItem.FactoryId,
+			UserId:      order.UserId,
+			Color:       productItem.Color,
+			Size:        productItem.Size,
+			Count:       order.Quantity,
+			Price:       order.Price,
+		})
+	}
+
+	return result, nil
 }
 
 func (s *OrderServiceImpl) produceSupplyMessage(supplyItems []kafka.RequestItem) {

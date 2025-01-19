@@ -13,6 +13,7 @@ type ProductItem struct {
 type ProductItemInfo struct {
 	Id        int             `json:"id"`
 	ProductId int             `json:"productId"`
+	FactoryId int             `json:"factoryId"`
 	Name      string          `json:"name"`
 	Price     decimal.Decimal `json:"price"`
 	Color     string          `json:"color"`

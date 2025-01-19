@@ -54,4 +54,5 @@ func (s *Server) Start() error {
 func (r *Router) SetupRoutes(logger goatlogger.Logger, orderService service.Order) {
 	r.router.HandleFunc("/order", handlers.CreateOrderHandler(logger, orderService)).Methods(http.MethodPost)
 	r.router.HandleFunc("/orders", handlers.GetUserOrders(logger, orderService)).Methods(http.MethodGet)
+	r.router.HandleFunc("/orders/latest", handlers.GetLatestOrdersHandler(logger, orderService)).Methods(http.MethodGet)
 }

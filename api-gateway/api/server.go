@@ -136,6 +136,6 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.C
 	//	report-service
 	reportSubRouter := r.router.PathPrefix("/report").Subrouter()
 	reportSubRouter.Use(goathttp.AuthMiddleware)
-	reportSubRouter.HandleFunc("/sell/{user_id}", reporthandlers.GetSellReportHandlers(logger, reportClient)).Methods(http.MethodGet, http.MethodOptions)
-	reportSubRouter.HandleFunc("/order/{user_id}", reporthandlers.GetOrderReportHandler(logger, reportClient)).Methods(http.MethodGet, http.MethodOptions)
+	reportSubRouter.HandleFunc("/sell/{userId}/{date}", reporthandlers.GetSellReportHandlers(logger, reportClient)).Methods(http.MethodGet, http.MethodOptions)
+	reportSubRouter.HandleFunc("/order/{userId}/{date}", reporthandlers.GetOrderReportHandler(logger, reportClient)).Methods(http.MethodGet, http.MethodOptions)
 }
