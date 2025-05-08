@@ -5,6 +5,7 @@ import (
 	"client-service/database/queries"
 	"github.com/GOAT-prod/goatcontext"
 	"github.com/jmoiron/sqlx"
+	"github.com/lib/pq"
 )
 
 type Client interface {
@@ -35,7 +36,7 @@ func (r *ClientRepositoryImpl) GetClient(ctx goatcontext.Context, id int) (clien
 }
 
 func (r *ClientRepositoryImpl) GetClientsByIds(ctx goatcontext.Context, ids []int) (clients []database.Client, err error) {
-	return clients, r.postgres.SelectContext(ctx, &clients, queries.GetClientsByIds, ids)
+	return clients, r.postgres.SelectContext(ctx, &clients, queries.GetClientsByIds, pq.Array(ids))
 }
 
 func (r *ClientRepositoryImpl) AddClient(ctx goatcontext.Context, client database.Client) (id int, err error) {

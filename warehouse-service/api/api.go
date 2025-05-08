@@ -53,6 +53,7 @@ func (s *Server) Start() error {
 
 func (r *Router) SetupRoutes(logger goatlogger.Logger, warehouse service.WareHouse) {
 	r.router.HandleFunc("/products", handlers.GetProductsHandler(logger, warehouse)).Methods(http.MethodGet)
+	r.router.HandleFunc("/product/client/{id}", handlers.GetClientProductsHandler(logger, warehouse)).Methods(http.MethodGet)
 	r.router.HandleFunc("/product/{productId}", handlers.GetDetailedProductHandler(logger, warehouse)).Methods(http.MethodGet)
 	r.router.HandleFunc("/materials/list", handlers.GetMaterialsList(logger, warehouse)).Methods(http.MethodGet)
 	r.router.HandleFunc("/products", handlers.AddProductsHandler(logger, warehouse)).Methods(http.MethodPost)
@@ -60,5 +61,4 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, warehouse service.WareHou
 	r.router.HandleFunc("/products", handlers.DeleteProductsHandler(logger, warehouse)).Methods(http.MethodDelete)
 	r.router.HandleFunc("/products/items", handlers.GetProductItemsInfoHandler(logger, warehouse)).Methods(http.MethodPost)
 	r.router.HandleFunc("/products/detailed", handlers.GetDetailedProductsHandler(logger, warehouse)).Methods(http.MethodPost)
-	r.router.HandleFunc("/product/client/{id}", handlers.GetClientProductsHandler(logger, warehouse)).Methods(http.MethodGet)
 }

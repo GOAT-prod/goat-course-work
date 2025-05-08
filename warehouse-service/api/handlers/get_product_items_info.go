@@ -13,7 +13,7 @@ import (
 func GetProductItemsInfoHandler(logger goatlogger.Logger, warehouseService service.WareHouse) goathttp.Handler {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx, err := goatcontext.New(r)
-		if err != nil || !ctx.IsAuthorized() {
+		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}

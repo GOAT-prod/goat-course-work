@@ -38,7 +38,7 @@ func (r *refreshJob) Run() {
 			return
 		}
 
-		if err = r.reportRepository.AddReportItems(goatcontext.Context{}, items); err != nil {
+		if err = r.reportRepository.AddReportItems(goatcontext.Context{Context: context.Background()}, items); err != nil {
 			log.Println(err)
 			return
 		}

@@ -29,6 +29,7 @@ func main() {
 	app := NewApp(mainCtx, logger, config)
 	app.initDatabases()
 	app.initRepositories()
+	app.initClients()
 	app.initServices()
 	app.initServer()
 	app.Start()

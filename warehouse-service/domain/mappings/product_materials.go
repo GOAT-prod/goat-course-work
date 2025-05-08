@@ -13,10 +13,11 @@ func ToDomainProductMaterial(material models.ProductMaterial) domain.ProductMate
 	}
 }
 
-func ToDatabaseProductMaterial(materials domain.ProductMaterial) models.ProductMaterial {
+func ToDatabaseProductMaterial(materials domain.ProductMaterial, productId int) models.ProductMaterial {
 	return models.ProductMaterial{
-		Id:       materials.Id,
-		Material: materials.Material,
+		Id:        materials.Id,
+		ProductId: productId,
+		Material:  materials.Material,
 	}
 }
 
@@ -26,8 +27,8 @@ func ToDomainProductMaterials(materials []models.ProductMaterial) []domain.Produ
 	})
 }
 
-func ToDatabaseProductMaterials(materials []domain.ProductMaterial) []models.ProductMaterial {
+func ToDatabaseProductMaterials(materials []domain.ProductMaterial, productId int) []models.ProductMaterial {
 	return lo.Map(materials, func(item domain.ProductMaterial, _ int) models.ProductMaterial {
-		return ToDatabaseProductMaterial(item)
+		return ToDatabaseProductMaterial(item, productId)
 	})
 }

@@ -7,7 +7,7 @@ services:
     networks:
       - app-network
     extra_hosts:
-      - "postgres:147.45.245.24"
+      - "postgres:176.57.221.144"
     depends_on:
       - kafka
       - client-service
@@ -23,7 +23,7 @@ services:
     networks:
       - app-network
     extra_hosts:
-      - "postgres:147.45.245.24"
+      - "postgres:176.57.221.144"
     depends_on:
       - client-service
     expose:
@@ -38,7 +38,7 @@ services:
     networks:
       - app-network
     extra_hosts:
-      - "postgres:147.45.245.24"
+      - "postgres:176.57.221.144"
     expose:
       - "80"
     restart: always
@@ -63,7 +63,7 @@ services:
     networks:
       - app-network
     extra_hosts:
-      - "postgres:147.45.245.24"
+      - "postgres:176.57.221.144"
     depends_on:
       - user-service
       - warehouse-service
@@ -79,7 +79,7 @@ services:
     networks:
       - app-network
     extra_hosts:
-      - "postgres:147.45.245.24"
+      - "postgres:176.57.221.144"
     depends_on:
       - warehouse-service
     expose:
@@ -94,7 +94,7 @@ services:
     networks:
       - app-network
     extra_hosts:
-      - "postgres:147.45.245.24"
+      - "postgres:176.57.221.144"
     depends_on:
       - warehouse-service
     expose:
@@ -109,7 +109,7 @@ services:
     networks:
       - app-network
     extra_hosts:
-      - "postgres:147.45.245.24"
+      - "postgres:176.57.221.144"
     depends_on:
       - order-service
     expose:

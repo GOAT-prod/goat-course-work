@@ -456,6 +456,8 @@ paths:
           description: Доступ запрещен
           schema:
             type: string
+      security:
+      - LogisticAuth: []
       summary: Получить корзину пользователя
       tags:
       - Корзина
@@ -477,6 +479,8 @@ paths:
           description: Доступ запрещен
           schema:
             type: string
+      security:
+      - LogisticAuth: []
       summary: Очистить корзину
       tags:
       - Корзина
@@ -507,6 +511,8 @@ paths:
           description: Доступ запрещен
           schema:
             type: string
+      security:
+      - LogisticAuth: []
       summary: Добавить товар в корзину
       tags:
       - Корзина
@@ -536,6 +542,8 @@ paths:
           description: Доступ запрещен
           schema:
             type: string
+      security:
+      - LogisticAuth: []
       summary: Обновить элемент корзины
       tags:
       - Корзина
@@ -563,6 +571,8 @@ paths:
           description: Доступ запрещен
           schema:
             type: string
+      security:
+      - LogisticAuth: []
       summary: Удалить элемент из корзины
       tags:
       - Корзина

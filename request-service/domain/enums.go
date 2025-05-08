@@ -18,7 +18,7 @@ const (
 )
 
 var (
-	StatusToDomain map[string]Status = map[string]Status{
+	StatusToDomain = map[string]Status{
 		"undefined": UndefinedStatus,
 		"pending":   PendingStatus,
 		"approved":  ApprovedStatus,

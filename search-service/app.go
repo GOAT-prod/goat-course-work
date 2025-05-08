@@ -92,7 +92,7 @@ func (a *App) initRedis() {
 }
 
 func (a *App) initRepositories() {
-	a.filterRepository = repository.NewFilterRepository(a.mongoClient, a.cfg.Databases.Mongo.Database, a.cfg.Databases.Mongo.Connection)
+	a.filterRepository = repository.NewFilterRepository(a.mongoClient, a.cfg.Databases.Mongo.Database, a.cfg.Databases.Mongo.Collection)
 	a.cacheRepository = repository.NewCacheRepository(a.redisClient)
 }
 

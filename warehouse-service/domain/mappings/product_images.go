@@ -13,10 +13,11 @@ func ToDomainProductImage(image models.ProductImages) domain.ProductImages {
 	}
 }
 
-func ToDatabaseProductImage(image domain.ProductImages) models.ProductImages {
+func ToDatabaseProductImage(image domain.ProductImages, productId int) models.ProductImages {
 	return models.ProductImages{
-		Id:       image.Id,
-		ImageUrl: image.ImageUrl,
+		Id:        image.Id,
+		ProductId: productId,
+		ImageUrl:  image.ImageUrl,
 	}
 }
 
@@ -26,8 +27,8 @@ func ToDomainProductImages(images []models.ProductImages) []domain.ProductImages
 	})
 }
 
-func ToDatabaseProductImages(images []domain.ProductImages) []models.ProductImages {
+func ToDatabaseProductImages(images []domain.ProductImages, productId int) []models.ProductImages {
 	return lo.Map(images, func(item domain.ProductImages, _ int) models.ProductImages {
-		return ToDatabaseProductImage(item)
+		return ToDatabaseProductImage(item, productId)
 	})
 }

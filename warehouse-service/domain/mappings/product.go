@@ -31,8 +31,8 @@ func ToDatabaseProduct(product domain.Product) models.Product {
 		Price:     product.Price,
 		FactoryId: product.Factory.Id,
 		Items:     ToDatabaseProductItems(product.Items),
-		Materials: ToDatabaseProductMaterials(product.Materials),
-		Images:    ToDatabaseProductImages(product.Images),
+		Materials: ToDatabaseProductMaterials(product.Materials, product.Id),
+		Images:    ToDatabaseProductImages(product.Images, product.Id),
 		Status:    string(product.Status),
 	}
 }

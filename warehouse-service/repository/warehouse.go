@@ -49,27 +49,27 @@ func (r *Init) GetProducts(ctx goatcontext.Context) ([]models.Product, error) {
 		return nil, err
 	}
 
-	for _, product := range products {
+	for i, product := range products {
 		items, err := r.GetProductItems(ctx, product.Id)
 		if err != nil {
 			return nil, err
 		}
 
-		product.Items = items
+		products[i].Items = items
 
 		materials, err := r.GetProductsMaterials(ctx, product.Id)
 		if err != nil {
 			return nil, err
 		}
 
-		product.Materials = materials
+		products[i].Materials = materials
 
 		images, err := r.GetImages(ctx, product.Id)
 		if err != nil {
 			return nil, err
 		}
 
-		product.Images = images
+		products[i].Images = images
 	}
 
 	return products, nil
@@ -183,13 +183,13 @@ func (r *Init) AddProducts(ctx goatcontext.Context, products []models.Product) (
 }
 
 func (r *Init) UpdateProducts(ctx goatcontext.Context, products []models.Product) error {
-	tx, err := r.postgres.Begin()
+	tx, err := r.postgres.BeginTxx(ctx.Context, nil)
 	if err != nil {
 		return err
 	}
 
 	for _, product := range products {
-		if _, err = tx.ExecContext(ctx, queries.UpdateProducts, product); err != nil {
+		if _, err = tx.NamedExecContext(ctx, queries.UpdateProducts, product); err != nil {
 			_ = tx.Rollback()
 			return err
 		}
@@ -266,13 +266,15 @@ func (r *Init) AddProductMaterials(ctx goatcontext.Context, productMaterials []m
 }
 
 func (r *Init) UpdateProductMaterials(ctx goatcontext.Context, productMaterials []models.ProductMaterial) error {
-	for _, material := range productMaterials {
-		if _, err := r.postgres.NamedExecContext(ctx, queries.UpdateProductMaterials, material); err != nil {
-			return err
-		}
+	if len(productMaterials) == 0 {
+		return nil
 	}
 
-	return nil
+	if err := r.DeleteProductMaterials(ctx, []int{productMaterials[0].Id}); err != nil {
+		return err
+	}
+
+	return r.AddProductMaterials(ctx, productMaterials)
 }
 
 func (r *Init) DeleteProductMaterials(ctx goatcontext.Context, id []int) error {
@@ -295,13 +297,15 @@ func (r *Init) AddImages(ctx goatcontext.Context, productImages []models.Product
 }
 
 func (r *Init) UpdateImages(ctx goatcontext.Context, productImages []models.ProductImages) error {
-	for _, image := range productImages {
-		if _, err := r.postgres.NamedExecContext(ctx, queries.UpdateImages, image); err != nil {
-			return err
-		}
+	if len(productImages) == 0 {
+		return nil
 	}
 
-	return nil
+	if err := r.DeleteImages(ctx, []int{productImages[0].ProductId}); err != nil {
+		return err
+	}
+
+	return r.AddImages(ctx, productImages)
 }
 
 func (r *Init) DeleteImages(ctx goatcontext.Context, id []int) error {
@@ -319,27 +323,27 @@ func (r *Init) GetClientProducts(ctx goatcontext.Context, clientId int) ([]model
 		return nil, err
 	}
 
-	for _, product := range products {
+	for i, product := range products {
 		items, err := r.GetProductItems(ctx, product.Id)
 		if err != nil {
 			return nil, err
 		}
 
-		product.Items = items
+		products[i].Items = items
 
 		materials, err := r.GetProductsMaterials(ctx, product.Id)
 		if err != nil {
 			return nil, err
 		}
 
-		product.Materials = materials
+		products[i].Materials = materials
 
 		images, err := r.GetImages(ctx, product.Id)
 		if err != nil {
 			return nil, err
 		}
 
-		product.Images = images
+		products[i].Images = images
 	}
 
 	return products, nil

@@ -59,24 +59,21 @@ func parseFilters(r *http.Request) (domain.AppliedFilters, error) {
 		intSizes = append(intSizes, i)
 	}
 
-	minPrice, err := decimal.NewFromString(queryParams.Get("minPrice"))
-	if err != nil {
-		return domain.AppliedFilters{}, err
+	minPrice, _ := decimal.NewFromString(queryParams.Get("minPrice"))
+	maxPrice, _ := decimal.NewFromString(queryParams.Get("maxPrice"))
+	page, _ := strconv.Atoi(queryParams.Get("page"))
+	limit, _ := strconv.Atoi(queryParams.Get("limit"))
+
+	if maxPrice.Equal(decimal.Zero) {
+		maxPrice = decimal.NewFromFloat32(1000000)
 	}
 
-	maxPrice, err := decimal.NewFromString(queryParams.Get("maxPrice"))
-	if err != nil {
-		return domain.AppliedFilters{}, err
+	if limit == 0 {
+		limit = 10
 	}
 
-	page, err := strconv.Atoi(queryParams.Get("page"))
-	if err != nil {
-		return domain.AppliedFilters{}, err
-	}
-
-	limit, err := strconv.Atoi(queryParams.Get("limit"))
-	if err != nil {
-		return domain.AppliedFilters{}, err
+	if page == 0 {
+		page = 1
 	}
 
 	return domain.AppliedFilters{

@@ -24,7 +24,7 @@ type Order struct {
 
 type OrderItem struct {
 	Id            uuid.UUID `db:"id"`
-	OrderId       uuid.UUID `db:"order_id"`
+	OrderId       uuid.UUID `db:"orders_id"`
 	ProductItemId int       `db:"product_item_id"`
 	Quantity      int       `db:"quantity"`
 }
@@ -33,7 +33,7 @@ type Operation struct {
 	Id          uuid.UUID `db:"id"`
 	Date        time.Time `db:"date"`
 	Description string    `db:"description"`
-	OrderId     uuid.UUID `db:"order_id"`
+	OrderId     uuid.UUID `db:"orders_id"`
 }
 
 type OperationDetail struct {

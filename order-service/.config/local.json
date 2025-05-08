@@ -1,12 +1,12 @@
 {
-  "port": 80,
+  "port": 81,
   "app_name": "order-service",
   "databases": {
-    "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@postgres:5432/order?sslmode=disable"
+    "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@176.57.221.144:5432/order?sslmode=disable"
   },
   "cluster": {
-    "warehouse_service_url": "http://warehouse-service",
-    "cart_service_url": "http://cart-service"
+    "warehouse_service_url": "http://localhost:82",
+    "cart_service_url": "http://localhost:82"
   },
   "kafka": {
     "address": "kafka:9091",

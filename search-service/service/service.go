@@ -150,6 +150,10 @@ func checkProductItem(appliedFilters domain.AppliedFilters, productItem domain.P
 }
 
 func getPagesCount(products []domain.Product, limit int) int {
+	if len(products) == 0 {
+		return 0
+	}
+
 	if len(products)%limit == 0 {
 		return len(products) / limit
 	}

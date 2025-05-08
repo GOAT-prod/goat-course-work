@@ -34,12 +34,12 @@ func (r *CartRepositoryImpl) GetCart(ctx goatcontext.Context) (cart database.Car
 }
 
 func (r *CartRepositoryImpl) CreateCart(ctx goatcontext.Context, cart database.Cart) (id int64, err error) {
-	result, err := r.postgres.NamedExecContext(ctx, queries.CreateCart, cart)
+	stmt, err := r.postgres.PrepareNamedContext(ctx, queries.CreateCart)
 	if err != nil {
 		return
 	}
 
-	return result.LastInsertId()
+	return id, stmt.GetContext(ctx, &id, cart)
 }
 
 func (r *CartRepositoryImpl) GetCartItems(ctx goatcontext.Context, cartId int) (items []database.CartItem, err error) {
@@ -51,12 +51,12 @@ func (r *CartRepositoryImpl) GetCartItemsByIds(ctx goatcontext.Context, ids []in
 }
 
 func (r *CartRepositoryImpl) AddCartItem(ctx goatcontext.Context, cartItem database.CartItem) (id int64, err error) {
-	result, err := r.postgres.NamedExecContext(ctx, queries.AddCartItem, cartItem)
+	stmt, err := r.postgres.PrepareNamedContext(ctx, queries.AddCartItem)
 	if err != nil {
 		return
 	}
 
-	return result.LastInsertId()
+	return id, stmt.GetContext(ctx, &id, cartItem)
 }
 
 func (r *CartRepositoryImpl) UpdateCartItem(ctx goatcontext.Context, cartItem database.CartItem) error {

@@ -17,6 +17,7 @@ import (
 // @Failure      400  {string}  string  "Ошибка очистки корзины"
 // @Failure      403  {string}  string  "Доступ запрещен"
 // @Router       /cart/clear [delete]
+// @Security LogisticAuth
 func ClearCartHandler(logger goatlogger.Logger, cartClient *cart.Client) goathttp.Handler {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx, err := goatcontext.New(r)

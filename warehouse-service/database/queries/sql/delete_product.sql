@@ -1,5 +1,5 @@
 UPDATE product
 SET
-    is_deleted = TRUE
+    status = 'deleted'
 WHERE
     id = any($1);

@@ -1,7 +1,7 @@
 {
-  "port": 8082,
+  "port": 83,
   "app_name": "client-service",
   "databases": {
-    "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@postgres:5432/client?sslmode=disable"
+    "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@176.57.221.144:5432/client?sslmode=disable"
   }
 }

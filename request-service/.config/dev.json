@@ -5,7 +5,7 @@
     "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@postgres:5432/request?sslmode=disable"
   },
   "kafka": {
-    "address": "localhost:9091",
+    "address": "kafka:9091",
     "productApproveTopic": "product-approve",
     "supplyProductsTopic": "supply-products"
   },

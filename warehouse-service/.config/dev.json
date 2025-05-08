@@ -2,7 +2,7 @@
   "port": 80,
   "app_name": "warehouse-service",
   "databases": {
-    "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@postgres:5432/warehouse?sslmode=disable"
+    "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@176.57.221.144:5432/warehouse?sslmode=disable"
   },
   "cluster": {
     "client_service": "http://client-service"

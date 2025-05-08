@@ -20,6 +20,7 @@ import (
 // @Failure      400  {string}  string  "Ошибка ввода или бизнес-логики"
 // @Failure      403  {string}  string  "Доступ запрещен"
 // @Router       /cart/item [post]
+// @Security LogisticAuth
 func AddCartItemHandler(logger goatlogger.Logger, cartClient *cart.Client) goathttp.Handler {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx, err := goatcontext.New(r)

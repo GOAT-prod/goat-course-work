@@ -45,9 +45,7 @@ func (s *OrderServiceImpl) Order(ctx goatcontext.Context, cartItemsIds []int) er
 		return fmt.Errorf("не удалось получить айдемы из корзины для заказа: %w", err)
 	}
 
-	warehouseProductItems, err := s.warehouseService.GetProductItemsInfo(ctx, lo.Map(itemsForOrder, func(item cart.Item, _ int) int {
-		return item.ProductItemId
-	}))
+	warehouseProductItems, err := s.warehouseService.GetProductItemsInfo(ctx, lo.Map(itemsForOrder, func(item cart.Item, _ int) int { return item.ProductItemId }))
 	if err != nil {
 		return fmt.Errorf("не удалось получить покупаемые товары со склада: %w", err)
 	}
@@ -203,7 +201,7 @@ func (s *OrderServiceImpl) GetUserOrders(ctx goatcontext.Context) ([]domain.Orde
 }
 
 func (s *OrderServiceImpl) GetLatestOrders(ctx goatcontext.Context) ([]domain.ReportItem, error) {
-	startTime := time.Now().Add(-15 * time.Minute)
+	startTime := time.Now().Add(-1500 * time.Hour)
 	endTime := time.Now()
 
 	latestOrders, err := s.orderRepository.GetLatestOrders(ctx, startTime, endTime)

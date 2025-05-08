@@ -1,19 +1,19 @@
 {
-  "port": 8080,
+  "port": 80,
   "app_name": "search-service",
   "databases": {
     "mongo": {
-      "connection": "",
-      "database": "",
-      "collection": ""
+      "connection": "mongodb://localhost:27017/?connect=direct",
+      "database": "search",
+      "collection": "filters"
     },
     "redis": {
-      "address": "redis:6379",
+      "address": "localhost:6379",
       "password": "",
       "database": 2
     }
   },
   "cluster": {
-    "warehouse_service_url": "http://warehouse-service"
+    "warehouse_service_url": "http://localhost:81"
   }
 }

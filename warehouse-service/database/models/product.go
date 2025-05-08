@@ -16,9 +16,10 @@ type Product struct {
 }
 
 type ProductMaterial struct {
-	Id        int    `db:"material_id" json:"id"`
-	ProductId int    `db:"product_id" json:"product_id"`
-	Material  string `db:"name" json:"material"`
+	Id         int    `db:"id" json:"id"`
+	MaterialId int    `db:"material_id" json:"material_id"`
+	ProductId  int    `db:"product_id" json:"product_id"`
+	Material   string `db:"name" json:"material"`
 }
 
 type ProductImages struct {

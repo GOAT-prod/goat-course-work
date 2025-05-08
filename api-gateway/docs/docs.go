@@ -126,6 +126,11 @@ const docTemplate = `{
         },
         "/cart": {
             "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
                 "description": "Возвращает содержимое корзины текущего пользователя.",
                 "produces": [
                     "application/json"
@@ -158,6 +163,11 @@ const docTemplate = `{
         },
         "/cart/clear": {
             "delete": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
                 "description": "Удаляет все товары из корзины текущего пользователя.",
                 "produces": [
                     "application/json"
@@ -190,6 +200,11 @@ const docTemplate = `{
         },
         "/cart/item": {
             "put": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
                 "description": "Обновляет количество, размер или другие параметры элемента в корзине.",
                 "consumes": [
                     "application/json"
@@ -234,6 +249,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
                 "description": "Позволяет добавить новый товар в корзину пользователя.",
                 "consumes": [
                     "application/json"
@@ -280,6 +300,11 @@ const docTemplate = `{
         },
         "/cart/item/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
                 "description": "Удаляет элемент корзины по его идентификатору.",
                 "produces": [
                     "application/json"

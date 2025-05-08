@@ -36,7 +36,7 @@ func NewCartServiceImpl(cartRepository repository.Cart, warehouseClient *warehou
 
 func (c *CartServiceImpl) GetCart(ctx goatcontext.Context) (domain.Cart, error) {
 	cart, err := c.cartRepository.GetCart(ctx)
-	if err != nil && errors.Is(err, sql.ErrNoRows) {
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		return domain.Cart{}, err
 	}
 
@@ -52,6 +52,10 @@ func (c *CartServiceImpl) GetCart(ctx goatcontext.Context) (domain.Cart, error) 
 		}
 
 		cart.Id = int(cartId)
+
+		return domain.Cart{
+			Id: cart.Id,
+		}, nil
 	}
 
 	cartItems, err := c.cartRepository.GetCartItems(ctx, cart.Id)

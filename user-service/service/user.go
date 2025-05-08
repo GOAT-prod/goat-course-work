@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"fmt"
 	"github.com/GOAT-prod/goatcontext"
 	"log"
@@ -119,7 +120,10 @@ func (s *UserServiceImpl) UpdateUserPassword(ctx goatcontext.Context, request do
 		return err
 	}
 
-	go s.sendMessage(ctx, user)
+	msgCtx := ctx
+	msgCtx.Context = context.Background()
+	go s.sendMessage(msgCtx, user)
+
 	return nil
 }
 

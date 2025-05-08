@@ -1,8 +1,10 @@
 package service
 
 import (
+	"errors"
 	"github.com/GOAT-prod/goatcontext"
 	"github.com/samber/lo"
+	"log"
 	"time"
 	"warehouse-service/cluster/clientservice"
 	"warehouse-service/database/broker"
@@ -76,6 +78,10 @@ func (s *Impl) GetDetailedProductsInfo(ctx goatcontext.Context, productId int) (
 		return domain.Product{}, err
 	}
 
+	if len(shortFactoryInfo) != 1 {
+		return domain.Product{}, errors.New("product factory not found")
+	}
+
 	return mappings.ToDomainProduct(dbProduct, shortFactoryInfo[0]), nil
 }
 
@@ -88,9 +94,13 @@ func (s *Impl) GetDetailedProductsInfos(ctx goatcontext.Context, productIds []in
 	products := make([]domain.Product, 0, len(dbProducts))
 
 	for _, dbProduct := range dbProducts {
-		shortFactoryInfo, err := s.clientServiceClient.GetClientInfoShort(ctx, []int{dbProduct.FactoryId})
-		if err != nil {
+		shortFactoryInfo, infoErr := s.clientServiceClient.GetClientInfoShort(ctx, []int{dbProduct.FactoryId})
+		if infoErr != nil {
 			return nil, err
+		}
+
+		if len(shortFactoryInfo) != 1 {
+			continue
 		}
 
 		products = append(products, mappings.ToDomainProduct(dbProduct, shortFactoryInfo[0]))
@@ -110,7 +120,7 @@ func (s *Impl) AddProducts(ctx goatcontext.Context, products []domain.Product) e
 		return err
 	}
 
-	s.produceRequest(addedProducts)
+	go s.produceRequest(addedProducts)
 
 	return err
 }
@@ -187,7 +197,7 @@ func (s *Impl) GetClientProduct(ctx goatcontext.Context, clientId int) ([]domain
 	return products, nil
 }
 
-func (s *Impl) produceRequest(products []models.Product) error {
+func (s *Impl) produceRequest(products []models.Product) {
 	for _, product := range products {
 		request := broker.Request{
 			Status:      "pending",
@@ -204,9 +214,9 @@ func (s *Impl) produceRequest(products []models.Product) error {
 		}
 
 		if err := s.kafkaProducer.Produce(request); err != nil {
-			return err
+			log.Println(err)
 		}
 	}
 
-	return nil
+	return
 }

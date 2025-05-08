@@ -2,9 +2,9 @@
   "port": 80,
   "app_name": "report-service",
   "databases": {
-    "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@147.45.245.24:5432/report?sslmode=disable"
+    "postgres": "postgres://gen_user:kajshfaiusfhlnasfldsui@176.57.221.144:5432/report?sslmode=disable"
   },
   "cluster": {
-    "order_service_url": "http://order-service"
+    "order_service_url": "http://localhost:81"
   }
 }

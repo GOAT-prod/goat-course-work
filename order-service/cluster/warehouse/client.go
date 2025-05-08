@@ -18,7 +18,7 @@ func NewClient(httpClient goatclient.BaseClient) *Client {
 }
 
 func (c *Client) GetProductItemsInfo(ctx goatcontext.Context, ids []int) (items []ProductItemInfo, err error) {
-	request, body, err := c.httpClient.Request(ctx, http.MethodPost, "/products/items", ids, nil)
+	request, body, err := c.httpClient.Request(ctx, http.MethodPost, "products/items", ids, nil)
 	if err != nil {
 		return
 	}
