@@ -15,8 +15,8 @@ type Product struct {
 }
 
 type ProductMaterial struct {
-	Id       int    `json:"Id"`
-	Material string `json:"Material"`
+	Id       int    `json:"id"`
+	Material string `json:"material"`
 }
 
 type ProductImages struct {
@@ -25,6 +25,6 @@ type ProductImages struct {
 }
 
 type Factory struct {
-	Id          int    `db:"id"`
-	FactoryName string `db:"name"`
+	Id          int    `json:"id"`
+	FactoryName string `json:"name"`
 }

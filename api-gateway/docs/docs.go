@@ -344,57 +344,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/catalog": {
-            "get": {
-                "security": [
-                    {
-                        "LogisticAuth": []
-                    }
-                ],
-                "description": "Retrieves the catalog based on the provided query parameters.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Catalog"
-                ],
-                "summary": "Get catalog",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Filter query parameter",
-                        "name": "filter",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Sort query parameter",
-                        "name": "sort",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Catalog data",
-                        "schema": {
-                            "$ref": "#/definitions/search.Catalog"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request or failed to process the response",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - context creation failed",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/client": {
             "put": {
                 "security": [
@@ -585,46 +534,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/filters/active": {
-            "get": {
-                "security": [
-                    {
-                        "LogisticAuth": []
-                    }
-                ],
-                "description": "Retrieves a list of active filters from the search service.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Filters"
-                ],
-                "summary": "Get active filters",
-                "responses": {
-                    "200": {
-                        "description": "List of active filters",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/search.Filter"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request or failed to process the response",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - context creation failed",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/order": {
             "post": {
                 "security": [
@@ -715,52 +624,6 @@ const docTemplate = `{
                     },
                     "403": {
                         "description": "Доступ запрещен",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/product/{productId}/catalog": {
-            "get": {
-                "security": [
-                    {
-                        "LogisticAuth": []
-                    }
-                ],
-                "description": "Retrieves the catalog for a specific product by its ID.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Catalog"
-                ],
-                "summary": "Get product catalog",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Product ID",
-                        "name": "productId",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Product catalog data",
-                        "schema": {
-                            "$ref": "#/definitions/search.Product"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request or failed to process the response",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - context creation failed",
                         "schema": {
                             "type": "string"
                         }
@@ -1156,7 +1019,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/requests": {
+        "/requests/all": {
             "get": {
                 "security": [
                     {
@@ -1196,7 +1059,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/requests/{requestId}/status/{status}": {
+        "/requests/{requestId}/{status}": {
             "put": {
                 "security": [
                     {
@@ -1227,6 +1090,143 @@ const docTemplate = `{
                 "responses": {
                     "204": {
                         "description": "Status updated successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request or failed to process the response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - context creation failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/search/catalog": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "Retrieves the catalog based on the provided query parameters.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Catalog"
+                ],
+                "summary": "Get catalog",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filter query parameter",
+                        "name": "filter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort query parameter",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Catalog data",
+                        "schema": {
+                            "$ref": "#/definitions/search.Catalog"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or failed to process the response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - context creation failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/search/catalog/product/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "Retrieves the catalog for a specific product by its ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Catalog"
+                ],
+                "summary": "Get product catalog",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product catalog data",
+                        "schema": {
+                            "$ref": "#/definitions/search.Product"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or failed to process the response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - context creation failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/search/filters": {
+            "get": {
+                "security": [
+                    {
+                        "LogisticAuth": []
+                    }
+                ],
+                "description": "Retrieves a list of active filters from the search service.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Filters"
+                ],
+                "summary": "Get active filters",
+                "responses": {
+                    "200": {
+                        "description": "List of active filters",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/search.Filter"
+                            }
+                        }
                     },
                     "400": {
                         "description": "Invalid request or failed to process the response",
@@ -1990,11 +1990,11 @@ const docTemplate = `{
         "warehousesevice.ProductMaterial": {
             "type": "object",
             "properties": {
-                "Id": {
+                "id": {
                     "description": "Уникальный идентификатор материала.",
                     "type": "integer"
                 },
-                "Material": {
+                "material": {
                     "description": "Название материала (например, \"дерево\", \"металл\").",
                     "type": "string"
                 }

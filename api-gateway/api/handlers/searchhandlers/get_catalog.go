@@ -19,7 +19,7 @@ import (
 // @Success 200 {object} search.Catalog "Catalog data"
 // @Failure 400 {string} string "Invalid request or failed to process the response"
 // @Failure 403 {string} string "Forbidden - context creation failed"
-// @Router /catalog [get]
+// @Router /search/catalog [get]
 // @Security LogisticAuth
 func GetCatalogHandler(logger goatlogger.Logger, searchClient *search.Client) goathttp.Handler {
 	return func(w http.ResponseWriter, r *http.Request) {

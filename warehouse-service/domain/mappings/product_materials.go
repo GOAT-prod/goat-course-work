@@ -15,9 +15,9 @@ func ToDomainProductMaterial(material models.ProductMaterial) domain.ProductMate
 
 func ToDatabaseProductMaterial(materials domain.ProductMaterial, productId int) models.ProductMaterial {
 	return models.ProductMaterial{
-		Id:        materials.Id,
-		ProductId: productId,
-		Material:  materials.Material,
+		MaterialId: materials.Id,
+		ProductId:  productId,
+		Material:   materials.Material,
 	}
 }
 

@@ -86,6 +86,20 @@ services:
       - "80"
     restart: always
 
+  search-service:
+    container_name: search-service
+    build: ./search-service
+    environment:
+      - ENV=dev
+    networks:
+      - app-network
+    depends_on:
+      - warehouse-service
+      - redis
+    expose:
+      - "80"
+    restart: always
+
   request-service:
     container_name: request-service
     build: ./request-service
@@ -146,6 +160,17 @@ services:
     networks:
       - app-network
 
+  mongo_db:
+    container_name: mongo_db
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_db_data:/data/db
+    networks:
+      - app-network
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.7.1
     hostname: zookeeper
@@ -195,3 +220,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  mongo_db_data:

@@ -354,10 +354,10 @@ definitions:
     type: object
   warehousesevice.ProductMaterial:
     properties:
-      Id:
+      id:
         description: Уникальный идентификатор материала.
         type: integer
-      Material:
+      material:
         description: Название материала (например, "дерево", "металл").
         type: string
     type: object
@@ -576,38 +576,6 @@ paths:
       summary: Удалить элемент из корзины
       tags:
       - Корзина
-  /catalog:
-    get:
-      description: Retrieves the catalog based on the provided query parameters.
-      parameters:
-      - description: Filter query parameter
-        in: query
-        name: filter
-        type: string
-      - description: Sort query parameter
-        in: query
-        name: sort
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Catalog data
-          schema:
-            $ref: '#/definitions/search.Catalog'
-        "400":
-          description: Invalid request or failed to process the response
-          schema:
-            type: string
-        "403":
-          description: Forbidden - context creation failed
-          schema:
-            type: string
-      security:
-      - LogisticAuth: []
-      summary: Get catalog
-      tags:
-      - Catalog
   /client:
     put:
       consumes:
@@ -730,31 +698,6 @@ paths:
       summary: Get list of clients
       tags:
       - clients
-  /filters/active:
-    get:
-      description: Retrieves a list of active filters from the search service.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: List of active filters
-          schema:
-            items:
-              $ref: '#/definitions/search.Filter'
-            type: array
-        "400":
-          description: Invalid request or failed to process the response
-          schema:
-            type: string
-        "403":
-          description: Forbidden - context creation failed
-          schema:
-            type: string
-      security:
-      - LogisticAuth: []
-      summary: Get active filters
-      tags:
-      - Filters
   /order:
     post:
       consumes:
@@ -818,35 +761,6 @@ paths:
       summary: Получить заказы пользователя
       tags:
       - Заказы
-  /product/{productId}/catalog:
-    get:
-      description: Retrieves the catalog for a specific product by its ID.
-      parameters:
-      - description: Product ID
-        in: path
-        name: productId
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Product catalog data
-          schema:
-            $ref: '#/definitions/search.Product'
-        "400":
-          description: Invalid request or failed to process the response
-          schema:
-            type: string
-        "403":
-          description: Forbidden - context creation failed
-          schema:
-            type: string
-      security:
-      - LogisticAuth: []
-      summary: Get product catalog
-      tags:
-      - Catalog
   /products:
     delete:
       consumes:
@@ -1094,32 +1008,7 @@ paths:
       summary: Get sell report
       tags:
       - Reports
-  /requests:
-    get:
-      description: Retrieves a list of requests.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: List of requests
-          schema:
-            items:
-              type: object
-            type: array
-        "400":
-          description: Invalid request or failed to process the response
-          schema:
-            type: string
-        "403":
-          description: Forbidden - context creation failed
-          schema:
-            type: string
-      security:
-      - LogisticAuth: []
-      summary: Get requests
-      tags:
-      - Requests
-  /requests/{requestId}/status/{status}:
+  /requests/{requestId}/{status}:
     put:
       description: Updates the status of a specific request by its ID.
       parameters:
@@ -1149,6 +1038,117 @@ paths:
       summary: Update request status
       tags:
       - Requests
+  /requests/all:
+    get:
+      description: Retrieves a list of requests.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of requests
+          schema:
+            items:
+              type: object
+            type: array
+        "400":
+          description: Invalid request or failed to process the response
+          schema:
+            type: string
+        "403":
+          description: Forbidden - context creation failed
+          schema:
+            type: string
+      security:
+      - LogisticAuth: []
+      summary: Get requests
+      tags:
+      - Requests
+  /search/catalog:
+    get:
+      description: Retrieves the catalog based on the provided query parameters.
+      parameters:
+      - description: Filter query parameter
+        in: query
+        name: filter
+        type: string
+      - description: Sort query parameter
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Catalog data
+          schema:
+            $ref: '#/definitions/search.Catalog'
+        "400":
+          description: Invalid request or failed to process the response
+          schema:
+            type: string
+        "403":
+          description: Forbidden - context creation failed
+          schema:
+            type: string
+      security:
+      - LogisticAuth: []
+      summary: Get catalog
+      tags:
+      - Catalog
+  /search/catalog/product/{id}:
+    get:
+      description: Retrieves the catalog for a specific product by its ID.
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product catalog data
+          schema:
+            $ref: '#/definitions/search.Product'
+        "400":
+          description: Invalid request or failed to process the response
+          schema:
+            type: string
+        "403":
+          description: Forbidden - context creation failed
+          schema:
+            type: string
+      security:
+      - LogisticAuth: []
+      summary: Get product catalog
+      tags:
+      - Catalog
+  /search/filters:
+    get:
+      description: Retrieves a list of active filters from the search service.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of active filters
+          schema:
+            items:
+              $ref: '#/definitions/search.Filter'
+            type: array
+        "400":
+          description: Invalid request or failed to process the response
+          schema:
+            type: string
+        "403":
+          description: Forbidden - context creation failed
+          schema:
+            type: string
+      security:
+      - LogisticAuth: []
+      summary: Get active filters
+      tags:
+      - Filters
   /user:
     post:
       consumes:

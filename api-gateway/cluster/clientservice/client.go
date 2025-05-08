@@ -40,15 +40,15 @@ func (c *Client) GetClientById(ctx goatcontext.Context, clientId int) (client Cl
 	return client, c.httpClient.Do(request, body, &client)
 }
 
-func (c *Client) UpdateClient(ctx goatcontext.Context, client ClientInfo) (result ClientInfo, err error) {
+func (c *Client) UpdateClient(ctx goatcontext.Context, client ClientInfo) error {
 	request, body, err := c.httpClient.Request(ctx, http.MethodPut, "client", client, nil)
 	if err != nil {
-		return
+		return err
 	}
 
 	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
 
-	return result, c.httpClient.Do(request, body, &result)
+	return c.httpClient.Do(request, body, nil)
 }
 
 func (c *Client) DeleteClient(ctx goatcontext.Context, clientId int) error {

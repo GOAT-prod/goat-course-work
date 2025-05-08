@@ -16,11 +16,11 @@ import (
 // @Description Retrieves the catalog for a specific product by its ID.
 // @Tags Catalog
 // @Produce json
-// @Param productId path int true "Product ID"
+// @Param id path int true "Product ID"
 // @Success 200 {object} search.Product "Product catalog data"
 // @Failure 400 {string} string "Invalid request or failed to process the response"
 // @Failure 403 {string} string "Forbidden - context creation failed"
-// @Router /product/{productId}/catalog [get]
+// @Router /search/catalog/product/{id} [get]
 // @Security LogisticAuth
 func GetProductCatalogHandler(logger goatlogger.Logger, searchClient *search.Client) goathttp.Handler {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +31,9 @@ func GetProductCatalogHandler(logger goatlogger.Logger, searchClient *search.Cli
 			return
 		}
 
-		productId, err := strconv.Atoi(mux.Vars(r)["productId"])
+		id, _ := mux.Vars(r)["id"]
+
+		productId, err := strconv.Atoi(id)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			logger.Error(err.Error())

@@ -19,7 +19,7 @@ import (
 // @Success 204 "Status updated successfully"
 // @Failure 400 {string} string "Invalid request or failed to process the response"
 // @Failure 403 {string} string "Forbidden - context creation failed"
-// @Router /requests/{requestId}/status/{status} [put]
+// @Router /requests/{requestId}/{status} [put]
 // @Security LogisticAuth
 func UpdateRequestStatusHandler(logger goatlogger.Logger, requestClient *request.Client) goathttp.Handler {
 	return func(w http.ResponseWriter, r *http.Request) {

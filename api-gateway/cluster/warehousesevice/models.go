@@ -26,8 +26,8 @@ type ProductItem struct {
 
 // ProductMaterial представляет информацию о материале, из которого состоит продукт.
 type ProductMaterial struct {
-	Id       int    `json:"Id"`       // Уникальный идентификатор материала.
-	Material string `json:"Material"` // Название материала (например, "дерево", "металл").
+	Id       int    `json:"id"`       // Уникальный идентификатор материала.
+	Material string `json:"material"` // Название материала (например, "дерево", "металл").
 }
 
 // ProductImages представляет информацию об изображении продукта.

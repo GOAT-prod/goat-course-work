@@ -51,7 +51,7 @@ func (c *Client) AddUser(ctx goatcontext.Context, user User) (result User, err e
 	return result, c.httpClient.Do(request, body, &result)
 }
 
-func (c *Client) UpdateUser(ctx goatcontext.Context, user User) (result User, err error) {
+func (c *Client) UpdateUser(ctx goatcontext.Context, user User) (err error) {
 	request, body, err := c.httpClient.Request(ctx, http.MethodPut, "user", user, nil)
 	if err != nil {
 		return
@@ -59,7 +59,7 @@ func (c *Client) UpdateUser(ctx goatcontext.Context, user User) (result User, er
 
 	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
 
-	return result, c.httpClient.Do(request, body, &result)
+	return c.httpClient.Do(request, body, nil)
 }
 
 func (c *Client) DeleteUser(ctx goatcontext.Context, userId int) error {
@@ -70,5 +70,5 @@ func (c *Client) DeleteUser(ctx goatcontext.Context, userId int) error {
 
 	request.Header.Set(headers.AuthorizationHeader(), ctx.AuthToken())
 
-	return c.httpClient.Do(request, body, &err)
+	return c.httpClient.Do(request, body, nil)
 }

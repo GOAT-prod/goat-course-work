@@ -37,14 +37,7 @@ func UpdateUserHandler(logger goatlogger.Logger, userClient *userservice.Client)
 			return
 		}
 
-		updatedUser, err := userClient.UpdateUser(ctx, user)
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			logger.Error(err.Error())
-			return
-		}
-
-		if err = json.WriteResponse(w, http.StatusOK, updatedUser); err != nil {
+		if err = userClient.UpdateUser(ctx, user); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			logger.Error(err.Error())
 			return

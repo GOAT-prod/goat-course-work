@@ -33,10 +33,6 @@ func (c *Client) GetSellReport(ctx goatcontext.Context, userId int, date time.Ti
 		return nil, err
 	}
 
-	if response.Body != nil {
-		defer response.Body.Close()
-	}
-
 	if response.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("status code %d", response.StatusCode)
 	}
@@ -55,10 +51,6 @@ func (c *Client) GetOrderReport(ctx goatcontext.Context, userId int, date time.T
 	response, err := http.DefaultClient.Do(request)
 	if err != nil {
 		return nil, err
-	}
-
-	if response.Body != nil {
-		defer response.Body.Close()
 	}
 
 	if response.StatusCode != http.StatusOK {

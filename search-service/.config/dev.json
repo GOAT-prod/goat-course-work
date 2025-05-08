@@ -3,9 +3,9 @@
   "app_name": "search-service",
   "databases": {
     "mongo": {
-      "connection": "",
-      "database": "",
-      "collection": ""
+      "connection": "mongodb://mongo_db:27017/?connect=direct",
+      "database": "search",
+      "collection": "filters"
     },
     "redis": {
       "address": "redis:6379",

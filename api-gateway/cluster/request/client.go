@@ -30,7 +30,7 @@ func (c *Client) GetRequests(ctx goatcontext.Context) (result any, err error) {
 }
 
 func (c *Client) UpdateRequestStatus(ctx goatcontext.Context, id int, status string) error {
-	request, body, err := c.httpClient.Request(ctx, http.MethodPut, fmt.Sprintf("request/%d/status/%s", id, status), nil, nil)
+	request, body, err := c.httpClient.Request(ctx, http.MethodPut, fmt.Sprintf("request/%d/%s", id, status), nil, nil)
 	if err != nil {
 		return err
 	}

@@ -17,7 +17,7 @@ import (
 // @Success 200 {object} []object "List of requests"
 // @Failure 400 {string} string "Invalid request or failed to process the response"
 // @Failure 403 {string} string "Forbidden - context creation failed"
-// @Router /requests [get]
+// @Router /requests/all [get]
 // @Security LogisticAuth
 func GetRequestsHandler(logger goatlogger.Logger, requestClient *request.Client) goathttp.Handler {
 	return func(w http.ResponseWriter, r *http.Request) {
