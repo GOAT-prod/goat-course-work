@@ -1,0 +1,21 @@
+# github.com/GOAT-prod/goatcontext v1.0.5
+## explicit; go 1.23
+github.com/GOAT-prod/goatcontext
+# github.com/GOAT-prod/goathttp v1.0.8
+## explicit; go 1.23
+github.com/GOAT-prod/goathttp/client
+github.com/GOAT-prod/goathttp/headers
+github.com/GOAT-prod/goathttp/json
+github.com/GOAT-prod/goathttp/server
+# github.com/GOAT-prod/goatlogger v0.1.5
+## explicit; go 1.22.4
+github.com/GOAT-prod/goatlogger
+# github.com/GOAT-prod/goatsettings v1.0.0
+## explicit; go 1.23.1
+github.com/GOAT-prod/goatsettings
+# github.com/golang-jwt/jwt/v5 v5.2.1
+## explicit; go 1.18
+github.com/golang-jwt/jwt/v5
+# github.com/gorilla/mux v1.8.1
+## explicit; go 1.20
+github.com/gorilla/mux

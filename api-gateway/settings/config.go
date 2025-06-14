@@ -16,4 +16,5 @@ type Cluster struct {
 	SearchService    string `json:"search_service_url"`
 	RequestService   string `json:"request_service_url"`
 	ReportService    string `json:"report_service_url"`
+	RouteService     string `json:"route_service_url"`
 }

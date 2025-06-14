@@ -270,7 +270,7 @@ func (r *Init) UpdateProductMaterials(ctx goatcontext.Context, productMaterials 
 		return nil
 	}
 
-	if err := r.DeleteProductMaterials(ctx, []int{productMaterials[0].Id}); err != nil {
+	if err := r.DeleteProductMaterials(ctx, []int{productMaterials[0].ProductId}); err != nil {
 		return err
 	}
 

@@ -10,6 +10,7 @@
     "order_service_url": "http://order-service",
     "search_service_url": "http://search-service",
     "request_service_url": "http://request-service",
-    "report_service_url": "http://report-service"
+    "report_service_url": "http://report-service",
+    "route_service_url": "http://route-service"
   }
 }

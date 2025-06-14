@@ -139,6 +139,16 @@ services:
       - app-network
     expose:
       - "80"
+        
+  route-search-service:
+    container_name: route-search-service
+    build: ./route-search-service
+    environment:
+      - ENV=dev
+    networks:
+      - app-network
+    expose:
+      - "80"
 
   api-gateway:
     container_name: api-gateway

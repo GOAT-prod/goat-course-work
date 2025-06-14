@@ -8,6 +8,7 @@ import (
 	"api-gateway/api/handlers/orderhandlers"
 	"api-gateway/api/handlers/reporthandlers"
 	"api-gateway/api/handlers/requesthandlers"
+	"api-gateway/api/handlers/routehandlers"
 	"api-gateway/api/handlers/searchhandlers"
 	"api-gateway/api/handlers/userhandlers"
 	"api-gateway/api/handlers/warehousehandlers"
@@ -17,6 +18,7 @@ import (
 	"api-gateway/cluster/order"
 	"api-gateway/cluster/report"
 	"api-gateway/cluster/request"
+	"api-gateway/cluster/route"
 	"api-gateway/cluster/search"
 	"api-gateway/cluster/userservice"
 	"api-gateway/cluster/warehousesevice"
@@ -69,7 +71,8 @@ func (s *Server) Start() error {
 }
 
 func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.Client, userClient *userservice.Client, clientService *clientservice.Client,
-	warehouseClient *warehousesevice.Client, cartClient *cart.Client, orderClient *order.Client, searchClient *search.Client, requestClient *request.Client, reportClient *report.Client) {
+	warehouseClient *warehousesevice.Client, cartClient *cart.Client, orderClient *order.Client, searchClient *search.Client, requestClient *request.Client,
+	reportClient *report.Client, routeClient *route.Client) {
 	r.router.PathPrefix("/swagger/").Handler(handlers.SwaggerHandler())
 
 	//	auth-service
@@ -157,5 +160,12 @@ func (r *Router) SetupRoutes(logger goatlogger.Logger, authClient *authservice.C
 		reportSubRouter.Use(goathttp.AuthMiddleware)
 		reportSubRouter.HandleFunc("/sell/{userId}/{date}", reporthandlers.GetSellReportHandlers(logger, reportClient)).Methods(http.MethodGet, http.MethodOptions)
 		reportSubRouter.HandleFunc("/order/{userId}/{date}", reporthandlers.GetOrderReportHandler(logger, reportClient)).Methods(http.MethodGet, http.MethodOptions)
+	}
+
+	//	route-service
+	{
+		routeSubRouter := r.router.PathPrefix("/routes").Subrouter()
+		routeSubRouter.Use(goathttp.AuthMiddleware)
+		routeSubRouter.HandleFunc("/route/best", routehandlers.GetBestRouteHandler(logger, routeClient)).Methods(http.MethodPost, http.MethodOptions)
 	}
 }

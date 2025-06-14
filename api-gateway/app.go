@@ -8,6 +8,7 @@ import (
 	"api-gateway/cluster/order"
 	"api-gateway/cluster/report"
 	"api-gateway/cluster/request"
+	"api-gateway/cluster/route"
 	"api-gateway/cluster/search"
 	"api-gateway/cluster/userservice"
 	"api-gateway/cluster/warehousesevice"
@@ -37,6 +38,7 @@ type App struct {
 	searchServiceClient    *search.Client
 	requestServiceClient   *request.Client
 	reportServiceClient    *report.Client
+	routeServiceClient     *route.Client
 }
 
 func NewApp(ctx context.Context, logger goatlogger.Logger, cfg settings.Config) *App {
@@ -69,6 +71,7 @@ func (a *App) initClients() {
 	a.searchServiceClient = search.NewClient(goatclient.NewBaseClient(a.cfg.Cluster.SearchService))
 	a.requestServiceClient = request.NewClient(goatclient.NewBaseClient(a.cfg.Cluster.RequestService))
 	a.reportServiceClient = report.NewClient(goatclient.NewBaseClient(a.cfg.Cluster.ReportService))
+	a.routeServiceClient = route.NewClient(goatclient.NewBaseClient(a.cfg.Cluster.RouteService))
 }
 
 func (a *App) initServer() {
@@ -77,7 +80,18 @@ func (a *App) initServer() {
 	}
 
 	router := api.NewRouter(a.logger, a.cfg.Port)
-	router.SetupRoutes(a.logger, a.authServiceClient, a.userServiceClient, a.clientServiceClient, a.warehouseServiceClient, a.cartServiceClient, a.orderServiceCLinet, a.searchServiceClient, a.requestServiceClient, a.reportServiceClient)
+	router.SetupRoutes(
+		a.logger,
+		a.authServiceClient,
+		a.userServiceClient,
+		a.clientServiceClient,
+		a.warehouseServiceClient,
+		a.cartServiceClient,
+		a.orderServiceCLinet,
+		a.searchServiceClient,
+		a.requestServiceClient,
+		a.reportServiceClient,
+		a.routeServiceClient)
 
 	a.server = api.NewServer(a.ctx, router)
 }
