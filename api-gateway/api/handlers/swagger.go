@@ -2,7 +2,7 @@ package handlers
 
 import (
 	_ "api-gateway/docs"
-	httpSwagger "github.com/swaggo/http-swagger/v2"
+	httpSwagger "github.com/ducknes/http-swagger"
 	"net/http"
 )
 

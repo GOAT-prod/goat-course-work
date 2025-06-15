@@ -1,0 +1,6 @@
+{
+  "port": 80,
+  "app_name": "route-search-service",
+  "maps_api_url": "https://geocode-maps.yandex.ru/v1/",
+  "maps_api_key": "5be0d276-cb4e-4c3d-9178-003b799117fd"
+}

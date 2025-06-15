@@ -16,6 +16,9 @@ github.com/GOAT-prod/goatsettings
 # github.com/KyleBanks/depth v1.2.1
 ## explicit
 github.com/KyleBanks/depth
+# github.com/ducknes/http-swagger v1.0.1
+## explicit; go 1.17
+github.com/ducknes/http-swagger
 # github.com/go-openapi/jsonpointer v0.21.0
 ## explicit; go 1.20
 github.com/go-openapi/jsonpointer
@@ -46,24 +49,32 @@ github.com/josharian/intern
 github.com/mailru/easyjson/buffer
 github.com/mailru/easyjson/jlexer
 github.com/mailru/easyjson/jwriter
+# github.com/pkg/errors v0.9.1
+## explicit
+github.com/pkg/errors
 # github.com/shopspring/decimal v1.4.0
 ## explicit; go 1.10
 github.com/shopspring/decimal
-# github.com/swaggo/files/v2 v2.0.1
+# github.com/sv-tools/openapi v0.2.1
+## explicit; go 1.18
+github.com/sv-tools/openapi/spec
+# github.com/swaggo/files/v2 v2.0.2
 ## explicit; go 1.16
 github.com/swaggo/files/v2
-# github.com/swaggo/http-swagger/v2 v2.0.2
-## explicit; go 1.17
-github.com/swaggo/http-swagger/v2
 # github.com/swaggo/swag v1.16.4
 ## explicit; go 1.18
-github.com/swaggo/swag
+# github.com/swaggo/swag/v2 v2.0.0-rc4
+## explicit; go 1.18
+github.com/swaggo/swag/v2
 # golang.org/x/tools v0.28.0
 ## explicit; go 1.22.0
 golang.org/x/tools/go/ast/astutil
 golang.org/x/tools/go/buildutil
 golang.org/x/tools/go/internal/cgo
 golang.org/x/tools/go/loader
+# gopkg.in/yaml.v2 v2.4.0
+## explicit; go 1.15
+gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
